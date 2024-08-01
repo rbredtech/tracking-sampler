@@ -1,17 +1,23 @@
-import stylisticJs from '@stylistic/eslint-plugin-js'
+import stylisticJs from '@stylistic/eslint-plugin-js';
+import html from 'eslint-plugin-html';
 
 export default [
   {
+    files: ['src/**.js'],
     languageOptions: {
       ecmaVersion: 3,
-      sourceType: "script"
+      sourceType: 'script'
     },
-    ignores: ["dist/*"],
     plugins: {
       '@stylistic/js': stylisticJs
     },
     rules: {
-      quotes: ["error", "single"]
+      semi: ['error', 'always'],
+      quotes: ['error', 'single']
     }
-  }
+  },
+  {
+    files: ['src/*.html'],
+    plugins: { html },
+  },
 ];

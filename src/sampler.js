@@ -4,7 +4,7 @@
   window.__sampler = function () {
     var args = Array.prototype.slice.call(arguments, 0);
     queue[queue.length] = args;
-  }
+  };
 
   function callQueue() {
     for (var i = 0; i < queue.length; i++) {
@@ -102,7 +102,7 @@
 
       window.__sampler = function (method, parameter, callback) {
         iframeMessage(method, parameter, callback);
-      }
+      };
 
       function onMessage(event) {
         if ('http://localhost:4000'.indexOf(event.origin) === -1 || !event.data) {
@@ -125,7 +125,7 @@
 
     iframe.onerror = function (e) {
       console.error('error loading iframe', e);
-    }
+    };
 
     element.appendChild(iframe);
   }

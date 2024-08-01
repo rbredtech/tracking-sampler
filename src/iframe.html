@@ -32,8 +32,8 @@
           var param = JSON.parse(message[3]);
 
           window.__sampler(method, param, function (cbParam) {
-            _message(id + ';' + JSON.stringify({ param: cbParam }))
-          })
+            _message(id + ';' + JSON.stringify({ param: cbParam }));
+          });
         },
         false,
       );

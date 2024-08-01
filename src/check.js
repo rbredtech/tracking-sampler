@@ -66,11 +66,11 @@
           desiredPercentile = 10;
         }
         if (callback && typeof callback === 'function') {
-          callback(percentile <= desiredPercentile)
+          callback(percentile <= desiredPercentile);
         }
         break;
       default:
         break;
     }
-  }
+  };
 })();
