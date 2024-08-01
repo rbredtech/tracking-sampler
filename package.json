@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "serve-sampler-dev": "serve src/ -p 4000",
-    "dev": "concurrently \"yarn serve-sampler-dev\" \"http-server ./\"",
+    "dev": "concurrently \"yarn serve-sampler-dev\" \"http-server ./test\"",
     "build": "rm -rf ./dist && gulp"
   },
   "devDependencies": {

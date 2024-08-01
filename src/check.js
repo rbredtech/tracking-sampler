@@ -1,48 +1,61 @@
-(function() {
+(function () {
   var nameTechnicalCookie = "x-sampler-t";
   var namePercentileCookie = "x-sampler-p";
 
-  function getCookie(cname) {
-    var name = cname + "=";
+  function getCookie(name) {
+    var cname = name + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
     for(var i = 0; i <ca.length; i++) {
       var c = ca[i];
-      while (c.charAt(0) == ' ') {
+      while (c.charAt(0) === ' ') {
         c = c.substring(1);
       }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
+      if (c.indexOf(cname) === 0) {
+        return c.substring(cname.length, c.length);
       }
     }
     return null;
   }
 
-  function setCookie(cname, cvalue) {
-    const d = new Date();
-    d.setTime(d.getTime() + 1000 * 60 * 60 * 24 * 365 * 2); // 2 years
-    let expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  function setCookie(name, value) {
+    let maxAge = 60 * 60 * 24 * 365 * 2; // 2 years
+    document.cookie = name + "=" + value + ";max-age=" + maxAge + ";path=/";
   }
 
-  var technicalCookie = parseInt(getCookie(nameTechnicalCookie));
-  var now = Date.now();
-  if (!technicalCookie) {
-    setCookie(nameTechnicalCookie, now);
-    technicalCookie = now;
+  function readStorage(key) {
+    var value = null;
+    if (window.localStorage && localStorage.getItem) {
+      value = localStorage.getItem(key);
+      if (value) return value;
+    }
+    value = getCookie(key);
+    return value;
   }
 
-  var percentile = parseInt(getCookie(namePercentileCookie)) || 0;
-  if (now - 1000 * 60 * 60 * 24 * 2 > technicalCookie) { // technical cookie is at least 2 days old
-    if (!percentile) {
-      var percentile = Math.ceil(Math.random() * 100);
-      setCookie(namePercentileCookie, percentile);
+  function writeStorage(key, value) {
+    setCookie(key, value + "");
+    if (window.localStorage && localStorage.setItem) {
+      localStorage.setItem(key, value + "");
     }
   }
 
-  console.log("you are in percentile", percentile);
+  var technicalCookie = parseInt(readStorage(nameTechnicalCookie));
+  var now = Date.now();
+  if (!technicalCookie) {
+    writeStorage(nameTechnicalCookie, now);
+    technicalCookie = now;
+  }
 
-  window.__sample_me = function(group, inSampleCB, outOfSampleCB) {
+  var percentile = parseInt(readStorage(namePercentileCookie));
+  if (now - 1000 * 60 * 60 * 24 * 2 > technicalCookie) { // technical cookie is at least 2 days old
+    if (!percentile) {
+      var percentile = Math.floor(Math.random() * 100) + 1;
+      writeStorage(namePercentileCookie, percentile);
+    }
+  }
+
+  window.__sample_me = function (group, inSampleCB, outOfSampleCB) {
     var desiredPercentile = 10;
     if (group === "agf") {
       desiredPercentile = 20;

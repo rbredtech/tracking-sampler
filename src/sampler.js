@@ -1,7 +1,7 @@
-(function() {
+(function () {
   var queue = [];
 
-  window.__sample_me = function() {
+  window.__sample_me = function () {
     var args = Array.prototype.slice.call(arguments, 0);
     queue[queue.length] = args;
   }
@@ -33,9 +33,18 @@
     return !userAgentIsExcluded;
   }
 
+  function loadOnDOMContentLoaded(elementTagName, onDOMContentLoadedCB) {
+    document.addEventListener('DOMContentLoaded', function () {
+      var element = document.getElementsByTagName(elementTagName)[0];
+      if (element && onDOMContentLoadedCB && typeof onDOMContentLoadedCB === 'function') {
+        onDOMContentLoadedCB(element);
+      }
+    });
+  }
+
   function waitForDOMElement(elementTagName, onDomElementFoundCB, retriesLeft) {
     if (retriesLeft < 0) {
-      loadOnDOMContentLoaded(onDomElementFoundCB);
+      loadOnDOMContentLoaded(elementTagName, onDomElementFoundCB);
       return;
     }
 
@@ -67,9 +76,15 @@
     var samplerScriptTag = document.createElement('script');
     samplerScriptTag.setAttribute('type', 'text/javascript');
     samplerScriptTag.setAttribute('src', 'http://localhost:4000/check.js');
+
     samplerScriptTag.onload = function () {
       onSamplerLoaded();
     };
+
+    samplerScriptTag.onerror = function (e) {
+      console.error("error loading sampler", e);
+    };
+
     element.appendChild(samplerScriptTag);
   }
 
@@ -79,15 +94,13 @@
     iframe.setAttribute('style', 'position:fixed;border:0;outline:0;top:-999px;left:-999px;width:0;height:0;');
     iframe.setAttribute('frameborder', '0');
 
-    iframe.onload = function() {
+    iframe.onload = function () {
       if (!iframe.contentWindow || !iframe.contentWindow.postMessage) {
         iframe.parentElement.removeChild(iframe);
         return waitForDOMElement('head', loadSampler, 3);
       }
 
-      console.info("iframe loaded");
-
-      window.__sample_me = function(group, inSampleCB, outOfSampleCB) {
+      window.__sample_me = function (group, inSampleCB, outOfSampleCB) {
         iframeMessage(group, inSampleCB, outOfSampleCB)
       }
 
@@ -112,7 +125,7 @@
       onSamplerLoaded();
     };
 
-    iframe.onerror = function(e) {
+    iframe.onerror = function (e) {
       console.error("error loading iframe", e);
     }
 
