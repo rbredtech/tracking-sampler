@@ -1,14 +1,14 @@
 (function () {
   var queue = [];
 
-  window.__sample_me = function () {
+  window.__sampler = function () {
     var args = Array.prototype.slice.call(arguments, 0);
     queue[queue.length] = args;
   }
 
   function callQueue() {
     for (var i = 0; i < queue.length; i++) {
-      window.__sample_me.apply(null, queue[i]);
+      window.__sampler.apply(null, queue[i]);
     }
     queue = [];
   }
@@ -64,11 +64,11 @@
 
   var callbackCount = 0;
   var callbackMap = {};
- var iframe;
+  var iframe;
 
-  function iframeMessage(group, inSampleCB, outOfSampleCB) {
-    callbackMap[++callbackCount] = [inSampleCB, outOfSampleCB];
-    var msg = callbackCount + ';__sample_me;' + group;
+  function iframeMessage(method, parameter, callback) {
+    callbackMap[++callbackCount] = callback;
+    var msg = callbackCount + ';__sampler;' + method + ';' + JSON.stringify({ param: parameter });
     iframe.contentWindow.postMessage(msg, 'http://localhost:4000');
   }
 
@@ -82,7 +82,7 @@
     };
 
     samplerScriptTag.onerror = function (e) {
-      console.error("error loading sampler", e);
+      console.error('error loading sampler', e);
     };
 
     element.appendChild(samplerScriptTag);
@@ -100,8 +100,8 @@
         return waitForDOMElement('head', loadSampler, 3);
       }
 
-      window.__sample_me = function (group, inSampleCB, outOfSampleCB) {
-        iframeMessage(group, inSampleCB, outOfSampleCB)
+      window.__sampler = function (method, parameter, callback) {
+        iframeMessage(method, parameter, callback);
       }
 
       function onMessage(event) {
@@ -111,13 +111,11 @@
 
         var message = event.data.split(';');
         var id = message[0];
-        var callbackType = message[1];
-        if (callbackType === "inSample" && callbackMap[id] && typeof callbackMap[id][0] === 'function') {
-          callbackMap[id][0]();
+        var callbackParameter = JSON.parse(message[1]);
+        if (!callbackMap[id] || typeof callbackMap[id] !== 'function') {
+          return;
         }
-        if (callbackType === "outOfSample" && callbackMap[id] && typeof callbackMap[id][1] === 'function') {
-          callbackMap[id][1]();
-        }
+        callbackMap[id](callbackParameter.param);
       }
 
       window.addEventListener('message', onMessage);
@@ -126,7 +124,7 @@
     };
 
     iframe.onerror = function (e) {
-      console.error("error loading iframe", e);
+      console.error('error loading iframe', e);
     }
 
     element.appendChild(iframe);

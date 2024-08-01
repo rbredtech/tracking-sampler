@@ -16,11 +16,13 @@
     <object id='oipfCfg' type='application/oipfConfiguration'></object>
   </div>
 
-  <script type="text/javascript">
-    window.__sample_me("agtt", function () {
-      console.info("lucky you, you are amongst the chosen ones :-)");
-    }, function () {
-      console.warn("too bad, you are not part of the game :-(");
+  <script type='text/javascript'>
+    window.__sampler('check', 'agtt', function (inSample) {
+      if (inSample) {
+        console.info('lucky you, you are amongst the chosen ones :-)');
+      } else {
+      console.warn('too bad, you are not part of the game :-(');
+      }
     });
   </script>
 </body>

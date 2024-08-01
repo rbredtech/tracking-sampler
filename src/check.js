@@ -1,9 +1,9 @@
 (function () {
-  var nameTechnicalCookie = "x-sampler-t";
-  var namePercentileCookie = "x-sampler-p";
+  var nameTechnicalCookie = 'x-sampler-t';
+  var namePercentileCookie = 'x-sampler-p';
 
   function getCookie(name) {
-    var cname = name + "=";
+    var cname = name + '=';
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
     for(var i = 0; i <ca.length; i++) {
@@ -19,8 +19,8 @@
   }
 
   function setCookie(name, value) {
-    let maxAge = 60 * 60 * 24 * 365 * 2; // 2 years
-    document.cookie = name + "=" + value + ";max-age=" + maxAge + ";path=/";
+    var maxAge = 60 * 60 * 24 * 365 * 2; // 2 years
+    document.cookie = name + '=' + value + ';max-age=' + maxAge + ';path=/';
   }
 
   function readStorage(key) {
@@ -34,9 +34,9 @@
   }
 
   function writeStorage(key, value) {
-    setCookie(key, value + "");
+    setCookie(key, value + '');
     if (window.localStorage && localStorage.setItem) {
-      localStorage.setItem(key, value + "");
+      localStorage.setItem(key, value + '');
     }
   }
 
@@ -55,23 +55,22 @@
     }
   }
 
-  window.__sample_me = function (group, inSampleCB, outOfSampleCB) {
-    var desiredPercentile = 10;
-    if (group === "agf") {
-      desiredPercentile = 20;
-    }
-    if (group === "agtt") {
-      desiredPercentile = 10;
-    }
-
-    if (percentile <= desiredPercentile) {
-      if (inSampleCB && typeof inSampleCB === "function") {
-        inSampleCB();
-      }
-    } else {
-      if(outOfSampleCB && typeof outOfSampleCB === "function") {
-        outOfSampleCB();
-      }
+  window.__sampler = function(method, parameter, callback) {
+    switch(method) {
+      case 'check':
+        var desiredPercentile = 10;
+        if (parameter === 'agf') {
+          desiredPercentile = 20;
+        }
+        if (parameter === 'agtt') {
+          desiredPercentile = 10;
+        }
+        if (callback && typeof callback === 'function') {
+          callback(percentile <= desiredPercentile)
+        }
+        break;
+      default:
+        break;
     }
   }
 })();

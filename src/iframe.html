@@ -2,10 +2,10 @@
 <html xmlns='http://www.w3.org/1999/xhtml'>
 
 <head>
-  <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8">
+  <meta http-equiv='content-type' content='application/vnd.hbbtv.xhtml+xml; charset=utf-8'>
   </meta>
   <title></title>
-  <script type="text/javascript">
+  <script type='text/javascript'>
     //<![CDATA[
     var samplerScriptTag = document.createElement('script');
     samplerScriptTag.setAttribute('type', 'text/javascript');
@@ -23,15 +23,17 @@
         'message',
         function (event) {
           var message = event.data.split(';');
-          var id = message[0];
-          var method = message[1];
-          var group = message[2];
+          if (message[1] !== '__sampler') {
+            return;
+          }
 
-          window[method](group, function () {
-            _message(id + ';inSample');
-          }, function () {
-            _message(id + ';outOfSample');
-          });
+          var id = message[0];
+          var method = message[2];
+          var param = JSON.parse(message[3]);
+
+          window.__sampler(method, param, function (cbParam) {
+            _message(id + ';' + JSON.stringify({ param: cbParam }))
+          })
         },
         false,
       );
