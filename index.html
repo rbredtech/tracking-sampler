@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC '-//HbbTV//1.1.1//EN' 'http://www.hbbtv.org/dtd/HbbTV-1.1.1.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+
+<head>
+  <meta http-equiv='content-type' content='application/vnd.hbbtv.xhtml+xml; charset=utf-8' />
+  <title>Tracking Sampler Test</title>
+  <script type='text/javascript' src='http://localhost:4000/sampler.js'></script>
+</head>
+
+<body
+  style='width: 1280px; height: 720px; margin: 0; padding: 0; position: relative; overflow: hidden; font-family: "Tiresias", sans-serif'>
+  <object id='video' type='video/broadcast' fullscreen='true' width='1280' height='720'
+    style='position:absolute; top: 0px; left: 0px; width: 1280px; height: 720px;'></object>
+  <div style='visibility: hidden; width: 0; height: 0; position: absolute;'>
+    <object id='oipfAppMngr' type='application/oipfApplicationManager'></object>
+    <object id='oipfCfg' type='application/oipfConfiguration'></object>
+  </div>
+
+  <script type="text/javascript">
+    window.__sample_me("agtt", function () {
+      console.log("lucky you, you are among the chosen ones :-)");
+    }, function () {
+      console.warn("too bad, you are not part of the game :-(");
+    });
+  </script>
+</body>
+
+</html>
