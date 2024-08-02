@@ -19,51 +19,6 @@
     callTestingQueue();
   }
 
-  function isIframeCapable() {
-    var excludeList = ["antgalio", "hybrid", "maple", "presto", "technotrend goerler", "viera 2011" /* "hbbtvemulator"*/];
-    var currentUserAgent = window.navigator && navigator.userAgent && navigator.userAgent.toLowerCase();
-
-    if (!currentUserAgent || !currentUserAgent.indexOf) {
-      return false;
-    }
-
-    var userAgentIsExcluded = false;
-    for (var i = 0; i < excludeList.length; i++) {
-      userAgentIsExcluded = userAgentIsExcluded || currentUserAgent.indexOf(excludeList[i]) !== -1;
-    }
-
-    return !userAgentIsExcluded;
-  }
-
-  function loadOnDOMContentLoaded(elementTagName, onDOMContentLoadedCB) {
-    document.addEventListener("DOMContentLoaded", function () {
-      var element = document.getElementsByTagName(elementTagName)[0];
-      if (element && onDOMContentLoadedCB && typeof onDOMContentLoadedCB === "function") {
-        onDOMContentLoadedCB(element);
-      }
-    });
-  }
-
-  function waitForDOMElement(elementTagName, onDomElementFoundCB, retriesLeft) {
-    if (retriesLeft < 0) {
-      loadOnDOMContentLoaded(elementTagName, onDomElementFoundCB);
-      return;
-    }
-
-    var element = document.getElementsByTagName(elementTagName)[0];
-
-    if (!element) {
-      setTimeout(function () {
-        waitForDOMElement(elementTagName, onDomElementFoundCB, retriesLeft - 1);
-      }, 200);
-      return;
-    }
-
-    if (onDomElementFoundCB && typeof onDomElementFoundCB === "function") {
-      onDomElementFoundCB(element);
-    }
-  }
-
   var iframe;
 
   function iframeMessage(method, parameter, callback) {
