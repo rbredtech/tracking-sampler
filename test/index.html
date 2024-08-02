@@ -4,18 +4,8 @@
 <head>
   <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8" />
   <title>Tracking Sampler Test</title>
-  <script type="text/javascript">
-    //<![CDATA[
-    function loadTesting() {
-      var element = document.getElementsByTagName("head")[0];
-      var testingScriptTag = document.createElement("script");
-      testingScriptTag.setAttribute("type", "text/javascript");
-      testingScriptTag.setAttribute("src", "http://localhost:4000/testing.js");
-      element.appendChild(testingScriptTag);
-    }
-    //]]>
-  </script>
-  <script type="text/javascript" src="http://localhost:4000/sampler.js" onload="loadTesting()"></script>
+  <script type="text/javascript" src="http://localhost:4000/sampler.js"></script>
+  <script type="text/javascript" src="http://localhost:4000/testing.js"></script>
 </head>
 
 <body
