@@ -1,27 +1,27 @@
-<!DOCTYPE html PUBLIC '-//HbbTV//1.1.1//EN' 'http://www.hbbtv.org/dtd/HbbTV-1.1.1.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
+<!DOCTYPE html PUBLIC "-//HbbTV//1.1.1//EN" "http://www.hbbtv.org/dtd/HbbTV-1.1.1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-  <meta http-equiv='content-type' content='application/vnd.hbbtv.xhtml+xml; charset=utf-8' />
+  <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8" />
   <title>Tracking Sampler Test</title>
-  <script type='text/javascript' src='http://localhost:4000/sampler.js'></script>
+  <script type="text/javascript" src="http://localhost:4000/sampler.js"></script>
 </head>
 
 <body
-  style='width: 1280px; height: 720px; margin: 0; padding: 0; position: relative; overflow: hidden; font-family: "Tiresias", sans-serif'>
-  <object id='video' type='video/broadcast' fullscreen='true' width='1280' height='720'
-    style='position:absolute; top: 0px; left: 0px; width: 1280px; height: 720px;'></object>
-  <div style='visibility: hidden; width: 0; height: 0; position: absolute;'>
-    <object id='oipfAppMngr' type='application/oipfApplicationManager'></object>
-    <object id='oipfCfg' type='application/oipfConfiguration'></object>
+  style="width: 1280px; height: 720px; margin: 0; padding: 0; position: relative; overflow: hidden; font-family: 'Tiresias', sans-serif">
+  <object id="video" type="video/broadcast" fullscreen="true" width="1280" height="720"
+    style="position:absolute; top: 0px; left: 0px; width: 1280px; height: 720px;"></object>
+  <div style="visibility: hidden; width: 0; height: 0; position: absolute;">
+    <object id="oipfAppMngr" type="application/oipfApplicationManager"></object>
+    <object id="oipfCfg" type="application/oipfConfiguration"></object>
   </div>
 
-  <script type='text/javascript'>
-    window.__sampler('check', 'agtt', function (inSample) {
+  <script type="text/javascript">
+    window.__sampler("check", "agtt", function (inSample) {
       if (inSample) {
-        console.info('lucky you, you are amongst the chosen ones :-)');
+        console.info("lucky you, you are amongst the chosen ones :-)");
       } else {
-      console.warn('too bad, you are not part of the game :-(');
+        console.warn("too bad, you are not part of the game :-(");
       }
     });
   </script>

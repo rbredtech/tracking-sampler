@@ -12,15 +12,18 @@
     "lint": "eslint src/**"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin-js": "^2.6.1",
     "concurrently": "^8.2.2",
     "eslint": "^9.8.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-html": "^8.1.1",
+    "eslint-plugin-prettier": "^5.2.1",
     "gulp": "^5.0.0",
     "gulp-htmlmin": "^5.0.1",
     "gulp-minify-inline": "^1.1.0",
+    "gulp-replace": "^1.1.4",
     "gulp-terser": "^2.1.0",
     "http-server": "^14.1.1",
+    "prettier": "^3.3.3",
     "serve": "^14.2.3"
   }
 }

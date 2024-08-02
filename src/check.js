@@ -1,14 +1,14 @@
 (function () {
-  var nameTechnicalCookie = 'x-sampler-t';
-  var namePercentileCookie = 'x-sampler-p';
+  var nameTechnicalCookie = "x-sampler-t";
+  var namePercentileCookie = "x-sampler-p";
 
   function getCookie(name) {
-    var cname = name + '=';
+    var cname = name + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
+    var ca = decodedCookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
       var c = ca[i];
-      while (c.charAt(0) === ' ') {
+      while (c.charAt(0) === " ") {
         c = c.substring(1);
       }
       if (c.indexOf(cname) === 0) {
@@ -20,7 +20,7 @@
 
   function setCookie(name, value) {
     var maxAge = 60 * 60 * 24 * 365 * 2; // 2 years
-    document.cookie = name + '=' + value + ';max-age=' + maxAge + ';path=/';
+    document.cookie = name + "=" + value + ";max-age=" + maxAge + ";path=/";
   }
 
   function readStorage(key) {
@@ -34,9 +34,9 @@
   }
 
   function writeStorage(key, value) {
-    setCookie(key, value + '');
+    setCookie(key, value + "");
     if (window.localStorage && localStorage.setItem) {
-      localStorage.setItem(key, value + '');
+      localStorage.setItem(key, value + "");
     }
   }
 
@@ -48,24 +48,25 @@
   }
 
   var percentile = parseInt(readStorage(namePercentileCookie));
-  if (now - 1000 * 60 * 60 * 24 * 2 > technicalCookie) { // technical cookie is at least 2 days old
+  if (now - 1000 * 60 * 60 * 24 * 2 > technicalCookie) {
+    // technical cookie is at least 2 days old
     if (!percentile) {
       var percentile = Math.floor(Math.random() * 100) + 1;
       writeStorage(namePercentileCookie, percentile);
     }
   }
 
-  window.__sampler = function(method, parameter, callback) {
-    switch(method) {
-      case 'check':
+  window.__sampler = function (method, parameter, callback) {
+    switch (method) {
+      case "check":
         var desiredPercentile = 10;
-        if (parameter === 'agf') {
+        if (parameter === "agf") {
           desiredPercentile = 20;
         }
-        if (parameter === 'agtt') {
+        if (parameter === "agtt") {
           desiredPercentile = 10;
         }
-        if (callback && typeof callback === 'function') {
+        if (callback && typeof callback === "function") {
           callback(percentile <= desiredPercentile);
         }
         break;
