@@ -23,7 +23,7 @@
         "message",
         function (event) {
           var message = event.data.split(";");
-          if (message[1] !== "__sampler") {
+          if (message[1] !== "__tvi_sampler") {
             return;
           }
 
@@ -31,9 +31,12 @@
           var method = message[2];
           var param = JSON.parse(message[3]);
 
-          window.__sampler(method, param, function (cbParam) {
-            _message(id + ";" + JSON.stringify({ param: cbParam }));
-          });
+          switch (method) {
+            case "checkInSample":
+              window.__tvi_sampler.checkInSample(param, function (cbParam) {
+                _message(id + ";" + JSON.stringify({ param: cbParam }));
+              });
+          }
         },
         false,
       );

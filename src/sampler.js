@@ -1,16 +1,20 @@
 (function () {
   var queue = [];
 
-  window.__sampler = function () {
-    var args = Array.prototype.slice.call(arguments, 0);
-    queue[queue.length] = args;
+  var sampler = window.__tvi_sampler || {};
+  window.__tvi_sampler = sampler;
+  sampler._queue = [];
+
+  sampler.checkInSample = function () {
+    sampler._queue[sampler._queue.length] = { m: "checkInSample", a: Array.prototype.slice.call(arguments) };
   };
 
   function callQueue() {
-    for (var i = 0; i < queue.length; i++) {
-      window.__sampler.apply(null, queue[i]);
+    for (var i = 0; i < sampler._queue.length; i++) {
+      var f = sampler._queue[i];
+      sampler[f.m].apply(null, f.a);
     }
-    queue = [];
+    delete sampler._queue;
   }
 
   function onSamplerLoaded() {
@@ -68,7 +72,7 @@
 
   function iframeMessage(method, parameter, callback) {
     callbackMap[++callbackCount] = callback;
-    var msg = callbackCount + ";__sampler;" + method + ";" + JSON.stringify({ param: parameter });
+    var msg = callbackCount + ";__tvi_sampler;" + method + ";" + JSON.stringify({ param: parameter });
     iframe.contentWindow.postMessage(msg, "http://localhost:4000");
   }
 
@@ -100,8 +104,8 @@
         return waitForDOMElement("head", loadSampler, 3);
       }
 
-      window.__sampler = function (method, parameter, callback) {
-        iframeMessage(method, parameter, callback);
+      sampler.checkInSample = function (group, callback) {
+        iframeMessage("checkInSample", group, callback);
       };
 
       function onMessage(event) {

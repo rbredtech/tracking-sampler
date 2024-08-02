@@ -27,7 +27,9 @@
     var value = null;
     if (window.localStorage && localStorage.getItem) {
       value = localStorage.getItem(key);
-      if (value) return value;
+      if (value) {
+        return value;
+      }
     }
     value = getCookie(key);
     return value;
@@ -56,22 +58,19 @@
     }
   }
 
-  window.__sampler = function (method, parameter, callback) {
-    switch (method) {
-      case "check":
-        var desiredPercentile = 10;
-        if (parameter === "agf") {
-          desiredPercentile = 20;
-        }
-        if (parameter === "agtt") {
-          desiredPercentile = 10;
-        }
-        if (callback && typeof callback === "function") {
-          callback(percentile <= desiredPercentile);
-        }
-        break;
-      default:
-        break;
+  sampler = window.__tvi_sampler || {};
+  window.__tvi_sampler = sampler;
+
+  sampler.checkInSample = function (group, callback) {
+    var desiredPercentile = 10;
+    if (group === "agf") {
+      desiredPercentile = 20;
+    }
+    if (group === "agtt") {
+      desiredPercentile = 10;
+    }
+    if (callback && typeof callback === "function") {
+      callback(percentile <= desiredPercentile);
     }
   };
 })();
