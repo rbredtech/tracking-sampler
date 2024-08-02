@@ -9,7 +9,7 @@
     //<![CDATA[
     var samplerScriptTag = document.createElement("script");
     samplerScriptTag.setAttribute("type", "text/javascript");
-    samplerScriptTag.setAttribute("src", "http://localhost:4000/check.js");
+    samplerScriptTag.setAttribute("src", "http://localhost:4000/sampler-impl.js");
     document.getElementsByTagName("head")[0].appendChild(samplerScriptTag);
 
     function _message(msg) {
@@ -36,6 +36,9 @@
               window.__tvi_sampler.checkInSample(param, function (cbParam) {
                 _message(id + ";" + JSON.stringify({ param: cbParam }));
               });
+              break;
+            default:
+              break;
           }
         },
         false,

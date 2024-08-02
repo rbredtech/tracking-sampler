@@ -4,7 +4,18 @@
 <head>
   <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8" />
   <title>Tracking Sampler Test</title>
-  <script type="text/javascript" src="http://localhost:4000/sampler.js"></script>
+  <script type="text/javascript">
+    //<![CDATA[
+    function loadTesting() {
+      var element = document.getElementsByTagName("head")[0];
+      var testingScriptTag = document.createElement("script");
+      testingScriptTag.setAttribute("type", "text/javascript");
+      testingScriptTag.setAttribute("src", "http://localhost:4000/testing.js");
+      element.appendChild(testingScriptTag);
+    }
+    //]]>
+  </script>
+  <script type="text/javascript" src="http://localhost:4000/sampler.js" onload="loadTesting()"></script>
 </head>
 
 <body
@@ -17,6 +28,7 @@
   </div>
 
   <script type="text/javascript">
+    //<![CDATA[
     window.__tvi_sampler.checkInSample("agtt", function (inSample) {
       if (inSample) {
         console.info("lucky you, you are amongst the chosen ones :-)");
@@ -24,6 +36,7 @@
         console.warn("too bad, you are not part of the game :-(");
       }
     });
+    //]]>
   </script>
 </body>
 

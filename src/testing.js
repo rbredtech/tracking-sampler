@@ -1,26 +1,26 @@
 (function () {
   var sampler = window.__tvi_sampler || {};
   window.__tvi_sampler = sampler;
-  sampler._q = [];
+  sampler._tq = [];
 
-  sampler.checkInSample = function () {
-    sampler._q[sampler._q.length] = { m: "checkInSample", a: Array.prototype.slice.call(arguments) };
+  sampler.setPercentile = function () {
+    sampler._tq[sampler._tq.length] = { m: "setPercentile", a: Array.prototype.slice.call(arguments) };
   };
 
-  function callQueue() {
-    for (var i = 0; i < sampler._q.length; i++) {
-      var f = sampler._q[i];
+  function callTestingQueue() {
+    for (var i = 0; i < sampler._tq.length; i++) {
+      var f = sampler._tq[i];
       sampler[f.m].apply(null, f.a);
     }
-    delete sampler._q;
+    delete sampler._tq;
   }
 
-  function onSamplerLoaded() {
-    callQueue();
+  function onTestingLoaded() {
+    callTestingQueue();
   }
 
   function isIframeCapable() {
-    var excludeList = ["antgalio", "hybrid", "maple", "presto", "technotrend goerler", "viera 2011" /*, "hbbtvemulator"*/];
+    var excludeList = ["antgalio", "hybrid", "maple", "presto", "technotrend goerler", "viera 2011" /* "hbbtvemulator"*/];
     var currentUserAgent = window.navigator && navigator.userAgent && navigator.userAgent.toLowerCase();
 
     if (!currentUserAgent || !currentUserAgent.indexOf) {
@@ -64,8 +64,6 @@
     }
   }
 
-  sampler._cbCount = sampler._cbCount || 0;
-  sampler._cbMap = sampler.callbackMap || {};
   var iframe;
 
   function iframeMessage(method, parameter, callback) {
@@ -74,40 +72,25 @@
     iframe.contentWindow.postMessage(msg, "http://localhost:4000");
   }
 
-  function loadSampler(element) {
-    var samplerScriptTag = document.createElement("script");
-    samplerScriptTag.setAttribute("type", "text/javascript");
-    samplerScriptTag.setAttribute("src", "http://localhost:4000/sampler-impl.js");
+  function loadTesting(element) {
+    var tester = document.createElement("script");
+    tester.setAttribute("type", "text/javascript");
+    tester.setAttribute("src", "http://localhost:4000/testing-ipml.js");
 
-    samplerScriptTag.onload = function () {
-      onSamplerLoaded();
+    tester.onload = function () {
+      onTestingLoaded();
     };
 
-    samplerScriptTag.onerror = function (e) {
-      console.error("error loading sampler", e);
+    tester.onerror = function (e) {
+      console.error("error loading testing", e);
     };
 
-    element.appendChild(samplerScriptTag);
+    element.appendChild(tester);
   }
 
-  function onIframeMessage(event) {
-    if ("http://localhost:4000".indexOf(event.origin) === -1 || !event.data) {
-      return;
-    }
-
-    var message = event.data.split(";");
-    var id = message[0];
-    var callbackParameter = JSON.parse(message[1]);
-    if (!sampler._cbMap[id] || typeof sampler._cbMap[id] !== "function") {
-      return;
-    }
-    sampler._cbMap[id](callbackParameter.param);
-    sampler._cbMap[id] = undefined;
-  }
-
-  function loadSamplerIframe(element) {
+  function loadTestingIframe(element) {
     iframe = document.createElement("iframe");
-    iframe.setAttribute("src", "http://localhost:4000/sampler-iframe.html");
+    iframe.setAttribute("src", "http://localhost:4000/testing-iframe.html");
     iframe.setAttribute("style", "position:fixed;border:0;outline:0;top:-999px;left:-999px;width:0;height:0;");
     iframe.setAttribute("frameborder", "0");
 
@@ -117,30 +100,28 @@
         return waitForDOMElement("head", loadSampler, 3);
       }
 
-      sampler.checkInSample = function (group, callback) {
-        iframeMessage("checkInSample", group, callback);
+      sampler.setPercentile = function (percentile, callback) {
+        iframeMessage("setPercentile", percentile, callback);
       };
 
-      window.addEventListener("message", onIframeMessage);
-
-      onSamplerLoaded();
+      onTestingLoaded();
     };
 
     iframe.onerror = function (e) {
-      console.error("error loading iframe", e);
+      console.error("error loading testing iframe", e);
     };
 
     element.appendChild(iframe);
   }
 
-  function init() {
+  function initTesting() {
     var waitForDOMElementRetries = 3;
     if (isIframeCapable()) {
-      waitForDOMElement("body", loadSamplerIframe, waitForDOMElementRetries);
+      waitForDOMElement("body", loadTestingIframe, waitForDOMElementRetries);
     } else {
-      waitForDOMElement("head", loadSampler, waitForDOMElementRetries);
+      waitForDOMElement("head", loadTesting, waitForDOMElementRetries);
     }
   }
 
-  init();
+  initTesting();
 })();
