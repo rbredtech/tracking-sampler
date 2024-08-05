@@ -28,7 +28,7 @@ jobs:
         name: Build
         run: npm run build
         env:
-          SAMPLER_BASE_URL: "https://sampling.tvping.com"
+          SAMPLER_BASE_URL: "http://sampling.tvping.com"
 
       - id: "upload"
         uses: "google-github-actions/upload-cloud-storage@v2"
