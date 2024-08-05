@@ -1,4 +1,5 @@
 (function () {
+  var nameTechnicalCookie = "x-sampler-t";
   var namePercentileCookie = "x-sampler-p";
 
   function setCookie(name, value) {
@@ -19,5 +20,10 @@
   sampler.setPercentile = function (percentile, callback) {
     writeStorage(namePercentileCookie, percentile);
     callback(percentile);
+  };
+
+  sampler.setValidTechCookie = function (callback) {
+    writeStorage(nameTechnicalCookie, Date.now() - 1000 * 60 * 60 * 24 * 4);
+    callback();
   };
 })();

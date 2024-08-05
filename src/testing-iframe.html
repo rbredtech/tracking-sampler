@@ -36,6 +36,11 @@
               window.__tvi_sampler.setPercentile(param.param, function (cbParam) {
                 _message(id + ";" + JSON.stringify({ param: cbParam }));
               });
+              break;
+            case "setValidTechCookie":
+              window.__tvi_sampler.setValidTechCookie(function (cbParam) {
+                _message(id + ";" + JSON.stringify({ param: cbParam }));
+              });
             default:
               break;
           }

@@ -7,6 +7,10 @@
     sampler._tq[sampler._tq.length] = { m: "setPercentile", a: Array.prototype.slice.call(arguments) };
   };
 
+  sampler.setValidTechCookie = function () {
+    sampler._tq[sampler._tq.length] = { m: "setValidTechCookie", a: Array.prototype.slice.call(arguments) };
+  };
+
   function callTestingQueue() {
     for (var i = 0; i < sampler._tq.length; i++) {
       var f = sampler._tq[i];
@@ -57,6 +61,10 @@
 
       sampler.setPercentile = function (percentile, callback) {
         iframeMessage("setPercentile", percentile, callback);
+      };
+
+      sampler.setValidTechCookie = function (callback) {
+        iframeMessage("setValidTechCookie", callback);
       };
 
       onTestingLoaded();
