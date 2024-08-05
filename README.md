@@ -46,4 +46,5 @@ Adding the testing module enhances the `window.__tvi_sampler` api with the follo
 | Method | Parameters |
 | ---    | ---        |
 | `setPercentile(percentile, callback)` | `percentile` - numeric value between 0 and 100<br />`callback`- function with numeric parameter returning the new percentile |
+| `isTechCookieValid(callback)`| `callback` - called with boolean parameter indicating if tech cookie is valid |
 | `setValidTechCookie(callback)` | `callback` - called when the tech-cookie was set. After reloading the application, sampling takes place |
