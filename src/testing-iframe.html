@@ -37,10 +37,16 @@
                 _message(id + ";" + JSON.stringify({ param: cbParam }));
               });
               break;
+            case "isTechCookieValid":
+              window.__tvi_sampler.isTechCookieValid(function (cbParam) {
+                _message(id + ";" + JSON.stringify({ param: cbParam }));
+              });
+              break;
             case "setValidTechCookie":
               window.__tvi_sampler.setValidTechCookie(function (cbParam) {
                 _message(id + ";" + JSON.stringify({ param: cbParam }));
               });
+              break;
             default:
               break;
           }

@@ -43,18 +43,20 @@
   }
 
   var technicalCookie = parseInt(readStorage(nameTechnicalCookie));
+  var percentile = 0;
+
   var now = Date.now();
   if (!technicalCookie) {
     writeStorage(nameTechnicalCookie, now);
     technicalCookie = now;
-  }
-
-  var percentile = parseInt(readStorage(namePercentileCookie));
-  if (now - 1000 * 60 * 60 * 24 * 2 > technicalCookie) {
-    // technical cookie is at least 2 days old
-    if (!percentile) {
-      var percentile = Math.floor(Math.random() * 100) + 1;
-      writeStorage(namePercentileCookie, percentile);
+  } else {
+    // check if technical cookie is at least 2 days old
+    if (now - 1000 * 60 * 60 * 24 * 2 > technicalCookie) {
+      percentile = parseInt(readStorage(namePercentileCookie));
+      if (!percentile) {
+        var percentile = Math.floor(Math.random() * 100) + 1;
+        writeStorage(namePercentileCookie, percentile);
+      }
     }
   }
 
@@ -70,7 +72,7 @@
       desiredPercentile = 10;
     }
     if (callback && typeof callback === "function") {
-      callback(percentile <= desiredPercentile);
+      callback(!!percentile && percentile <= desiredPercentile);
     }
   };
 })();

@@ -7,6 +7,10 @@
     sampler._tq[sampler._tq.length] = { m: "setPercentile", a: Array.prototype.slice.call(arguments) };
   };
 
+  sampler.isTechCookieValid = function () {
+    sampler._tq[sampler._tq.length] = { m: "isTechCookieValid", a: Array.prototype.slice.call(arguments) };
+  };
+
   sampler.setValidTechCookie = function () {
     sampler._tq[sampler._tq.length] = { m: "setValidTechCookie", a: Array.prototype.slice.call(arguments) };
   };
@@ -63,8 +67,12 @@
         iframeMessage("setPercentile", percentile, callback);
       };
 
+      sampler.isTechCookieValid = function (callback) {
+        iframeMessage("isTechCookieValid", undefined, callback);
+      };
+
       sampler.setValidTechCookie = function (callback) {
-        iframeMessage("setValidTechCookie", callback);
+        iframeMessage("setValidTechCookie", undefined, callback);
       };
 
       onTestingLoaded();
