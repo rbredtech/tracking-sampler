@@ -18,7 +18,7 @@ jobs:
         uses: "google-github-actions/auth@v2"
         with:
           project_id: tv-insight-cd
-          credentials_json: ${{ secrets.GCP_TV_INSIGHT_SA_KEY }}
+          credentials_json: ${{ secrets.GCP_TRACKING_SAMPLING_SA_KEY }}
 
       - id: "install"
         name: Install dependencies
