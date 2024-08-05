@@ -27,7 +27,7 @@ The `window.__tvi_sampler` object exposes the following methods:
 
 ## Testing module
 
-The tracking sampler comes with a separate testing module. Adding this module allows for setting the device's percentile, rather than randomly assigning it.
+The tracking sampler comes with a separate testing module. Adding this module adds [methods](#testing-api-methods) to update the random percentile to a fixed value, and to check and set the tech cookie[^1].
 
 ### Adding the testing module
 
@@ -48,3 +48,13 @@ Adding the testing module enhances the `window.__tvi_sampler` api with the follo
 | `setPercentile(percentile, callback)` | `percentile` - numeric value between 0 and 100<br />`callback`- function with numeric parameter returning the new percentile |
 | `isTechCookieValid(callback)`| `callback` - called with boolean parameter indicating if tech cookie is valid |
 | `setValidTechCookie(callback)` | `callback` - called when the tech-cookie was set. After reloading the application, sampling takes place |
+
+## Development
+
+- `yarn dev` serves `index.html` from the `/test` folder, which loads the sampler and testing module directly from the `/src` folder
+
+## Build
+
+- `yarn build` minifies the sampler and testing modules and writes them to `/dist`
+
+[^1]: The tech cookie is a cookie/localStorage key which stores the timestamp at creation. If this cookie/localStorage can still be read after at least 2 days, it is assumed that the device can store data in cookies/localStorage and therefore the percentile of the device can be persisted. If cookies/localStorage are not available, the device will always be out-of-sample.
