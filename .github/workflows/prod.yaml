@@ -27,11 +27,13 @@ jobs:
       - id: "build"
         name: Build
         run: npm run build
+        env:
+          SAMPLER_BASE_URL: "https://sampling.tvping.com"
 
       - id: "upload"
         uses: "google-github-actions/upload-cloud-storage@v2"
         with:
-          path: "dest"
+          path: "dist"
           destination: sampling-content-tvping-com
           parent: false
           predefinedAcl: publicRead
@@ -43,7 +45,7 @@ jobs:
       - id: "upload_html"
         uses: "google-github-actions/upload-cloud-storage@v2"
         with:
-          path: "dest"
+          path: "dist"
           destination: sampling-content-tvping-com
           parent: false
           predefinedAcl: publicRead
