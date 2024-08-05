@@ -6,8 +6,7 @@
   "author": "Andreas Jantschnig <andreas.jantschnig@tv-insight.com>",
   "license": "MIT",
   "scripts": {
-    "serve-sampler-dev": "serve src/ -p 4000",
-    "dev": "concurrently \"yarn serve-sampler-dev\" \"http-server ./test\"",
+    "dev": "concurrently \"serve src/ -p 4000\" \"serve test/ -p 8080\"",
     "build": "rm -rf ./dist && gulp",
     "test": "jest --verbose",
     "ci": "start-server-and-test \"yarn dev --hide 0,1\" http://localhost:8080 test",
@@ -26,7 +25,6 @@
     "gulp-replace": "^1.1.4",
     "gulp-size": "^5.0.0",
     "gulp-terser": "^2.1.0",
-    "http-server": "^14.1.1",
     "jest": "^29.7.0",
     "prettier": "^3.3.3",
     "puppeteer": "^22.15.0",
