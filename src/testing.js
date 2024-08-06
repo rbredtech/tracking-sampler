@@ -32,13 +32,13 @@
   function iframeMessage(method, parameter, callback) {
     sampler._cbMap[++sampler._cbCount] = callback;
     var msg = sampler._cbCount + ";__tvi_sampler;" + method + ";" + JSON.stringify({ param: parameter });
-    iframe.contentWindow.postMessage(msg, "http://localhost:4000");
+    iframe.contentWindow.postMessage(msg, window.location.protocol + "//localhost:4000");
   }
 
   function loadTesting(element) {
     var testingScriptTag = document.createElement("script");
     testingScriptTag.setAttribute("type", "text/javascript");
-    testingScriptTag.setAttribute("src", "http://localhost:4000/testing-impl.js");
+    testingScriptTag.setAttribute("src", window.location.protocol + "//localhost:4000/testing-impl.js");
 
     testingScriptTag.onload = function () {
       onTestingLoaded();
@@ -53,7 +53,7 @@
 
   function loadTestingIframe(element) {
     iframe = document.createElement("iframe");
-    iframe.setAttribute("src", "http://localhost:4000/testing-iframe.html");
+    iframe.setAttribute("src", window.location.protocol + "//localhost:4000/testing-iframe.html");
     iframe.setAttribute("style", "position:fixed;border:0;outline:0;top:-999px;left:-999px;width:0;height:0;");
     iframe.setAttribute("frameborder", "0");
 

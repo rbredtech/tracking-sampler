@@ -12,8 +12,6 @@ if (!SAMPLER_BASE_URL) {
 }
 
 const terserOptions = {
-  ecma: 5,
-  ie8: true,
   compress: {
     arrows: false,
     booleans: false,
@@ -41,7 +39,7 @@ function minifyHtmlTemplates() {
 }
 
 function setBaseUrl() {
-  return gulp.src("./dist/**").pipe(replace("http://localhost:4000", SAMPLER_BASE_URL)).pipe(gulp.dest("./dist"));
+  return gulp.src("./dist/**").pipe(replace("localhost:4000", SAMPLER_BASE_URL)).pipe(gulp.dest("./dist"));
 }
 
 function printSize() {

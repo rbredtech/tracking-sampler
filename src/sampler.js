@@ -71,13 +71,13 @@ window.isIframeCapable = function () {
   function iframeMessage(method, parameter, callback) {
     sampler._cbMap[++sampler._cbCount] = callback;
     var msg = sampler._cbCount + ";__tvi_sampler;" + method + ";" + JSON.stringify({ param: parameter });
-    iframe.contentWindow.postMessage(msg, "http://localhost:4000");
+    iframe.contentWindow.postMessage(msg, window.location.protocol + "//localhost:4000");
   }
 
   function loadSampler(element) {
     var samplerScriptTag = document.createElement("script");
     samplerScriptTag.setAttribute("type", "text/javascript");
-    samplerScriptTag.setAttribute("src", "http://localhost:4000/sampler-impl.js");
+    samplerScriptTag.setAttribute("src", window.location.protocol + "//localhost:4000/sampler-impl.js");
 
     samplerScriptTag.onload = function () {
       onSamplerLoaded();
@@ -91,7 +91,7 @@ window.isIframeCapable = function () {
   }
 
   function onIframeMessage(event) {
-    if ("http://localhost:4000".indexOf(event.origin) === -1 || !event.data) {
+    if ((window.location.protocol + "//localhost:4000").indexOf(event.origin) === -1 || !event.data) {
       return;
     }
 
@@ -107,7 +107,7 @@ window.isIframeCapable = function () {
 
   function loadSamplerIframe(element) {
     iframe = document.createElement("iframe");
-    iframe.setAttribute("src", "http://localhost:4000/sampler-iframe.html");
+    iframe.setAttribute("src", window.location.protocol + "//localhost:4000/sampler-iframe.html");
     iframe.setAttribute("style", "position:fixed;border:0;outline:0;top:-999px;left:-999px;width:0;height:0;");
     iframe.setAttribute("frameborder", "0");
 
