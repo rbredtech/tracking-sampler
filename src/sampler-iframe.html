@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//HbbTV//1.1.1//EN" "http://www.hbbtv.org/dtd/HbbTV-1.1.1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8">
+  </meta>
+  <title></title>
+  <script type="text/javascript">
+    //<![CDATA[
+    var samplerScriptTag = document.createElement("script");
+    samplerScriptTag.setAttribute("type", "text/javascript");
+    samplerScriptTag.setAttribute("src", window.location.protocol + "//localhost:4000/sampler-impl.js");
+    document.getElementsByTagName("head")[0].appendChild(samplerScriptTag);
+
+    function _message(msg) {
+      if (window.parent && window.parent.postMessage) {
+        window.parent.postMessage(msg, "*");
+      }
+    }
+
+    function messageEventHandler(event) {
+      var message = event.data.split(";");
+      if (message[1] !== "__tvi_sampler") {
+        return;
+      }
+
+      var id = message[0];
+      var method = message[2];
+      var param = JSON.parse(message[3]);
+
+      switch (method) {
+        case "checkInSample":
+          window.__tvi_sampler.checkInSample(param, function (cbParam) {
+            _message(id + ";" + JSON.stringify({ param: cbParam }));
+          });
+          break;
+        default:
+          break;
+      }
+    }
+
+    if (window["addEventListener"]) {
+      window.addEventListener("message", messageEventHandler, false);
+    }
+    //]]>
+  </script>
+</head>
+
+<body></body>
+
+</html>
