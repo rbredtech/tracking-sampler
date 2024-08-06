@@ -26,7 +26,8 @@ jobs:
         name: Build
         run: yarn build
         env:
-          SAMPLER_BASE_URL: sampling-dev.tvping.com
+          SAMPLER_HOST: sampling-dev.tvping.com
+          MAX_PERCENTILE: 10
 
       - id: auth
         uses: google-github-actions/auth@v2

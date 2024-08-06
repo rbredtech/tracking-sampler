@@ -31,7 +31,7 @@ describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
 
     const inSample = await page.evaluate(() => {
       return new Promise((resolve) => {
-        window.__tvi_sampler.checkInSample("agtt", resolve);
+        window.__tvi_sampler.checkInSample(resolve);
       });
     });
     expect(inSample).toBe(false);
@@ -60,7 +60,7 @@ describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
       it("should be in-sample", async () => {
         const inSample = await page.evaluate(() => {
           return new Promise((resolve) => {
-            window.__tvi_sampler.checkInSample("agtt", resolve);
+            window.__tvi_sampler.checkInSample(resolve);
           });
         });
         expect(inSample).toBe(true);
@@ -80,7 +80,7 @@ describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
       it("should be out-of-sample", async () => {
         const inSample = await page.evaluate(() => {
           return new Promise((resolve) => {
-            window.__tvi_sampler.checkInSample("agtt", resolve);
+            window.__tvi_sampler.checkInSample(resolve);
           });
         });
         expect(inSample).toBe(false);

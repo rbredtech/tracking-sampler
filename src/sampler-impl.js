@@ -63,14 +63,8 @@
   sampler = window.__tvi_sampler || {};
   window.__tvi_sampler = sampler;
 
-  sampler.checkInSample = function (group, callback) {
-    var desiredPercentile = 10;
-    if (group === "agf") {
-      desiredPercentile = 20;
-    }
-    if (group === "agtt") {
-      desiredPercentile = 10;
-    }
+  sampler.checkInSample = function (callback) {
+    var desiredPercentile = parseInt("<%-MAX_PERCENTILE%>");
     if (callback && typeof callback === "function") {
       callback(!!percentile && percentile <= desiredPercentile);
     }
