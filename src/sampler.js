@@ -28,7 +28,7 @@ window.waitForDOMElement = function (elementTagName, onDomElementFoundCB, retrie
 };
 
 window.isIframeCapable = function () {
-  var excludeList = ["antgalio", "hybrid", "maple", "presto", "technotrend goerler", "viera 2011" /*, "hbbtvemulator"*/];
+  var excludeList = ["antgalio", "hybrid", "maple", "presto", "technotrend goerler", "viera 2011"];
   var currentUserAgent = window.navigator && navigator.userAgent && navigator.userAgent.toLowerCase();
 
   if (!currentUserAgent || !currentUserAgent.indexOf) {

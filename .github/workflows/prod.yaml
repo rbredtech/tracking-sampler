@@ -11,29 +11,33 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - id: "checkout"
+      - id: checkout
         uses: actions/checkout@v4
 
-      - id: "auth"
-        uses: "google-github-actions/auth@v2"
+      - id: install
+        name: Install dependencies
+        run: yarn install
+
+      - id: test
+        name: Test
+        run: yarn ci
+
+      - id: build
+        name: Build
+        run: yarn build
+        env:
+          SAMPLER_BASE_URL: http://sampling.tvping.com
+
+      - id: auth
+        uses: google-github-actions/auth@v2
         with:
           project_id: tv-insight-cd
           credentials_json: ${{ secrets.GCP_TRACKING_SAMPLING_SA_KEY }}
 
-      - id: "install"
-        name: Install dependencies
-        run: npm install
-
-      - id: "build"
-        name: Build
-        run: npm run build
-        env:
-          SAMPLER_BASE_URL: "http://sampling.tvping.com"
-
-      - id: "upload"
-        uses: "google-github-actions/upload-cloud-storage@v2"
+      - id: upload
+        uses: google-github-actions/upload-cloud-storage@v2
         with:
-          path: "dist"
+          path: dist
           destination: sampling-content-tvping-com
           parent: false
           predefinedAcl: publicRead
@@ -42,10 +46,10 @@ jobs:
             cache-control: public, max-age=3600
           process_gcloudignore: false
 
-      - id: "upload_html"
-        uses: "google-github-actions/upload-cloud-storage@v2"
+      - id: upload_html
+        uses: google-github-actions/upload-cloud-storage@v2
         with:
-          path: "dist"
+          path: dist
           destination: sampling-content-tvping-com
           parent: false
           predefinedAcl: publicRead

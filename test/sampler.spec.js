@@ -1,29 +1,25 @@
 const puppeteer = require("puppeteer");
 
-function wait(timeout) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, timeout);
-  });
-}
-
 let page;
 
-beforeAll(async () => {
-  const browser = await puppeteer.launch({ dumpio: false, args: ["--disable-gpu"] });
-  page = await browser.newPage();
-}, 10000);
+describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
+  beforeAll(async () => {
+    const userAgent = !iFrame ? "HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03" : undefined;
+    const browser = await puppeteer.launch({ dumpio: false, args: ["--disable-gpu"] });
+    page = await browser.newPage();
+    if (userAgent) {
+      await page.setUserAgent(userAgent);
+    }
+  }, 10000);
 
-afterAll(async () => {
-  await page.browser().close();
-}, 10000);
+  afterAll(async () => {
+    await page.browser().close();
+  }, 10000);
 
-describe("Tracking Sampler", () => {
   beforeEach(async () => {
     await page.goto(`http://localhost:8080`);
     await page.waitForFunction(() => document.readyState === "complete");
-  });
+  }, 10000);
 
   it("should start off with out-of-sample (tech cookie invalid)", async () => {
     const techCookieValid = await page.evaluate(() => {

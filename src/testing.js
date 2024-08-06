@@ -36,19 +36,19 @@
   }
 
   function loadTesting(element) {
-    var tester = document.createElement("script");
-    tester.setAttribute("type", "text/javascript");
-    tester.setAttribute("src", "http://localhost:4000/testing-ipml.js");
+    var testingScriptTag = document.createElement("script");
+    testingScriptTag.setAttribute("type", "text/javascript");
+    testingScriptTag.setAttribute("src", "http://localhost:4000/testing-impl.js");
 
-    tester.onload = function () {
+    testingScriptTag.onload = function () {
       onTestingLoaded();
     };
 
-    tester.onerror = function (e) {
+    testingScriptTag.onerror = function (e) {
       console.error("error loading testing", e);
     };
 
-    element.appendChild(tester);
+    element.appendChild(testingScriptTag);
   }
 
   function loadTestingIframe(element) {
@@ -60,7 +60,7 @@
     iframe.onload = function () {
       if (!iframe.contentWindow || !iframe.contentWindow.postMessage) {
         iframe.parentElement.removeChild(iframe);
-        return waitForDOMElement("head", loadSampler, 3);
+        return waitForDOMElement("head", loadTesting, 3);
       }
 
       sampler.setPercentile = function (percentile, callback) {

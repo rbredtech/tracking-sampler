@@ -14,41 +14,39 @@
       }
     }
 
+    function messageEventHandler(event) {
+      var message = event.data.split(";");
+      if (message[1] !== "__tvi_sampler") {
+        return;
+      }
+
+      var id = message[0];
+      var method = message[2];
+      var param = JSON.parse(message[3]);
+
+      switch (method) {
+        case "setPercentile":
+          window.__tvi_sampler.setPercentile(param.param, function (cbParam) {
+            _message(id + ";" + JSON.stringify({ param: cbParam }));
+          });
+          break;
+        case "isTechCookieValid":
+          window.__tvi_sampler.isTechCookieValid(function (cbParam) {
+            _message(id + ";" + JSON.stringify({ param: cbParam }));
+          });
+          break;
+        case "setValidTechCookie":
+          window.__tvi_sampler.setValidTechCookie(function (cbParam) {
+            _message(id + ";" + JSON.stringify({ param: cbParam }));
+          });
+          break;
+        default:
+          break;
+      }
+    }
+
     if (window["addEventListener"]) {
-      window.addEventListener(
-        "message",
-        function (event) {
-          var message = event.data.split(";");
-          if (message[1] !== "__tvi_sampler") {
-            return;
-          }
-
-          var id = message[0];
-          var method = message[2];
-          var param = JSON.parse(message[3]);
-
-          switch (method) {
-            case "setPercentile":
-              window.__tvi_sampler.setPercentile(param.param, function (cbParam) {
-                _message(id + ";" + JSON.stringify({ param: cbParam }));
-              });
-              break;
-            case "isTechCookieValid":
-              window.__tvi_sampler.isTechCookieValid(function (cbParam) {
-                _message(id + ";" + JSON.stringify({ param: cbParam }));
-              });
-              break;
-            case "setValidTechCookie":
-              window.__tvi_sampler.setValidTechCookie(function (cbParam) {
-                _message(id + ";" + JSON.stringify({ param: cbParam }));
-              });
-              break;
-            default:
-              break;
-          }
-        },
-        false,
-      );
+      window.addEventListener("message", messageEventHandler, false);
     }
     //]]>
   </script>
