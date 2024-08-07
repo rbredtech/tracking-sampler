@@ -1,5 +1,5 @@
-import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import html from "eslint-plugin-html";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default [
   eslintPluginPrettierRecommended,
@@ -18,10 +18,9 @@ export default [
     },
   },
   {
-    files: ["gulpfile.js"],
+    files: ["gulpfile.mjs"],
     languageOptions: {
-      ecmaVersion: 6,
-      sourceType: "commonjs",
+      sourceType: "module",
     },
   },
   {

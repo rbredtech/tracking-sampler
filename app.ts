@@ -13,10 +13,10 @@ app.get("*", function(req, res) {
   res.render(__dirname + "/src" + req.url, {
     SAMPLER_HOST: "localhost:4000",
     MAX_PERCENTILE: 10,
-    FILE_SUFFIX: undefined,
     TECHNICAL_COOKIE_MIN_AGE: 1000 * 60 * 60 * 24 * 2,
     TECHNICAL_COOKIE_NAME: "x-sampler-t",
     PERCENTILE_COOKIE_NAME: "x-sampler-p",
+    __CONFIG_NAME: null,
   });
 });
 

@@ -22,6 +22,29 @@ jobs:
         name: Test
         run: yarn ci
 
+      - id: build-config
+        name: Write build config
+        uses: devops-actions/json-to-file
+        with:
+          filename: "build.json"
+          json: |
+            {
+              "": {
+                "SAMPLER_HOST": "sampling-dev.tvping.com",
+                "MAX_PERCENTILE": 10,
+                "TECHNICAL_COOKIE_MIN_AGE": 172800000,
+                "TECHNICAL_COOKIE_NAME": "x-sampler-t",
+                "PERCENTILE_COOKIE_NAME": "x-sampler-p"
+              },
+              "agf": {
+                "SAMPLER_HOST": "sampling-dev.tvping.com",
+                "MAX_PERCENTILE": 10,
+                "TECHNICAL_COOKIE_MIN_AGE": 172800000,
+                "TECHNICAL_COOKIE_NAME": "x-sampler-agf-t",
+                "PERCENTILE_COOKIE_NAME": "x-sampler-agf-p"
+              }
+            }
+
       - id: build
         name: Build
         run: yarn build

@@ -6,8 +6,11 @@
   "author": "Andreas Jantschnig <andreas.jantschnig@tv-insight.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently \"ts-node app.ts\" \"serve test/ -p 8080\"",
+    "dev": "concurrently \"yarn serve-scripts\" \"yarn serve-test\"",
     "build": "rm -rf ./dist && gulp",
+    "serve-scripts": "ts-node app.ts",
+    "serve-test": "serve test/ -p 8080",
+    "serve-dist": "serve dist/ -p 4040",
     "test": "jest --verbose",
     "ci": "start-server-and-test \"yarn dev --hide 0,1\" http://localhost:8080 test",
     "lint": "eslint src/**"

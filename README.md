@@ -51,10 +51,37 @@ Adding the testing module enhances the `window.__tvi_sampler` api with the follo
 
 ## Development
 
-- `yarn dev` serves `index.html` from the `/test` folder, which loads the sampler and testing module directly from the `/src` folder
+`yarn dev` serves `index.html` from the `/test` folder, which loads the sampler and testing module directly from the `/src` folder
 
 ## Build
 
-- `yarn build` minifies the sampler and testing modules and writes them to `/dist`
+Use `yarn build` to create a production-ready, minified sampling and testing module in the `/dist` folder.
+
+The build process requires a `build.json` file with the following structure:
+
+```json
+{
+  "20": {
+    "SAMPLER_HOST": "sampling.tvping.com",
+    "MAX_PERCENTILE": 20,
+    "TECHNICAL_COOKIE_MIN_AGE": 172800000,
+    "TECHNICAL_COOKIE_NAME": "x-sampler-20-t",
+    "PERCENTILE_COOKIE_NAME": "x-sampler-20-p"
+  },
+  "": {
+    "SAMPLER_HOST": "sampling.tvping.com",
+    "MAX_PERCENTILE": 10,
+    "TECHNICAL_COOKIE_MIN_AGE": 172800000,
+    "TECHNICAL_COOKIE_NAME": "x-sampler-t",
+    "PERCENTILE_COOKIE_NAME": "x-sampler-p"
+  }
+}
+```
+
+> `TECHNICAL_COOKIE_MIN_AGE` is in milliseconds
+
+As shown in the example above, multiple build configs can be added. The example above would build two entrypoints, `sampler-20.js` (the key of the build config is added as a filename suffix) and `sampler.js` (because the key of the config is an empty string).
+
+Every config also gets it's own testing module, following the same rules (e.g. above config outputs `testing-20.js` and `testing.js` to be used with the respective entrypoints).
 
 [^1]: The tech cookie is a cookie/localStorage key which stores the timestamp at creation. If this cookie/localStorage can still be read after at least 2 days, it is assumed that the device can store data in cookies/localStorage and therefore the percentile of the device can be persisted. If cookies/localStorage are not available, the device will always be out-of-sample.
