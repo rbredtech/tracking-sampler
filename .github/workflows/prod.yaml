@@ -65,20 +65,6 @@ jobs:
           destination: sampling-content-tvping-com
           parent: false
           predefinedAcl: publicRead
-          glob: "**/*.js"
           headers: |-
-            cache-control: public, max-age=3600
-          process_gcloudignore: false
-
-      - id: upload_html
-        uses: google-github-actions/upload-cloud-storage@v2
-        with:
-          path: dist
-          destination: sampling-content-tvping-com
-          parent: false
-          predefinedAcl: publicRead
-          glob: "**/*.html"
-          headers: |-
-            content-type: application/vnd.hbbtv.xhtml+xml
             cache-control: public, max-age=3600
           process_gcloudignore: false
