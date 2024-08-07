@@ -2,7 +2,10 @@ name: PROD - Static Bucket
 
 on:
   push:
-    branches: [master]
+    branches:
+      - "!develop"
+    tags:
+      - "v*.*.*"
 
 jobs:
   deploy:
@@ -48,9 +51,6 @@ jobs:
       - id: build
         name: Build
         run: yarn build
-        env:
-          SAMPLER_HOST: sampling.tvping.com
-          MAX_PERCENTILE: 10
 
       - id: auth
         uses: google-github-actions/auth@v2
