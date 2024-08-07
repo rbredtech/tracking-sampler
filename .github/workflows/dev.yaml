@@ -68,7 +68,7 @@ jobs:
           destination: sampling-content-dev-tvping-com
           parent: false
           predefinedAcl: publicRead
-          glob: "!(**/*.html)" # WARNING this glob is not working due to https://github.com/mrmlnc/fast-glob/issues/343 Assure that html files are uploaded AFTER uploading of other files so that content-type is changed!!!
+          glob: "!*.html"
           headers: |-
             cache-control: public, max-age=3600
           process_gcloudignore: false
@@ -81,7 +81,7 @@ jobs:
           destination: sampling-content-dev-tvping-com
           parent: false
           predefinedAcl: publicRead
-          glob: "**/*.html"
+          glob: "*.html"
           headers: |-
             content-type: application/vnd.hbbtv.xhtml+xml
             cache-control: public, max-age=3600

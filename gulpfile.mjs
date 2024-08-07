@@ -68,4 +68,4 @@ function printSize() {
     .pipe(gulp.dest("dist"));
 }
 
-export default gulp.series(compileTemplates, minifyJsTemplates, minifyHtmlTemplates, printSize);
+export default gulp.series(compileTemplates, printSize);
