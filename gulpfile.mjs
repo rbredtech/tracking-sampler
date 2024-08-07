@@ -6,25 +6,12 @@ import minifyInline from "gulp-minify-inline";
 import rename from "gulp-rename";
 import size from "gulp-size";
 import terser from "gulp-terser";
+import { createRequire } from "module";
 
-const baseConfig = {
-  SAMPLER_HOST: "sampling.tvping.com",
-  MAX_PERCENTILE: 10,
-  TECHNICAL_COOKIE_MIN_AGE: 1000 * 60 * 60 * 24 * 2,
-  TECHNICAL_COOKIE_NAME: "x-sampler-t",
-  PERCENTILE_COOKIE_NAME: "x-sampler-p",
-};
+const require = createRequire(import.meta.url);
+const buildConfigs = Object.entries(require("./build.json"));
 
-const buildConfigs = [
-  {
-    ...baseConfig,
-    FILE_SUFFIX: undefined,
-  },
-  {
-    ...baseConfig,
-    FILE_SUFFIX: "agf",
-  },
-];
+console.log(buildConfigs);
 
 const terserOptions = {
   compress: {
@@ -40,29 +27,26 @@ const terserOptions = {
     properties: false,
     typeofs: false,
   },
+  mangle: {
+    toplevel: true,
+  },
 };
 
 function compileTemplates(done) {
-  const tasks = buildConfigs.map(function (config) {
-    const compileTemplateWithConfig = function (taskDone) {
+  const tasks = buildConfigs.map(([key, config]) => {
+    const compileTemplatesWithConfig = () =>
       gulp
-        .src(["src/*", "!src/testing*"])
-        .pipe(ejs(config))
-        .pipe(gif(!!config.FILE_SUFFIX, rename({ suffix: `-${config.FILE_SUFFIX}` })))
+        .src("./src/*")
+        .pipe(ejs({ ...config, __CONFIG_NAME: key }))
+        .pipe(gif(!!key, rename({ suffix: `-${key}` })))
         .pipe(gulp.dest("./dist"));
-      taskDone();
-    };
-    return compileTemplateWithConfig;
+    return compileTemplatesWithConfig;
   });
 
-  return gulp.parallel(...tasks, (parallelDone) => {
-    parallelDone();
+  return gulp.series(...tasks, (seriesDone) => {
+    seriesDone();
     done();
   })();
-}
-
-function compileTestingTemplates() {
-  return gulp.src("./src/testing*").pipe(ejs(baseConfig)).pipe(gulp.dest("./dist"));
 }
 
 function minifyJsTemplates() {
@@ -84,4 +68,4 @@ function printSize() {
     .pipe(gulp.dest("dist"));
 }
 
-export default gulp.series(compileTemplates, compileTestingTemplates, minifyJsTemplates, minifyHtmlTemplates, printSize);
+export default gulp.series(compileTemplates, minifyJsTemplates, minifyHtmlTemplates, printSize);
