@@ -91,7 +91,7 @@
   }
 
   function onIframeMessage(event) {
-    if ((window.location.protocol + "//<%-SAMPLER_HOST%>").indexOf(event.origin) === -1 || !event.data) {
+    if ((window.location.protocol + "//<%-SAMPLER_HOST%>").indexOf(event.origin) === -1 || !event.data || typeof event.data !== "string") {
       return;
     }
 
