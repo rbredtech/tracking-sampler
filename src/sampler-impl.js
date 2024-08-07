@@ -1,6 +1,6 @@
 (function () {
-  var nameTechnicalCookie = "x-sampler-t";
-  var namePercentileCookie = "x-sampler-p";
+  var nameTechnicalCookie = "<%-TECHNICAL_COOKIE_NAME%>";
+  var namePercentileCookie = "<%-PERCENTILE_COOKIE_NAME%>";
 
   function getCookie(name) {
     var cname = name + "=";
@@ -50,8 +50,7 @@
     writeStorage(nameTechnicalCookie, now);
     technicalCookie = now;
   } else {
-    // check if technical cookie is at least 2 days old
-    if (now - 1000 * 60 * 60 * 24 * 2 > technicalCookie) {
+    if (now - parseInt("<%-TECHNICAL_COOKIE_MIN_AGE%>") > technicalCookie) {
       percentile = parseInt(readStorage(namePercentileCookie));
       if (!percentile) {
         var percentile = Math.floor(Math.random() * 100) + 1;
