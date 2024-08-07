@@ -68,9 +68,7 @@ jobs:
           destination: sampling-content-dev-tvping-com
           parent: false
           predefinedAcl: publicRead
-          glob: "!(**/*.html)"
-          headers: |-
-            cache-control: public, max-age=3600
+          glob: "**/*.js"
           process_gcloudignore: false
 
       - id: upload_html
@@ -84,5 +82,4 @@ jobs:
           glob: "**/*.html"
           headers: |-
             content-type: application/vnd.hbbtv.xhtml+xml
-            cache-control: public, max-age=3600
           process_gcloudignore: false
