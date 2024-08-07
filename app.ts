@@ -1,6 +1,6 @@
+import { renderFile } from "ejs";
 import express from "express";
 import path from "path";
-import { renderFile } from "ejs";
 
 const app = express();
 

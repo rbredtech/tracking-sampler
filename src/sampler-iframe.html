@@ -2,14 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-  <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8">
-  </meta>
+  <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8"></meta>
   <title></title>
   <script type="text/javascript">
     //<![CDATA[
     var samplerScriptTag = document.createElement("script");
     samplerScriptTag.setAttribute("type", "text/javascript");
-    samplerScriptTag.setAttribute("src", window.location.protocol + "//<%-SAMPLER_HOST%>/sampler-impl.js");
+    [{ }]
+    <% if (FILE_SUFFIX) { %>
+      samplerScriptTag.setAttribute("src", window.location.protocol + "//<%-SAMPLER_HOST%>/sampler-impl-<%-FILE_SUFFIX%>.js");
+    <% } else { %>
+      samplerScriptTag.setAttribute("src", window.location.protocol + "//<%-SAMPLER_HOST%>/sampler-impl.js")
+    <% } %>
     document.getElementsByTagName("head")[0].appendChild(samplerScriptTag);
 
     function _message(msg) {
