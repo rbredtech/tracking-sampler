@@ -9,9 +9,7 @@ import terser from "gulp-terser";
 import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
-const buildConfigs = Object.entries(require("./build.json"));
-
-console.log(buildConfigs);
+const buildConfigs = require("./build.json");
 
 const terserOptions = {
   compress: {
@@ -33,7 +31,7 @@ const terserOptions = {
 };
 
 function compileTemplates(done) {
-  const tasks = buildConfigs.map(([key, config]) => {
+  const tasks = Object.entries(buildConfigs).map(([key, config]) => {
     const compileTemplatesWithConfig = () =>
       gulp
         .src("./src/*")
