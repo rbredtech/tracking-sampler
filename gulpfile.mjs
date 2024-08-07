@@ -7,14 +7,21 @@ import rename from "gulp-rename";
 import size from "gulp-size";
 import terser from "gulp-terser";
 
+const baseConfig = {
+  SAMPLER_HOST: "sampling.tvping.com",
+  MAX_PERCENTILE: 10,
+  TECHNICAL_COOKIE_MIN_AGE: 1000 * 60 * 60 * 24 * 2,
+  TECHNICAL_COOKIE_NAME: "x-sampler-t",
+  PERCENTILE_COOKIE_NAME: "x-sampler-p",
+};
+
 const buildConfigs = [
   {
-    SAMPLER_HOST: "sampling.tvping.com",
-    MAX_PERCENTILE: 10,
+    ...baseConfig,
+    FILE_SUFFIX: undefined,
   },
   {
-    SAMPLER_HOST: "sampling.tvping.com",
-    MAX_PERCENTILE: 10,
+    ...baseConfig,
     FILE_SUFFIX: "agf",
   },
 ];
@@ -36,12 +43,12 @@ const terserOptions = {
 };
 
 function compileTemplates(done) {
-  const tasks = buildConfigs.map(function ({ SAMPLER_HOST, MAX_PERCENTILE, FILE_SUFFIX }) {
+  const tasks = buildConfigs.map(function (config) {
     const compileTemplateWithConfig = function (taskDone) {
       gulp
         .src(["src/*", "!src/testing*"])
-        .pipe(ejs({ SAMPLER_HOST, MAX_PERCENTILE, FILE_SUFFIX }))
-        .pipe(gif(!!FILE_SUFFIX, rename({ suffix: `-${FILE_SUFFIX}` })))
+        .pipe(ejs(config))
+        .pipe(gif(!!config.FILE_SUFFIX, rename({ suffix: `-${config.FILE_SUFFIX}` })))
         .pipe(gulp.dest("./dist"));
       taskDone();
     };
@@ -55,10 +62,7 @@ function compileTemplates(done) {
 }
 
 function compileTestingTemplates() {
-  return gulp
-    .src("./src/testing*")
-    .pipe(ejs({ SAMPLER_HOST: "sampling.tvping.com" }))
-    .pipe(gulp.dest("./dist"));
+  return gulp.src("./src/testing*").pipe(ejs(baseConfig)).pipe(gulp.dest("./dist"));
 }
 
 function minifyJsTemplates() {

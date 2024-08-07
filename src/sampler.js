@@ -77,12 +77,7 @@ window.isIframeCapable = function () {
   function loadSampler(element) {
     var samplerScriptTag = document.createElement("script");
     samplerScriptTag.setAttribute("type", "text/javascript");
-    <% if (FILE_SUFFIX) { %>
-      samplerScriptTag.setAttribute("src", window.location.protocol + "//<%-SAMPLER_HOST%>/sampler-impl-<%-FILE_SUFFIX%>.js");
-    <% } else { %>
-      samplerScriptTag.setAttribute("src", window.location.protocol + "//<%-SAMPLER_HOST%>/sampler-impl.js");
-    <% } %>
-    samplerScriptTag.setAttribute("src", window.location.protocol + "//<%-SAMPLER_HOST%>/sampler-impl.js");
+    samplerScriptTag.setAttribute("src", window.location.protocol + "//<%-SAMPLER_HOST%>/sampler-impl<%= FILE_SUFFIX ? '-' + FILE_SUFFIX : '' %>.js");
 
     samplerScriptTag.onload = function () {
       onSamplerLoaded();
@@ -112,13 +107,7 @@ window.isIframeCapable = function () {
 
   function loadSamplerIframe(element) {
     iframe = document.createElement("iframe");
-    [/  /]
-    <% if (FILE_SUFFIX) { %>
-      iframe.setAttribute("src", window.location.protocol + "//<%-SAMPLER_HOST%>/sampler-iframe-<%-FILE_SUFFIX%>.html");
-    <% } else { %>
-      iframe.setAttribute("src", window.location.protocol + "//<%-SAMPLER_HOST%>/sampler-iframe.html");
-    <% } %>
-    iframe.setAttribute("src", window.location.protocol + "//<%-SAMPLER_HOST%>/sampler-iframe.html");
+    iframe.setAttribute("src", window.location.protocol + "//<%-SAMPLER_HOST%>/sampler-iframe<%= FILE_SUFFIX ? '-' + FILE_SUFFIX : '' %>.html");
     iframe.setAttribute("style", "position:fixed;border:0;outline:0;top:-999px;left:-999px;width:0;height:0;");
     iframe.setAttribute("frameborder", "0");
 

@@ -1,6 +1,6 @@
 (function () {
-  var nameTechnicalCookie = "x-sampler-t";
-  var namePercentileCookie = "x-sampler-p";
+  var nameTechnicalCookie = "<%-TECHNICAL_COOKIE_NAME%>";
+  var namePercentileCookie = "<%-PERCENTILE_COOKIE_NAME%>";
 
   function getCookie(name) {
     var cname = name + "=";
@@ -52,11 +52,11 @@
 
   sampler.isTechCookieValid = function (callback) {
     var technicalCookie = parseInt(readStorage(nameTechnicalCookie)) || null;
-    callback(!!technicalCookie && Date.now() - 1000 * 60 * 60 * 24 * 2 > technicalCookie);
+    callback(!!technicalCookie && Date.now() - parseInt("<%-TECHNICAL_COOKIE_MIN_AGE%>") > technicalCookie);
   };
 
   sampler.setValidTechCookie = function (callback) {
-    writeStorage(nameTechnicalCookie, Date.now() - 1000 * 60 * 60 * 24 * 4);
+    writeStorage(nameTechnicalCookie, Date.now() - parseInt("<%-TECHNICAL_COOKIE_MIN_AGE%>") * 2);
     callback();
   };
 })();
