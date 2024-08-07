@@ -1,8 +1,12 @@
 name: DEV - Static Bucket
 
 on:
-  pull_request:
-    branches: [master]
+  push:
+    branches:
+      - "develop"
+      - "feature/*"
+      - "release/*"
+      - "hotfix/*"
 
 jobs:
   deploy-dev:
@@ -48,17 +52,16 @@ jobs:
       - id: build
         name: Build
         run: yarn build
-        env:
-          SAMPLER_HOST: sampling-dev.tvping.com
-          MAX_PERCENTILE: 10
 
       - id: auth
+        if: github.ref == 'refs/heads/develop'
         uses: google-github-actions/auth@v2
         with:
           project_id: tv-insight-cd
           credentials_json: ${{ secrets.GCP_TRACKING_SAMPLING_SA_KEY }}
 
       - id: upload
+        if: github.ref == 'refs/heads/develop'
         uses: google-github-actions/upload-cloud-storage@v2
         with:
           path: dist
@@ -71,6 +74,7 @@ jobs:
           process_gcloudignore: false
 
       - id: upload_html
+        if: github.ref == 'refs/heads/develop'
         uses: google-github-actions/upload-cloud-storage@v2
         with:
           path: dist
