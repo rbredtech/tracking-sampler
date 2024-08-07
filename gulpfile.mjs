@@ -1,19 +1,23 @@
 import gulp from "gulp";
 import ejs from "gulp-ejs";
-import terser from "gulp-terser";
 import htmlmin from "gulp-htmlmin";
+import gif from "gulp-if";
 import minifyInline from "gulp-minify-inline";
+import rename from "gulp-rename";
 import size from "gulp-size";
+import terser from "gulp-terser";
 
-const { SAMPLER_HOST, MAX_PERCENTILE } = process.env;
-
-if (!SAMPLER_HOST) {
-  throw Error("SAMPLER_HOST not configured");
-}
-
-if (!MAX_PERCENTILE) {
-  throw Error("MAX_PERCENTILE is not configured");
-}
+const buildConfigs = [
+  {
+    SAMPLER_HOST: "sampling.tvping.com",
+    MAX_PERCENTILE: 10,
+  },
+  {
+    SAMPLER_HOST: "sampling.tvping.com",
+    MAX_PERCENTILE: 10,
+    FILE_SUFFIX: "agf",
+  },
+];
 
 const terserOptions = {
   compress: {
@@ -31,14 +35,29 @@ const terserOptions = {
   },
 };
 
-function copyTemplates() {
-  return gulp.src("./src/*").pipe(gulp.dest("./dist"));
+function compileTemplates(done) {
+  const tasks = buildConfigs.map(function ({ SAMPLER_HOST, MAX_PERCENTILE, FILE_SUFFIX }) {
+    const compileTemplateWithConfig = function (taskDone) {
+      gulp
+        .src(["src/*", "!src/testing*"])
+        .pipe(ejs({ SAMPLER_HOST, MAX_PERCENTILE, FILE_SUFFIX }))
+        .pipe(gif(!!FILE_SUFFIX, rename({ suffix: `-${FILE_SUFFIX}` })))
+        .pipe(gulp.dest("./dist"));
+      taskDone();
+    };
+    return compileTemplateWithConfig;
+  });
+
+  return gulp.parallel(...tasks, (parallelDone) => {
+    parallelDone();
+    done();
+  })();
 }
 
-function compileTemplates() {
+function compileTestingTemplates() {
   return gulp
-    .src("./dist/*")
-    .pipe(ejs({ SAMPLER_HOST: "sampling.tvping.com", MAX_PERCENTILE: 10 }))
+    .src("./src/testing*")
+    .pipe(ejs({ SAMPLER_HOST: "sampling.tvping.com" }))
     .pipe(gulp.dest("./dist"));
 }
 
@@ -61,4 +80,4 @@ function printSize() {
     .pipe(gulp.dest("dist"));
 }
 
-export default gulp.series(copyTemplates, compileTemplates, minifyJsTemplates, minifyHtmlTemplates, printSize);
+export default gulp.series(compileTemplates, compileTestingTemplates, minifyJsTemplates, minifyHtmlTemplates, printSize);
