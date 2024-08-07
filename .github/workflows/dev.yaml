@@ -28,7 +28,7 @@ jobs:
 
       - id: build-config
         name: Write build config
-        uses: devops-actions/json-to-file
+        uses: devops-actions/json-to-file@v1.0.4
         with:
           filename: "build.json"
           json: |
