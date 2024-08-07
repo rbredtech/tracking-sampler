@@ -1,6 +1,6 @@
 # TV-Insight Tracking Sampler
 
-The tracking sampler can be used to only select devices within a specified percentile for tracking.
+The tracking sampler can be used to only select devices within a specified percentile for tracking. After the tech cookie[^1] set by the sampler is validated, a random percentile is assigned to the device and persisted.
 
 ## How to add the tracking sampler
 
@@ -16,6 +16,8 @@ The tracking sampler can be used to only select devices within a specified perce
   })
 </script>
 ```
+
+> As described in the [Build](#build) section, multiple entry points for the sample can be build/deployed, so `sampler.js` can also be e.g. `sampler-20.js`
 
 ### API methods
 
@@ -48,10 +50,13 @@ Adding the testing module enhances the `window.__tvi_sampler` api with the follo
 | `setPercentile(percentile, callback)` | `percentile` - numeric value between 0 and 100<br />`callback`- function with numeric parameter returning the new percentile |
 | `isTechCookieValid(callback)`| `callback` - called with boolean parameter indicating if tech cookie is valid |
 | `setValidTechCookie(callback)` | `callback` - called when the tech-cookie was set. After reloading the application, sampling takes place |
+| `reset(callback)` | `callback` - called after technical cookie and percentile cookie were deleted |
 
 ## Development
 
-`yarn dev` serves `index.html` from the `/test` folder, which loads the sampler and testing module directly from the `/src` folder
+- `yarn dev` serves `index.html` from the `/test` folder, which loads the sampler and testing module directly from the `/src` folder (accessible in the browser via `http://localhost:8080`)
+- `yarn serve-scripts` serves the compiled scripts from `/src` via `http://localhost:4000`
+- `yarn serve-dist` serves production build scripts from `/dist` via `http://localhost:4040` (see [Build](#build) section)
 
 ## Build
 

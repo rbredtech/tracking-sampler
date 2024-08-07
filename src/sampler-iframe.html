@@ -22,6 +22,10 @@
     }
 
     function messageEventHandler(event) {
+      if (!event.data || typeof event.data !== "string") {
+        return;
+      }
+
       var message = event.data.split(";");
       if (message[1] !== "__tvi_sampler") {
         return;

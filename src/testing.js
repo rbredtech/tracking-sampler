@@ -15,6 +15,10 @@
     sampler._tq[sampler._tq.length] = { m: "setValidTechCookie", a: Array.prototype.slice.call(arguments) };
   };
 
+  sampler.reset = function () {
+    sampler._tq[sampler._tq.length] = { m: "reset", a: Array.prototype.slice.call(arguments) };
+  };
+
   function callTestingQueue() {
     for (var i = 0; i < sampler._tq.length; i++) {
       var f = sampler._tq[i];
@@ -73,6 +77,10 @@
 
       sampler.setValidTechCookie = function (callback) {
         iframeMessage("setValidTechCookie", undefined, callback);
+      };
+
+      sampler.reset = function (callback) {
+        iframeMessage("reset", undefined, callback);
       };
 
       onTestingLoaded();

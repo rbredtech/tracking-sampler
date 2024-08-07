@@ -23,6 +23,10 @@
     document.cookie = name + "=" + value + ";max-age=" + maxAge + ";path=/";
   }
 
+  function deleteCookie(name) {
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
+
   function readStorage(key) {
     var value = null;
     if (window.localStorage && localStorage.getItem) {
@@ -42,6 +46,13 @@
     }
   }
 
+  function deleteStorage(key) {
+    deleteCookie(key);
+    if (window.localStorage && localStorage.removeItem) {
+      localStorage.removeItem(key);
+    }
+  }
+
   sampler = window.__tvi_sampler || {};
   window.__tvi_sampler = sampler;
 
@@ -57,6 +68,12 @@
 
   sampler.setValidTechCookie = function (callback) {
     writeStorage(nameTechnicalCookie, Date.now() - parseInt("<%-TECHNICAL_COOKIE_MIN_AGE%>") * 2);
+    callback();
+  };
+
+  sampler.reset = function (callback) {
+    deleteStorage(nameTechnicalCookie);
+    deleteStorage(namePercentileCookie);
     callback();
   };
 })();
