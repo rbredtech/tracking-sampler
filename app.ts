@@ -1,6 +1,10 @@
-import { renderFile } from "ejs";
+import ejs, { renderFile } from "ejs";
 import express from "express";
 import path from "path";
+
+ejs.delimiter = "*";
+ejs.openDelimiter = "__ejs(/";
+ejs.closeDelimiter = "/);";
 
 const app = express();
 

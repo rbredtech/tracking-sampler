@@ -10,7 +10,7 @@
     "build": "rm -rf ./dist && gulp",
     "serve-scripts": "ts-node app.ts",
     "serve-test": "serve test/ -p 8080",
-    "serve-dist": "serve dist/ -p 4040",
+    "serve-dist": "serve dist/ -p 4040 -c ../serve.json",
     "test": "jest --verbose",
     "ci": "start-server-and-test \"concurrently 'yarn serve-scripts' 'yarn serve-test' --hide 0,1\" http://localhost:8080 test",
     "lint": "eslint src/**"

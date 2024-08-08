@@ -11,6 +11,10 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const buildConfigs = require("./build.json");
 
+ejs.__EJS__.delimiter = "*";
+ejs.__EJS__.openDelimiter = "__ejs(/";
+ejs.__EJS__.closeDelimiter = "/);";
+
 const terserOptions = {
   compress: {
     arrows: false,
