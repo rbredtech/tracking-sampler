@@ -17,7 +17,7 @@ The tracking sampler can be used to only select devices within a specified perce
 </script>
 ```
 
-> As described in the [Build](#build) section, multiple entry points for the sample can be build/deployed, so `sampler.js` can also be e.g. `sampler-20.js`
+> As described in the [Build](#build) section, multiple entry points for the sample can be built/deployed, so `sampler.js` can also be e.g. `sampler-20.js`
 
 ### API methods
 
@@ -29,7 +29,7 @@ The `window.__tvi_sampler` object exposes the following methods:
 
 ## Testing module
 
-The tracking sampler comes with a separate testing module. Adding this module adds [methods](#testing-api-methods) to update the random percentile to a fixed value, and to check and set the tech cookie[^1].
+The tracking sampler comes with a separate testing module. Adding this module extends the `window.__tvi_sampler` object with [methods](#testing-api-methods) to update the random percentile to a user-defined value, to reset all stored values, and to check and set the tech cookie[^1].
 
 ### Adding the testing module
 
@@ -39,7 +39,9 @@ To enable the testing module, the following script tag has to be added:
 <script type="text/javascript" src="http://sampling.tvping.com/testing.js"></script>
 ```
 
-It is important that the script tag is added **after** the tag loading the sampler!
+> As described in the [Build](#build) section, if a different entrypoint like e.g. `sampler-20.js` is used, also the corresponding testing module needs to be used. I the case of `sampler-20.js` this would be `testing-20.js`.
+
+It is important that the script tag is added **after** the script tag loading the sampler!
 
 ### Testing API methods
 
@@ -47,7 +49,7 @@ Adding the testing module enhances the `window.__tvi_sampler` api with the follo
 
 | Method | Parameters |
 | ---    | ---        |
-| `setPercentile(percentile, callback)` | `percentile` - numeric value between 0 and 100<br />`callback`- function with numeric parameter returning the new percentile |
+| `setPercentile(percentile, callback)` | `percentile` - numeric value between 1 and 100<br />`callback`- function with numeric parameter returning the new percentile |
 | `isTechCookieValid(callback)`| `callback` - called with boolean parameter indicating if tech cookie is valid |
 | `setValidTechCookie(callback)` | `callback` - called when the tech-cookie was set. After reloading the application, sampling takes place |
 | `reset(callback)` | `callback` - called after technical cookie and percentile cookie were deleted |
