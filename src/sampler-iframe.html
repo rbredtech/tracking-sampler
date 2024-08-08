@@ -9,11 +9,6 @@
   <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8">
   <script type="text/javascript">
     //<![CDATA[
-    var samplerScriptTag = document.createElement("script");
-    samplerScriptTag.setAttribute("type", "text/javascript");
-    samplerScriptTag.setAttribute("src", window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/__ejs(/*-IMPL_FILE*/);");
-    document.getElementsByTagName("head")[0].appendChild(samplerScriptTag);
-
     window._sendMessage = function (msg) {
       if (window.parent && window.parent.postMessage) {
         window.parent.postMessage(msg, "*");
@@ -50,6 +45,12 @@
     if (window["addEventListener"]) {
       window.addEventListener("message", messageEventHandler, false);
     }
+
+    var samplerScriptTag = document.createElement("script");
+    samplerScriptTag.setAttribute("type", "text/javascript");
+    samplerScriptTag.setAttribute("src", window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/__ejs(/*-IMPL_FILE*/);");
+    document.getElementsByTagName("head")[0].appendChild(samplerScriptTag);
+
     //]]>
   </script>
 </head>

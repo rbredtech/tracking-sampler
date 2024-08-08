@@ -2,7 +2,25 @@ const puppeteer = require("puppeteer");
 
 let page;
 
-describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
+const cases = [
+  [true, true],
+  [true, false],
+  [false, true],
+  [false, false],
+];
+
+async function overrideLocalStorage(page) {
+  await page.evaluate(() => {
+    return new Promise((resolve) => {
+      window.localStorage.__proto__.getItem = function (key) {};
+      window.localStorage.__proto__.setItem = function (key, value) {};
+      window.localStorage.__proto__.removeItem = function (key) {};
+      resolve();
+    });
+  });
+}
+
+describe.each(cases)("Tracking Sampler - iFrame: %s - localStorage: %s", (iFrame, localStorage) => {
   beforeAll(async () => {
     const userAgent = !iFrame ? "HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03" : undefined;
     const browser = await puppeteer.launch({ dumpio: false, args: ["--disable-gpu"] });
@@ -19,6 +37,14 @@ describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
   beforeEach(async () => {
     await page.goto(`http://localhost:8080`);
     await page.waitForFunction(() => document.readyState === "complete");
+    await page.evaluate(() => {
+      return new Promise((resolve) => {
+        window.__tvi_sampler.reset(resolve);
+      });
+    });
+    if (!localStorage) {
+      await overrideLocalStorage(page);
+    }
   }, 5000);
 
   it("should start off with out-of-sample (tech cookie invalid)", async () => {
@@ -44,7 +70,6 @@ describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
           window.__tvi_sampler.setValidTechCookie(resolve);
         });
       });
-      await page.reload();
     }, 5000);
 
     describe("and percentile is below threshold", () => {
@@ -54,7 +79,6 @@ describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
             window.__tvi_sampler.setPercentile(5, resolve);
           });
         });
-        await page.reload();
       }, 5000);
 
       it("should be in-sample", async () => {
@@ -74,7 +98,6 @@ describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
             window.__tvi_sampler.setPercentile(50, resolve);
           });
         });
-        await page.reload();
       }, 5000);
 
       it("should be out-of-sample", async () => {
