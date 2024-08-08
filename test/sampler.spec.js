@@ -10,16 +10,16 @@ describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
     if (userAgent) {
       await page.setUserAgent(userAgent);
     }
-  }, 10000);
+  }, 5000);
 
   afterAll(async () => {
     await page.browser().close();
-  }, 10000);
+  }, 5000);
 
   beforeEach(async () => {
     await page.goto(`http://localhost:8080`);
     await page.waitForFunction(() => document.readyState === "complete");
-  }, 10000);
+  }, 5000);
 
   it("should start off with out-of-sample (tech cookie invalid)", async () => {
     const techCookieValid = await page.evaluate(() => {
@@ -45,7 +45,7 @@ describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
         });
       });
       await page.reload();
-    }, 10000);
+    }, 5000);
 
     describe("and percentile is below threshold", () => {
       beforeAll(async () => {
@@ -55,7 +55,7 @@ describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
           });
         });
         await page.reload();
-      }, 10000);
+      }, 5000);
 
       it("should be in-sample", async () => {
         const inSample = await page.evaluate(() => {
@@ -75,7 +75,7 @@ describe.each([true, false])("Tracking Sampler - iFrame: %s", (iFrame) => {
           });
         });
         await page.reload();
-      }, 10000);
+      }, 5000);
 
       it("should be out-of-sample", async () => {
         const inSample = await page.evaluate(() => {

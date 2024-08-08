@@ -16,11 +16,19 @@ function getCookie(name) {
 
 function setCookie(name, value) {
   var maxAge = 60 * 60 * 24 * 365 * 2; // 2 years
-  document.cookie = name + "=" + value + ";max-age=" + maxAge + ";path=/";
+  var cookie = name + "=" + value + ";max-age=" + maxAge + ";path=/";
+  document.cookie = cookie;
+  if (window._sendMessage) {
+    window._sendMessage("cmd$set-cookie//" + cookie);
+  }
 }
 
 function deleteCookie(name) {
-  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  var cookie = name + "=;max-age=-1;path=/";
+  document.cookie = cookie;
+  if (window._sendMessage) {
+    window._sendMessage("cmd$set-cookie//" + cookie);
+  }
 }
 
 function readStorage(key) {

@@ -9,22 +9,30 @@
 
   sampler.setPercentile = function (percentile, callback) {
     writeStorage(namePercentileCookie, percentile);
-    callback(percentile);
+    if (callback && typeof callback === "function") {
+      callback(percentile);
+    }
   };
 
   sampler.isTechCookieValid = function (callback) {
     var technicalCookie = parseInt(readStorage(nameTechnicalCookie)) || null;
-    callback(!!technicalCookie && Date.now() - parseInt("__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);") > technicalCookie);
+    if (callback && typeof callback === "function") {
+      callback(!!technicalCookie && Date.now() - parseInt("__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);") > technicalCookie);
+    }
   };
 
   sampler.setValidTechCookie = function (callback) {
     writeStorage(nameTechnicalCookie, Date.now() - parseInt("__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);") * 2);
-    callback();
+    if (callback && typeof callback === "function") {
+      callback();
+    }
   };
 
   sampler.reset = function (callback) {
     deleteStorage(nameTechnicalCookie);
     deleteStorage(namePercentileCookie);
-    callback();
+    if (callback && typeof callback === "function") {
+      callback();
+    }
   };
 })();

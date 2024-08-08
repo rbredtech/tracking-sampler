@@ -69,9 +69,11 @@
   var iframe;
 
   function iframeMessage(method, parameter, callback) {
-    sampler._cbMap[++sampler._cbCount] = callback;
-    var msg = sampler._cbCount + ";__tvi_sampler;" + method + ";" + JSON.stringify({ param: parameter });
-    iframe.contentWindow.postMessage(msg, window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);");
+    try {
+      sampler._cbMap[++sampler._cbCount] = callback;
+      var msg = sampler._cbCount + ";__tvi_sampler;" + method + ";" + JSON.stringify({ param: parameter });
+      iframe.contentWindow.postMessage(msg, window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);");
+    } catch (e) {}
   }
 
   function loadSampler(element) {
@@ -95,14 +97,31 @@
       return;
     }
 
-    var message = event.data.split(";");
-    var id = message[0];
-    var callbackParameter = JSON.parse(message[1]);
-    if (!sampler._cbMap[id] || typeof sampler._cbMap[id] !== "function") {
-      return;
+    var message = event.data.split("$");
+    if (message[0] === "cb") {
+      try {
+        var cb = message[1].split(";");
+        var id = cb[0];
+        var callbackParameter = JSON.parse(cb[1]);
+        if (!sampler._cbMap[id] || typeof sampler._cbMap[id] !== "function") {
+          return;
+        }
+        sampler._cbMap[id](callbackParameter.param);
+        sampler._cbMap[id] = undefined;
+      } catch (e) {}
     }
-    sampler._cbMap[id](callbackParameter.param);
-    sampler._cbMap[id] = undefined;
+    if (message[0] === "cmd") {
+      var cmd = message[1].split("//");
+      switch (cmd[0]) {
+        case "set-cookie":
+          if (cmd[1]) {
+            document.cookie = cmd[1];
+          }
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   function loadSamplerIframe(element) {
@@ -121,14 +140,14 @@
         iframeMessage("checkInSample", undefined, callback);
       };
 
-      window.addEventListener("message", onIframeMessage);
-
       onSamplerLoaded();
     };
 
     iframe.onerror = function (e) {
       console.error("error loading iframe", e);
     };
+
+    window.addEventListener("message", onIframeMessage);
 
     element.appendChild(iframe);
   }
