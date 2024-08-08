@@ -52,6 +52,40 @@ Adding the testing module enhances the `window.__tvi_sampler` api with the follo
 | `setValidTechCookie(callback)` | `callback` - called when the tech-cookie was set. After reloading the application, sampling takes place |
 | `reset(callback)` | `callback` - called after technical cookie and percentile cookie were deleted |
 
+## Integration with CMP and Tracking
+
+The following code shows exemplary how the sampler can be used in conjunction with the TV-Insight consent library and tracking script:
+
+```html
+!DOCTYPE html PUBLIC '-//HbbTV//1.1.1//EN' 'http://www.hbbtv.org/dtd/HbbTV-1.1.1.dtd'>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8">
+  <script type="text/javascript" src="http://consent.tvping.com/v2/cmp.js?channelId=9999"></script>
+  <script type="text/javascript" src="http://sampling.tvping.com/sampler.js"></script>
+  <script type="text/javascript">
+    window.__cmpapi('getTCData', 2, function (tcData) {
+      if (tcData.cmpStatus === 'loaded') {
+        var consent = tcData.vendor.consents[4040];
+        if (consent === true) {
+          window.__tvi_sampler.checkInSample(function (inSample) {
+            if (inSample) {
+              var trackingScriptTag = document.createElement('script');
+              trackingScriptTag.type = 'text/javascript';
+              trackingScripType.src = 'http://session-consent.tv-insight.com/9999/tracking.js?r=1&d=1&t=' + Date.now();
+              document.getElementsByTagName('head')[0].appendChild(trackingScriptTag);
+            }
+          });
+        }
+    });
+  </script>
+</head>
+
+<body></body>
+</html>
+```
+
 ## Development
 
 - `yarn dev` serves `index.html` from the `/test` folder, which loads the sampler and testing module directly from the `/src` folder (accessible in the browser via `http://localhost:8080`)
