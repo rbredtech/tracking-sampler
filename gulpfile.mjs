@@ -38,7 +38,7 @@ function compileTemplates(done) {
   const tasks = Object.entries(buildConfigs).map(([key, config]) => {
     const compileTemplatesWithConfig = () =>
       gulp
-        .src("./src/*")
+        .src(["./src/*", "!./src/partials/**/*"])
         .pipe(ejs({ ...config, __CONFIG_NAME: key }))
         .pipe(gif(!!key, rename({ suffix: `-${key}` })))
         .pipe(gulp.dest("./dist"));

@@ -1,5 +1,12 @@
 {
   "cleanUrls": false,
+  "directoryListing": false,
+  "redirects": [
+    {
+      "source": "!index.html",
+      "destination": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "index.html",

@@ -2,7 +2,7 @@
   var nameTechnicalCookie = "__ejs(/*-TECHNICAL_COOKIE_NAME*/);";
   var namePercentileCookie = "__ejs(/*-PERCENTILE_COOKIE_NAME*/);";
 
-  __ejs(/*- include("storage.js") */);
+  __ejs(/*- include("partials/storage.js") */);
 
   var technicalCookie = parseInt(readStorage(nameTechnicalCookie));
   var percentile = 0;
