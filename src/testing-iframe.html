@@ -31,6 +31,11 @@ __ejs(/* } */);
         var param = JSON.parse(message[3]);
 
         switch (method) {
+          case "getPercentile":
+            window.__tvi_sampler.getPercentile(function (cbParam) {
+              window._sendMessage("cb$" + id + ";" + JSON.stringify({ param: cbParam }));
+            });
+            break;
           case "setPercentile":
             window.__tvi_sampler.setPercentile(param.param, function (cbParam) {
               window._sendMessage("cb$" + id + ";" + JSON.stringify({ param: cbParam }));

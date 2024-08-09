@@ -3,6 +3,10 @@
   window.__tvi_sampler = sampler;
   sampler._tq = [];
 
+  sampler.getPercentile = function () {
+    sampler._tq[sampler._tq.length] = { m: "getPercentile", a: Array.prototype.slice.call(arguments) };
+  };
+
   sampler.setPercentile = function () {
     sampler._tq[sampler._tq.length] = { m: "setPercentile", a: Array.prototype.slice.call(arguments) };
   };
@@ -66,6 +70,10 @@
         iframe.parentElement.removeChild(iframe);
         return waitForDOMElement("head", loadTesting, 3);
       }
+
+      sampler.getPercentile = function (callback) {
+        iframeMessage("getPercentile", undefined, callback);
+      };
 
       sampler.setPercentile = function (percentile, callback) {
         iframeMessage("setPercentile", percentile, callback);
