@@ -25,7 +25,7 @@
   window.__tvi_sampler = sampler;
 
   sampler.checkInSample = function (callback) {
-    var desiredPercentile = parseInt("__ejs(/*-MAX_PERCENTILE*/);");
+    var desiredPercentile = parseInt("__ejs(/*-IN_SAMPLE_PERCENTILE*/);");
     if (callback && typeof callback === "function") {
       callback(!!percentile && percentile <= desiredPercentile);
     }

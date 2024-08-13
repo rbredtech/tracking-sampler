@@ -35,17 +35,17 @@ jobs:
             {
               "": {
                 "SAMPLER_HOST": "sampling-dev.tvping.com",
-                "MAX_PERCENTILE": 10,
+                "IN_SAMPLE_PERCENTILE": 10,
                 "TECHNICAL_COOKIE_MIN_AGE": 172800000,
                 "TECHNICAL_COOKIE_NAME": "x-sampler-t",
                 "PERCENTILE_COOKIE_NAME": "x-sampler-p"
               },
-              "agf": {
+              "twenty": {
                 "SAMPLER_HOST": "sampling-dev.tvping.com",
-                "MAX_PERCENTILE": 10,
+                "IN_SAMPLE_PERCENTILE": 20,
                 "TECHNICAL_COOKIE_MIN_AGE": 172800000,
-                "TECHNICAL_COOKIE_NAME": "x-sampler-agf-t",
-                "PERCENTILE_COOKIE_NAME": "x-sampler-agf-p"
+                "TECHNICAL_COOKIE_NAME": "x-sampler-twenty-t",
+                "PERCENTILE_COOKIE_NAME": "x-sampler-twenty-p"
               }
             }
 
