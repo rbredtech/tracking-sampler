@@ -40,12 +40,19 @@ jobs:
                 "TECHNICAL_COOKIE_NAME": "x-sampler-t",
                 "PERCENTILE_COOKIE_NAME": "x-sampler-p"
               },
-              "twenty": {
-                "SAMPLER_HOST": "sampling-dev.tvping.com",
-                "IN_SAMPLE_PERCENTILE": 20,
+              "de-ip": {
+                "SAMPLER_HOST": "sampling.tvping.com",
+                "IN_SAMPLE_PERCENTILE": 10,
                 "TECHNICAL_COOKIE_MIN_AGE": 172800000,
-                "TECHNICAL_COOKIE_NAME": "x-sampler-twenty-t",
-                "PERCENTILE_COOKIE_NAME": "x-sampler-twenty-p"
+                "TECHNICAL_COOKIE_NAME": "x-sampler-t",
+                "PERCENTILE_COOKIE_NAME": "x-sampler-p"
+              },
+              "de-p7s1": {
+                "SAMPLER_HOST": "sampling.tvping.com",
+                "IN_SAMPLE_PERCENTILE": 100,
+                "TECHNICAL_COOKIE_MIN_AGE": 172800000,
+                "TECHNICAL_COOKIE_NAME": "x-sampler-t",
+                "PERCENTILE_COOKIE_NAME": "x-sampler-p"
               }
             }
 

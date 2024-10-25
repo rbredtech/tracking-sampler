@@ -7,13 +7,6 @@
   sampler = window.__tvi_sampler || {};
   window.__tvi_sampler = sampler;
 
-  sampler.getPercentile = function (callback) {
-    var percentile = parseInt(readStorage(namePercentileCookie)) || null;
-    if (callback && typeof callback === "function") {
-      callback(percentile);
-    }
-  };
-
   sampler.setPercentile = function (percentile, callback) {
     writeStorage(namePercentileCookie, percentile);
     if (callback && typeof callback === "function") {
