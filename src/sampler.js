@@ -52,6 +52,10 @@
     sampler._q[sampler._q.length] = { m: "checkInSample", a: Array.prototype.slice.call(arguments) };
   };
 
+  sampler.getPercentile = function () {
+    sampler._q[sampler._q.length] = { m: "getPercentile", a: Array.prototype.slice.call(arguments) };
+  };
+
   function callQueue() {
     for (var i = 0; i < sampler._q.length; i++) {
       var f = sampler._q[i];
@@ -138,6 +142,10 @@
 
       sampler.checkInSample = function (callback) {
         iframeMessage("checkInSample", undefined, callback);
+      };
+
+      sampler.getPercentile = function (callback) {
+        iframeMessage("getPercentile", undefined, callback);
       };
 
       onSamplerLoaded();

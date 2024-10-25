@@ -36,6 +36,11 @@ __ejs(/* } */);
               window._sendMessage("cb$" + id + ";" + JSON.stringify({ param: cbParam }));
             });
             break;
+          case "getPercentile":
+            window.__tvi_sampler.getPercentile(function (cbParam) {
+              window._sendMessage("cb$" + id + ";" + JSON.stringify({ param: cbParam }));
+            });
+            break;
           default:
             break;
         }
@@ -50,7 +55,6 @@ __ejs(/* } */);
     samplerScriptTag.setAttribute("type", "text/javascript");
     samplerScriptTag.setAttribute("src", window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/__ejs(/*-IMPL_FILE*/);");
     document.getElementsByTagName("head")[0].appendChild(samplerScriptTag);
-
     //]]>
   </script>
 </head>

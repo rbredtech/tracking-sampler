@@ -26,6 +26,9 @@
         console.warn("too bad, you are not part of the game :-(");
       }
     });
+    window.__tvi_sampler.getPercentile(function (percentile) {
+      console.info("your percentile is", percentile);
+    });
     //]]>
   </script>
 </body>
