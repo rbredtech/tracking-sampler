@@ -15,7 +15,7 @@
     if (now - parseInt("__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);") > technicalCookie) {
       percentile = parseInt(readStorage(namePercentileCookie));
       if (!percentile) {
-        var percentile = Math.floor(Math.random() * 100) + 1;
+        percentile = Math.floor(Math.random() * 100) + 1;
         writeStorage(namePercentileCookie, percentile);
       }
     }
@@ -28,6 +28,13 @@
     var desiredPercentile = parseInt("__ejs(/*-IN_SAMPLE_PERCENTILE*/);");
     if (callback && typeof callback === "function") {
       callback(!!percentile && percentile <= desiredPercentile);
+    }
+  };
+
+  sampler.getPercentile = function (callback) {
+    var percentile = parseInt(readStorage(namePercentileCookie)) || null;
+    if (callback && typeof callback === "function") {
+      callback(percentile);
     }
   };
 })();
