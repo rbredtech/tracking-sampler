@@ -1,14 +1,18 @@
 import ejs, { renderFile } from "ejs";
 import express from "express";
 import path from "path";
+import { fileURLToPath } from 'url';
 
 ejs.delimiter = "*";
 ejs.openDelimiter = "__ejs(/";
 ejs.closeDelimiter = "/);";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 
-app.set("views", path.join(__dirname, "./src"));
+app.set("views", path.join(__dirname, "/src"));
 app.engine("html", renderFile);
 app.engine("js", renderFile);
 app.set("view engine", "ejs");
