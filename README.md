@@ -17,7 +17,11 @@ The tracking sampler can be used to only select devices within a specified perce
 </script>
 ```
 
+> [!NOTE]
 > As described in the [Build](#build) section, multiple entry points for the sample can be built/deployed, so `sampler-default.js` can also be e.g. `sampler-twenty.js`
+
+> [!IMPORTANT]
+> While the tech cookie[^1] is not yet validated, the `checkInSample` method will always return `true`. To check if it returned `true` because the tech cookie evaluation is not done yet, you can use `getPercentile`, which will return `undefined` in this case.
 
 ### API methods
 
@@ -26,7 +30,7 @@ The `window.__tvi_sampler` object exposes the following methods:
 | Method | Parameters |
 | ---    | ---        |
 | `checkInSample(callback)` | `callback` - function with boolean parameter indicating if device is in or out of sample |
-| `getPercentile(callback)` | `callback` - function with numeric parameter returning the current percentile |
+| `getPercentile(callback)` | `callback` - function with numeric parameter returning the current percentile (`undefined` if not yet set) |
 
 ## Testing module
 
@@ -40,6 +44,7 @@ To enable the testing module, the following script tag has to be added:
 <script type="text/javascript" src="http://sampling.tvping.com/testing-default.js"></script>
 ```
 
+> [!NOTE]
 > As described in the [Build](#build) section, if a different entrypoint like e.g. `sampler-twenty.js` is used, also the corresponding testing module needs to be used. I the case of `sampler-twenty.js` this would be `testing-twenty.js`.
 
 It is important that the script tag is added **after** the script tag loading the sampler!
@@ -119,7 +124,7 @@ The build process requires a `build.json` file with the following structure:
   },
 }
 ```
-
+> [!IMPORTANT]
 > `TECHNICAL_COOKIE_MIN_AGE` is in milliseconds
 
 As shown in the example above, multiple build configs can be added. The example above would build two entrypoints, `sampler-default.js` (the key of the build config is added as a filename suffix) and `sampler-twenty.js`. If the key would be an empty string, no file suffix will be added.

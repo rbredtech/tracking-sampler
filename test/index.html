@@ -23,7 +23,7 @@
       window.__tvi_sampler.getPercentile(function (percentile) {
         if (inSample) {
           if (!percentile) {
-            console.warn("percentile not yet assigned");
+            console.warn("percentile not yet assigned", percentile);
           } else {
             console.info("percentile in desired range", percentile);
           }

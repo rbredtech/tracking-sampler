@@ -40,7 +40,7 @@ describe.each(cases)("Tracking Sampler - iFrame: %s", (iFrame) => {
 
       expect(techCookieValid).toBe(false);
       expect(inSample).toBe(true);
-      expect(percentile).toBe(0);
+      expect(percentile).toBe(undefined);
     });
   });
 

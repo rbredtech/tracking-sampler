@@ -14,7 +14,7 @@
 
   var technicalCookiePassed = now - parseInt("__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);") > technicalCookie;
 
-  var percentile = parseInt(readStorage(namePercentileCookie)) || 0;
+  var percentile = parseInt(readStorage(namePercentileCookie)) || undefined;
   if (!percentile && technicalCookiePassed) {
     percentile = Math.floor(Math.random() * 100) + 1;
     writeStorage(namePercentileCookie, percentile);
