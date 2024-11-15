@@ -21,7 +21,7 @@ The tracking sampler can be used to only select devices within a specified perce
 > As described in the [Build](#build) section, multiple entry points for the sample can be built/deployed, so `sampler-default.js` can also be e.g. `sampler-twenty.js`
 
 > [!IMPORTANT]
-> While the tech cookie[^1] is not yet validated, the `checkInSample` method will always return `true`. To check if it returned `true` because the tech cookie evaluation is not done yet, you can use `getPercentile`, which will return `undefined` in this case.
+> While the tech cookie[^1] is not yet validated, the `checkInSample` returns `true` or `false` based on the `IN_SAMPLE_WITHOUT_TC` config value (see [Build](#build) section). To check if the tech cookie evaluation is not done yet, you can use `getPercentile`, which will return `undefined` in this case.
 
 ### API methods
 
@@ -113,22 +113,37 @@ The build process requires a `build.json` file with the following structure:
     "IN_SAMPLE_PERCENTILE": 10,
     "TECHNICAL_COOKIE_MIN_AGE": 172800000,
     "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-    "PERCENTILE_COOKIE_NAME": "x-sampler-p"
+    "PERCENTILE_COOKIE_NAME": "x-sampler-p",
+    "IN_SAMPLE_WITHOUT_TC": false
   },
   "twenty": {
     "SAMPLER_HOST": "sampling.tvping.com",
     "IN_SAMPLE_PERCENTILE": 20,
     "TECHNICAL_COOKIE_MIN_AGE": 172800000,
     "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-    "PERCENTILE_COOKIE_NAME": "x-sampler-p"
+    "PERCENTILE_COOKIE_NAME": "x-sampler-p",
+    "IN_SAMPLE_WITHOUT_TC": true
   },
 }
 ```
+> [!CAUTION]
+> All [config values](#config-values) are mandatory!
+
 > [!IMPORTANT]
-> `TECHNICAL_COOKIE_MIN_AGE` is in milliseconds
+> `TECHNICAL_COOKIE_MIN_AGE` is in milliseconds.
 
 As shown in the example above, multiple build configs can be added. The example above would build two entrypoints, `sampler-default.js` (the key of the build config is added as a filename suffix) and `sampler-twenty.js`. If the key would be an empty string, no file suffix will be added.
 
 Every config also gets it's own testing module, following the same rules (e.g. above config outputs `testing-default.js` and `testing-twenty.js` to be used with the respective entrypoints).
+
+### Config values
+| Value | Description |
+| ---   | ---         |
+| `SAMPLER_HOST` | Host where sampler is deployed to |
+| `IN_SAMPLE_PERCENTILE` | Which percentile the device needs to be in |
+| `TECHNICAL_COOKIE_MIN_AGE` | How long the technical cookie needs to be stored until the sampler gets active|
+| `TECHNICAL_COOKIE_NAME` | Cookie name / localStorage key where technical cookie is saved |
+| `PERCENTILE_COOKIE_NAME` | Cookie name / localStorage key where device percentile is saved |
+| `IN_SAMPLE_WITHOUT_TC` | Should `checkInSample` return `true` or `false` while technical cookie evaluation is not finished |
 
 [^1]: The tech cookie is a cookie/localStorage key which stores the timestamp at creation. If this cookie/localStorage can still be read after at least 2 days, it is assumed that the device can store data in cookies/localStorage and therefore the percentile of the device can be persisted. If cookies/localStorage are not available, the device will always be out-of-sample.

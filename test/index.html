@@ -21,14 +21,17 @@
     //<![CDATA[
     window.__tvi_sampler.checkInSample(function (inSample) {
       window.__tvi_sampler.getPercentile(function (percentile) {
-        if (inSample) {
-          if (!percentile) {
-            console.warn("percentile not yet assigned", percentile);
-          } else {
-            console.info("percentile in desired range", percentile);
+        if (!percentile) {
+          console.warn("percentile not yet assigned", percentile);
+          if (inSample) {
+            console.info("in sample while TC evaluation not done");
           }
         } else {
-          console.error("percentile not in desired range", percentile);
+          if (inSample) {
+            console.info("percentile in desired range", percentile);
+          } else {
+            console.error("percentile not in desired range", percentile);
+          }
         }
       });
     });

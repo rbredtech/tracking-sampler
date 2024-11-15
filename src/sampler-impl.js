@@ -1,6 +1,7 @@
 (function () {
   var nameTechnicalCookie = "__ejs(/*-TECHNICAL_COOKIE_NAME*/);";
   var namePercentileCookie = "__ejs(/*-PERCENTILE_COOKIE_NAME*/);";
+  var inSampleWithoutTC = __ejs(/*-IN_SAMPLE_WITHOUT_TC*/);
 
   __ejs(/*- include("partials/storage.js") */);
 
@@ -26,7 +27,13 @@
   sampler.checkInSample = function (callback) {
     var desiredPercentile = parseInt("__ejs(/*-IN_SAMPLE_PERCENTILE*/);");
     if (callback && typeof callback === "function") {
-      callback(!technicalCookiePassed || (!!percentile && percentile <= desiredPercentile));
+      var inSample = false;
+      if (technicalCookiePassed) {
+        inSample = !!percentile && percentile <= desiredPercentile;
+      } else {
+        inSample = inSampleWithoutTC;
+      }
+      callback(inSample);
     }
   };
 

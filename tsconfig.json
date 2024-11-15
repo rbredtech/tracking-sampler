@@ -22,11 +22,9 @@
     "esm": true,
   },
   "include": [
-    "src/**/*"
+    "app.ts"
   ],
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts",
-    "**/*.test.ts"
+    "node_modules"
   ]
 }
