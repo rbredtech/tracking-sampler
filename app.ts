@@ -24,7 +24,7 @@ app.get("*", function(req, res) {
     TECHNICAL_COOKIE_MIN_AGE: 1000 * 60 * 60 * 24 * 2,
     TECHNICAL_COOKIE_NAME: "x-sampler-t",
     PERCENTILE_COOKIE_NAME: "x-sampler-p",
-    IN_SAMPLE_WITHOUT_TC: false,
+    IN_SAMPLE_WITHOUT_TC: true,
     __CONFIG_NAME: null,
   });
 });
