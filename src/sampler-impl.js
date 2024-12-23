@@ -27,11 +27,9 @@
   sampler.checkInSample = function (callback) {
     var desiredPercentile = parseInt("__ejs(/*-IN_SAMPLE_PERCENTILE*/);");
     if (callback && typeof callback === "function") {
-      var inSample = false;
+      var inSample = inSampleWithoutTC;
       if (technicalCookiePassed) {
         inSample = !!percentile && percentile <= desiredPercentile;
-      } else {
-        inSample = inSampleWithoutTC;
       }
       callback(inSample);
     }
