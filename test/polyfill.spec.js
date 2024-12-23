@@ -6,13 +6,6 @@ beforeAll(async () => {
   const browser = await puppeteer.launch({ dumpio: false, args: ["--disable-gpu"] });
   page = await browser.newPage();
   await page.goto(`http://localhost:8080`);
-  await page.evaluate(
-    () =>
-      new Promise((resolve) => {
-        window.JSON = null;
-        resolve();
-      }),
-  );
   await page.waitForFunction(() => document.readyState === "complete");
 }, 5000);
 
