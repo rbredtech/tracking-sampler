@@ -1,3 +1,33 @@
+window.objectKeys =
+  window.Object.keys ||
+  (function () {
+    var hasDontEnumBug = !Object.prototype.propertyIsEnumerable.call({ toString: null }, "toString");
+    var DontEnums = ["toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor"];
+
+    return function (object) {
+      if ((typeof object !== "object" && typeof object !== "function") || object === undefined || object === null) {
+        throw new TypeError("Cannot convert undefined or null to object");
+      }
+
+      var result = [];
+      for (var name in object) {
+        if (Object.prototype.hasOwnProperty.call(object, name)) {
+          result.push(name);
+        }
+      }
+
+      if (hasDontEnumBug) {
+        for (var i = 0; i < DontEnums.length; i++) {
+          if (Object.prototype.hasOwnProperty.call(object, DontEnums[i])) {
+            result.push(DontEnums[i]);
+          }
+        }
+      }
+
+      return result;
+    };
+  })();
+
 window.jsonParse =
   (window.JSON && window.JSON.parse) ||
   function (jsonString) {
