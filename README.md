@@ -45,7 +45,7 @@ To enable the testing module, the following script tag has to be added:
 ```
 
 > [!NOTE]
-> As described in the [Build](#build) section, if a different entrypoint like e.g. `sampler-twenty.js` is used, also the corresponding testing module needs to be used. I the case of `sampler-twenty.js` this would be `testing-twenty.js`.
+> As described in the [Build](#build) section, if a different entrypoint like e.g. `sampler-twenty.js` is used, also the corresponding testing module needs to be used. In the case of `sampler-twenty.js` this would be `testing-twenty.js`.
 
 It is important that the script tag is added **after** the script tag loading the sampler!
 
