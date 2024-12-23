@@ -6,7 +6,8 @@
   <title>Tracking Sampler Test</title>
   <script type="text/javascript">
     //<![CDATA[
-    // disabling native window.JSON
+    // disabling native apis for testing polyfills
+    window.Object.keys == null;
     window.JSON = null;
     //]]>
   </script>
