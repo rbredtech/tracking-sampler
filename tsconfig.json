@@ -1,0 +1,30 @@
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "importHelpers": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "useUnknownInCatchVariables": false,
+    "esModuleInterop": true,
+    "lib": [
+      "ESNext"
+    ],
+  },
+  "ts-node": {
+    "esm": true,
+  },
+  "include": [
+    "app.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

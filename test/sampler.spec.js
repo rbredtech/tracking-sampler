@@ -21,7 +21,7 @@ describe.each(cases)("Tracking Sampler - iFrame: %s", (iFrame) => {
   }, 5000);
 
   describe("before tech cookie becomes valid", () => {
-    it("should be out of sample", async () => {
+    it("should always be in sample", async () => {
       const techCookieValid = await page.evaluate(() => {
         return new Promise((resolve) => {
           window.__tvi_sampler.isTechCookieValid(resolve);
@@ -32,9 +32,15 @@ describe.each(cases)("Tracking Sampler - iFrame: %s", (iFrame) => {
           window.__tvi_sampler.checkInSample(resolve);
         });
       });
+      const percentile = await page.evaluate(() => {
+        return new Promise((resolve) => {
+          window.__tvi_sampler.getPercentile(resolve);
+        });
+      });
 
       expect(techCookieValid).toBe(false);
-      expect(inSample).toBe(false);
+      expect(inSample).toBe(true);
+      expect(percentile).toBe(undefined);
     });
   });
 
