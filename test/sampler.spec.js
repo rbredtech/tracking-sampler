@@ -2,12 +2,21 @@ const puppeteer = require("puppeteer");
 
 let page;
 
-const cases = [true, false];
+const cases = [
+  [true, true],
+  [true, false],
+  [false, true],
+  [false, false],
+];
 
-describe.each(cases)("Tracking Sampler - iFrame: %s", (iFrame) => {
+describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame, localStorage) => {
   beforeAll(async () => {
     const userAgent = !iFrame ? "HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03" : undefined;
-    const browser = await puppeteer.launch({ dumpio: false, args: ["--disable-gpu"] });
+    const args = ["--disable-gpu"];
+    if (!localStorage) {
+      args.push("--disable-local-storage");
+    }
+    const browser = await puppeteer.launch({ dumpio: false, args });
     page = await browser.newPage();
     if (userAgent) {
       await page.setUserAgent(userAgent);

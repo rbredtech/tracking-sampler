@@ -1,4 +1,6 @@
 (function () {
+  __ejs(/*- include("partials/polyfill.js") */);
+
   window.loadOnDOMContentLoaded = function (elementTagName, onDOMContentLoadedCB) {
     document.addEventListener("DOMContentLoaded", function () {
       var element = document.getElementsByTagName(elementTagName)[0];
@@ -75,7 +77,7 @@
   function iframeMessage(method, parameter, callback) {
     try {
       sampler._cbMap[++sampler._cbCount] = callback;
-      var msg = sampler._cbCount + ";__tvi_sampler;" + method + ";" + JSON.stringify({ param: parameter });
+      var msg = sampler._cbCount + ";__tvi_sampler;" + method + ";" + window.jsonStringify({ param: parameter });
       iframe.contentWindow.postMessage(msg, window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);");
     } catch (e) {}
   }
@@ -106,7 +108,7 @@
       try {
         var cb = message[1].split(";");
         var id = cb[0];
-        var callbackParameter = JSON.parse(cb[1]);
+        var callbackParameter = window.jsonParse(cb[1]);
         if (!sampler._cbMap[id] || typeof sampler._cbMap[id] !== "function") {
           return;
         }
