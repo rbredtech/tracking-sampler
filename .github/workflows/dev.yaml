@@ -33,7 +33,7 @@ jobs:
           filename: "build.json"
           json: |
             {
-              "": {
+              "default": {
                 "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
                 "IN_SAMPLE_PERCENTILE": 10,
                 "TECHNICAL_COOKIE_MIN_AGE": 172800000,
