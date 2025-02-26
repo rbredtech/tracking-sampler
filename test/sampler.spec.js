@@ -7,7 +7,7 @@ const cases = [true, false];
 describe.each(cases)("Tracking Sampler - iFrame: %s", (iFrame) => {
   beforeAll(async () => {
     const userAgent = !iFrame ? "HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03" : undefined;
-    const browser = await puppeteer.launch({ dumpio: false, args: ["--disable-gpu"] });
+    const browser = await puppeteer.launch({ dumpio: false, args: ["--disable-gpu", "--no-sandbox"] });
     page = await browser.newPage();
     if (userAgent) {
       await page.setUserAgent(userAgent);
