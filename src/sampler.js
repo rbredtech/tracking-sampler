@@ -77,8 +77,8 @@
   function iframeMessage(method, parameter, callback) {
     try {
       sampler._cbMap[++sampler._cbCount] = callback;
-      var msg = sampler._cbCount + ';__tvi_sampler;' + method + ";" + window.jsonStringify({ param: parameter });
-      iframe.contentWindow.postMessage(msg, window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);");
+      var msg = sampler._cbCount + ';__tvi_sampler;' + method + ';' + window.jsonStringify({ param: parameter });
+      iframe.contentWindow.postMessage(msg, window.location.protocol + '//__ejs(/*-SAMPLER_HOST*/);');
     } catch (e) {}
   }
 

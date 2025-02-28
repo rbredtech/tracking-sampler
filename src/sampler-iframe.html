@@ -35,13 +35,12 @@ __ejs(/* } */);
         switch (method) {
           case 'checkInSample':
             window.__tvi_sampler.checkInSample(function (cbParam) {
-              window._sendMessage('cb$' + id + ";" + window.jsonStringify({ param: cbParam }));
-
+              window._sendMessage('cb$' + id + ';' + window.jsonStringify({ param: cbParam }));
             });
             break;
           case 'getPercentile':
             window.__tvi_sampler.getPercentile(function (cbParam) {
-              window._sendMessage('cb$' + id + ";" + window.jsonStringify({ param: cbParam }));
+              window._sendMessage('cb$' + id + ';' + window.jsonStringify({ param: cbParam }));
             });
             break;
           default:
