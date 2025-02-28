@@ -2,9 +2,9 @@
   __ejs(/*- include("partials/polyfill.js") */);
 
   window.loadOnDOMContentLoaded = function (elementTagName, onDOMContentLoadedCB) {
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener('DOMContentLoaded', function () {
       var element = document.getElementsByTagName(elementTagName)[0];
-      if (element && onDOMContentLoadedCB && typeof onDOMContentLoadedCB === "function") {
+      if (element && onDOMContentLoadedCB && typeof onDOMContentLoadedCB === 'function') {
         onDOMContentLoadedCB(element);
       }
     });
@@ -25,13 +25,13 @@
       return;
     }
 
-    if (onDomElementFoundCB && typeof onDomElementFoundCB === "function") {
+    if (onDomElementFoundCB && typeof onDomElementFoundCB === 'function') {
       onDomElementFoundCB(element);
     }
   };
 
   window.isIframeCapable = function () {
-    var excludeList = ["antgalio", "hybrid", "maple", "presto", "technotrend goerler", "viera 2011"];
+    var excludeList = ['antgalio', 'hybrid', 'maple', 'presto', 'technotrend goerler', 'viera 2011'];
     var currentUserAgent = window.navigator && navigator.userAgent && navigator.userAgent.toLowerCase();
 
     if (!currentUserAgent || !currentUserAgent.indexOf) {
@@ -51,11 +51,11 @@
   sampler._q = [];
 
   sampler.checkInSample = function () {
-    sampler._q[sampler._q.length] = { m: "checkInSample", a: Array.prototype.slice.call(arguments) };
+    sampler._q[sampler._q.length] = { m: 'checkInSample', a: Array.prototype.slice.call(arguments) };
   };
 
   sampler.getPercentile = function () {
-    sampler._q[sampler._q.length] = { m: "getPercentile", a: Array.prototype.slice.call(arguments) };
+    sampler._q[sampler._q.length] = { m: 'getPercentile', a: Array.prototype.slice.call(arguments) };
   };
 
   function callQueue() {
@@ -77,49 +77,49 @@
   function iframeMessage(method, parameter, callback) {
     try {
       sampler._cbMap[++sampler._cbCount] = callback;
-      var msg = sampler._cbCount + ";__tvi_sampler;" + method + ";" + window.jsonStringify({ param: parameter });
+      var msg = sampler._cbCount + ';__tvi_sampler;' + method + ";" + window.jsonStringify({ param: parameter });
       iframe.contentWindow.postMessage(msg, window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);");
     } catch (e) {}
   }
 
   function loadSampler(element) {
-    var samplerScriptTag = document.createElement("script");
-    samplerScriptTag.setAttribute("type", "text/javascript");
-    samplerScriptTag.setAttribute("src", window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/sampler-impl__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.js");
+    var samplerScriptTag = document.createElement('script');
+    samplerScriptTag.setAttribute('type', 'text/javascript');
+    samplerScriptTag.setAttribute('src', window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/sampler-impl__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.js");
 
     samplerScriptTag.onload = function () {
       onSamplerLoaded();
     };
 
     samplerScriptTag.onerror = function (e) {
-      console.error("error loading sampler", e);
+      console.error('error loading sampler', e);
     };
 
     element.appendChild(samplerScriptTag);
   }
 
   function onIframeMessage(event) {
-    if ((window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);").indexOf(event.origin) === -1 || !event.data || typeof event.data !== "string") {
+    if ((window.location.protocol + '//__ejs(/*-SAMPLER_HOST*/);').indexOf(event.origin) === -1 || !event.data || typeof event.data !== 'string') {
       return;
     }
 
-    var message = event.data.split("$");
-    if (message[0] === "cb") {
+    var message = event.data.split('$');
+    if (message[0] === 'cb') {
       try {
-        var cb = message[1].split(";");
+        var cb = message[1].split(';');
         var id = cb[0];
         var callbackParameter = window.jsonParse(cb[1]);
-        if (!sampler._cbMap[id] || typeof sampler._cbMap[id] !== "function") {
+        if (!sampler._cbMap[id] || typeof sampler._cbMap[id] !== 'function') {
           return;
         }
         sampler._cbMap[id](callbackParameter.param);
         sampler._cbMap[id] = undefined;
       } catch (e) {}
     }
-    if (message[0] === "cmd") {
-      var cmd = message[1].split("//");
+    if (message[0] === 'cmd') {
+      var cmd = message[1].split('//');
       switch (cmd[0]) {
-        case "set-cookie":
+        case 'set-cookie':
           if (cmd[1]) {
             document.cookie = cmd[1];
           }
@@ -131,33 +131,33 @@
   }
 
   function loadSamplerIframe(element) {
-    iframe = document.createElement("iframe");
-    iframe.setAttribute("src", window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/sampler-iframe__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.html");
-    iframe.setAttribute("style", "position:fixed;border:0;outline:0;top:-999px;left:-999px;width:0;height:0;");
-    iframe.setAttribute("frameborder", "0");
+    iframe = document.createElement('iframe');
+    iframe.setAttribute('src', window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/sampler-iframe__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.html");
+    iframe.setAttribute('style', 'position:fixed;border:0;outline:0;top:-999px;left:-999px;width:0;height:0;');
+    iframe.setAttribute('frameborder', '0');
 
     iframe.onload = function () {
       if (!iframe.contentWindow || !iframe.contentWindow.postMessage) {
         iframe.parentElement.removeChild(iframe);
-        return waitForDOMElement("head", loadSampler, 3);
+        return waitForDOMElement('head', loadSampler, 3);
       }
 
       sampler.checkInSample = function (callback) {
-        iframeMessage("checkInSample", undefined, callback);
+        iframeMessage('checkInSample', undefined, callback);
       };
 
       sampler.getPercentile = function (callback) {
-        iframeMessage("getPercentile", undefined, callback);
+        iframeMessage('getPercentile', undefined, callback);
       };
 
       onSamplerLoaded();
     };
 
     iframe.onerror = function (e) {
-      console.error("error loading iframe", e);
+      console.error('error loading iframe', e);
     };
 
-    window.addEventListener("message", onIframeMessage);
+    window.addEventListener('message', onIframeMessage);
 
     element.appendChild(iframe);
   }
@@ -165,9 +165,9 @@
   function init() {
     var waitForDOMElementRetries = 3;
     if (isIframeCapable()) {
-      waitForDOMElement("body", loadSamplerIframe, waitForDOMElementRetries);
+      waitForDOMElement('body', loadSamplerIframe, waitForDOMElementRetries);
     } else {
-      waitForDOMElement("head", loadSampler, waitForDOMElementRetries);
+      waitForDOMElement('head', loadSampler, waitForDOMElementRetries);
     }
   }
 
