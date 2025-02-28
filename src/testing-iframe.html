@@ -11,18 +11,18 @@ __ejs(/* } */);
     //<![CDATA[
     window._sendMessage = function (msg) {
       if (window.parent && window.parent.postMessage) {
-        window.parent.postMessage(msg, "*");
+        window.parent.postMessage(msg, '*');
       }
     };
 
     function messageEventHandler(event) {
       try {
-        if (!event.data || typeof event.data !== "string") {
+        if (!event.data || typeof event.data !== 'string') {
           return;
         }
 
-        var message = event.data.split(";");
-        if (message[1] !== "__tvi_sampler") {
+        var message = event.data.split(';');
+        if (message[1] !== '__tvi_sampler') {
           return;
         }
 
@@ -31,24 +31,24 @@ __ejs(/* } */);
         var param = JSON.parse(message[3]);
 
         switch (method) {
-          case "setPercentile":
+          case 'setPercentile':
             window.__tvi_sampler.setPercentile(param.param, function (cbParam) {
-              window._sendMessage("cb$" + id + ";" + JSON.stringify({ param: cbParam }));
+              window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
             });
             break;
-          case "isTechCookieValid":
+          case 'isTechCookieValid':
             window.__tvi_sampler.isTechCookieValid(function (cbParam) {
-              window._sendMessage("cb$" + id + ";" + JSON.stringify({ param: cbParam }));
+              window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
             });
             break;
-          case "setValidTechCookie":
+          case 'setValidTechCookie':
             window.__tvi_sampler.setValidTechCookie(function (cbParam) {
-              window._sendMessage("cb$" + id + ";" + JSON.stringify({ param: cbParam }));
+              window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
             });
             break;
-          case "reset":
+          case 'reset':
             window.__tvi_sampler.reset(function (cbParam) {
-              window._sendMessage("cb$" + id + ";" + JSON.stringify({ param: cbParam }));
+              window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
             });
             break;
           default:
@@ -57,14 +57,14 @@ __ejs(/* } */);
       } catch (e) {}
     }
 
-    if (window["addEventListener"]) {
-      window.addEventListener("message", messageEventHandler, false);
+    if (window['addEventListener']) {
+      window.addEventListener('message', messageEventHandler, false);
     }
 
-    var testingScriptTag = document.createElement("script");
-    testingScriptTag.setAttribute("type", "text/javascript");
-    testingScriptTag.setAttribute("src", window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/__ejs(/*-IMPL_FILE*/);");
-    document.getElementsByTagName("head")[0].appendChild(testingScriptTag);
+    var testingScriptTag = document.createElement('script');
+    testingScriptTag.setAttribute('type', 'text/javascript');
+    testingScriptTag.setAttribute('src', window.location.protocol + '//__ejs(/*-SAMPLER_HOST*/);/__ejs(/*-IMPL_FILE*/);');
+    document.getElementsByTagName('head')[0].appendChild(testingScriptTag);
     //]]>
   </script>
 </head>

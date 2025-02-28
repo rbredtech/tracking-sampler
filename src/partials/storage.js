@@ -1,10 +1,10 @@
 function getCookie(name) {
-  var cname = name + "=";
+  var cname = name + '=';
   var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(";");
+  var ca = decodedCookie.split(';');
   for (var i = 0; i < ca.length; i++) {
     var c = ca[i];
-    while (c.charAt(0) === " ") {
+    while (c.charAt(0) === ' ') {
       c = c.substring(1);
     }
     if (c.indexOf(cname) === 0) {
@@ -16,18 +16,18 @@ function getCookie(name) {
 
 function setCookie(name, value) {
   var maxAge = 60 * 60 * 24 * 365 * 2; // 2 years
-  var cookie = name + "=" + value + ";max-age=" + maxAge + ";path=/";
+  var cookie = name + '=' + value + ';max-age=' + maxAge + ';path=/';
   document.cookie = cookie;
   if (window._sendMessage) {
-    window._sendMessage("cmd$set-cookie//" + cookie);
+    window._sendMessage('cmd$set-cookie//' + cookie);
   }
 }
 
 function deleteCookie(name) {
-  var cookie = name + "=;max-age=-1;path=/";
+  var cookie = name + '=;max-age=-1;path=/';
   document.cookie = cookie;
   if (window._sendMessage) {
-    window._sendMessage("cmd$set-cookie//" + cookie);
+    window._sendMessage('cmd$set-cookie//' + cookie);
   }
 }
 
@@ -44,9 +44,9 @@ function readStorage(key) {
 }
 
 function writeStorage(key, value) {
-  setCookie(key, value + "");
+  setCookie(key, value + '');
   if (window.localStorage && localStorage.setItem) {
-    localStorage.setItem(key, value + "");
+    localStorage.setItem(key, value + '');
   }
 }
 
