@@ -3,7 +3,7 @@ const puppeteer = require("puppeteer");
 let page;
 
 beforeAll(async () => {
-  const browser = await puppeteer.launch({ dumpio: false, args: ["--disable-gpu"] });
+  const browser = await puppeteer.launch({ dumpio: false, args: ["--disable-gpu", "--no-sandbox"] });
   page = await browser.newPage();
   await page.goto(`http://localhost:8080`);
   await page.waitForFunction(() => document.readyState === "complete");
