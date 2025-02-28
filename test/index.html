@@ -27,14 +27,20 @@
   <script type="text/javascript">
     //<![CDATA[
     window.__tvi_sampler.checkInSample(function (inSample) {
-      if (inSample) {
-        console.info("lucky you, you are amongst the chosen ones :-)");
-      } else {
-        console.warn("too bad, you are not part of the game :-(");
-      }
-    });
-    window.__tvi_sampler.getPercentile(function (percentile) {
-      console.info("your percentile is", percentile);
+      window.__tvi_sampler.getPercentile(function (percentile) {
+        if (!percentile) {
+          console.warn("percentile not yet assigned", percentile);
+          if (inSample) {
+            console.info("in sample while TC evaluation not done");
+          }
+        } else {
+          if (inSample) {
+            console.info("percentile in desired range", percentile);
+          } else {
+            console.error("percentile not in desired range", percentile);
+          }
+        }
+      });
     });
     //]]>
   </script>

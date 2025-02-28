@@ -33,26 +33,29 @@ jobs:
           filename: "build.json"
           json: |
             {
-              "": {
-                "SAMPLER_HOST": "sampling-dev.tvping.com",
+              "default": {
+                "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
                 "IN_SAMPLE_PERCENTILE": 10,
                 "TECHNICAL_COOKIE_MIN_AGE": 172800000,
                 "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-                "PERCENTILE_COOKIE_NAME": "x-sampler-p"
+                "PERCENTILE_COOKIE_NAME": "x-sampler-p",
+                "IN_SAMPLE_WITHOUT_TC": false
               },
               "de-ip": {
-                "SAMPLER_HOST": "sampling.tvping.com",
+                "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
                 "IN_SAMPLE_PERCENTILE": 10,
                 "TECHNICAL_COOKIE_MIN_AGE": 172800000,
                 "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-                "PERCENTILE_COOKIE_NAME": "x-sampler-p"
+                "PERCENTILE_COOKIE_NAME": "x-sampler-p",
+                "IN_SAMPLE_WITHOUT_TC": false
               },
               "de-p7s1": {
-                "SAMPLER_HOST": "sampling.tvping.com",
+                "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
                 "IN_SAMPLE_PERCENTILE": 100,
                 "TECHNICAL_COOKIE_MIN_AGE": 172800000,
                 "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-                "PERCENTILE_COOKIE_NAME": "x-sampler-p"
+                "PERCENTILE_COOKIE_NAME": "x-sampler-p",
+                "IN_SAMPLE_WITHOUT_TC": true
               }
             }
 

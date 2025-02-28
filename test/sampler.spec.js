@@ -12,7 +12,7 @@ const cases = [
 describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame, localStorage) => {
   beforeAll(async () => {
     const userAgent = !iFrame ? "HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03" : undefined;
-    const args = ["--disable-gpu"];
+    const args = ["--disable-gpu", "--no-sandbox"];
     if (!localStorage) {
       args.push("--disable-local-storage");
     }
@@ -30,7 +30,7 @@ describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame,
   }, 5000);
 
   describe("before tech cookie becomes valid", () => {
-    it("should be out of sample", async () => {
+    it("should always be in sample", async () => {
       const techCookieValid = await page.evaluate(() => {
         return new Promise((resolve) => {
           window.__tvi_sampler.isTechCookieValid(resolve);
@@ -41,9 +41,15 @@ describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame,
           window.__tvi_sampler.checkInSample(resolve);
         });
       });
+      const percentile = await page.evaluate(() => {
+        return new Promise((resolve) => {
+          window.__tvi_sampler.getPercentile(resolve);
+        });
+      });
 
       expect(techCookieValid).toBe(false);
-      expect(inSample).toBe(false);
+      expect(inSample).toBe(true);
+      expect(percentile).toBe(undefined);
     });
   });
 
