@@ -11,18 +11,18 @@ __ejs(/* } */);
     //<![CDATA[
     window._sendMessage = function (msg) {
       if (window.parent && window.parent.postMessage) {
-        window.parent.postMessage(msg, "*");
+        window.parent.postMessage(msg, '*');
       }
     };
 
     function messageEventHandler(event) {
       try {
-        if (!event.data || typeof event.data !== "string") {
+        if (!event.data || typeof event.data !== 'string') {
           return;
         }
 
-        var message = event.data.split(";");
-        if (message[1] !== "__tvi_sampler") {
+        var message = event.data.split(';');
+        if (message[1] !== '__tvi_sampler') {
           return;
         }
 
@@ -31,14 +31,14 @@ __ejs(/* } */);
         var param = JSON.parse(message[3]);
 
         switch (method) {
-          case "checkInSample":
+          case 'checkInSample':
             window.__tvi_sampler.checkInSample(function (cbParam) {
-              window._sendMessage("cb$" + id + ";" + JSON.stringify({ param: cbParam }));
+              window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
             });
             break;
-          case "getPercentile":
+          case 'getPercentile':
             window.__tvi_sampler.getPercentile(function (cbParam) {
-              window._sendMessage("cb$" + id + ";" + JSON.stringify({ param: cbParam }));
+              window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
             });
             break;
           default:
@@ -47,14 +47,14 @@ __ejs(/* } */);
       } catch (e) {}
     }
 
-    if (window["addEventListener"]) {
-      window.addEventListener("message", messageEventHandler, false);
+    if (window['addEventListener']) {
+      window.addEventListener('message', messageEventHandler, false);
     }
 
-    var samplerScriptTag = document.createElement("script");
-    samplerScriptTag.setAttribute("type", "text/javascript");
-    samplerScriptTag.setAttribute("src", window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/__ejs(/*-IMPL_FILE*/);");
-    document.getElementsByTagName("head")[0].appendChild(samplerScriptTag);
+    var samplerScriptTag = document.createElement('script');
+    samplerScriptTag.setAttribute('type', 'text/javascript');
+    samplerScriptTag.setAttribute('src', window.location.protocol + '//__ejs(/*-SAMPLER_HOST*/);/__ejs(/*-IMPL_FILE*/);');
+    document.getElementsByTagName('head')[0].appendChild(samplerScriptTag);
     //]]>
   </script>
 </head>
