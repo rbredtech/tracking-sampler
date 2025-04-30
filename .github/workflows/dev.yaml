@@ -36,7 +36,7 @@ jobs:
               "default": {
                 "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
                 "IN_SAMPLE_PERCENTILE": 100,
-                "TECHNICAL_COOKIE_MIN_AGE": 172800000,
+                "TECHNICAL_COOKIE_MIN_AGE": 0,
                 "TECHNICAL_COOKIE_NAME": "x-sampler-t",
                 "PERCENTILE_COOKIE_NAME": "x-sampler-p",
                 "IN_SAMPLE_WITHOUT_TC": false
@@ -44,7 +44,7 @@ jobs:
               "de-ip": {
                 "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
                 "IN_SAMPLE_PERCENTILE": 100,
-                "TECHNICAL_COOKIE_MIN_AGE": 172800000,
+                "TECHNICAL_COOKIE_MIN_AGE": 0,
                 "TECHNICAL_COOKIE_NAME": "x-sampler-t",
                 "PERCENTILE_COOKIE_NAME": "x-sampler-p",
                 "IN_SAMPLE_WITHOUT_TC": false
@@ -52,7 +52,7 @@ jobs:
               "de-p7s1": {
                 "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
                 "IN_SAMPLE_PERCENTILE": 100,
-                "TECHNICAL_COOKIE_MIN_AGE": 172800000,
+                "TECHNICAL_COOKIE_MIN_AGE": 0,
                 "TECHNICAL_COOKIE_NAME": "x-sampler-t",
                 "PERCENTILE_COOKIE_NAME": "x-sampler-p",
                 "IN_SAMPLE_WITHOUT_TC": true
