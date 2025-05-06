@@ -7,6 +7,9 @@ on:
       - "feature/*"
       - "release/*"
       - "hotfix/*"
+    paths:
+      - config/dev.json
+      - .github/workflows/dev.yml
 
 jobs:
   deploy-dev:
@@ -26,42 +29,9 @@ jobs:
         name: Test
         run: yarn ci
 
-      - id: build-config
-        name: Write build config
-        uses: devops-actions/json-to-file@v1.0.4
-        with:
-          filename: "build.json"
-          json: |
-            {
-              "default": {
-                "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
-                "IN_SAMPLE_PERCENTILE": 100,
-                "TECHNICAL_COOKIE_MIN_AGE": 0,
-                "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-                "PERCENTILE_COOKIE_NAME": "x-sampler-p",
-                "IN_SAMPLE_WITHOUT_TC": false
-              },
-              "de-ip": {
-                "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
-                "IN_SAMPLE_PERCENTILE": 100,
-                "TECHNICAL_COOKIE_MIN_AGE": 0,
-                "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-                "PERCENTILE_COOKIE_NAME": "x-sampler-p",
-                "IN_SAMPLE_WITHOUT_TC": false
-              },
-              "de-p7s1": {
-                "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
-                "IN_SAMPLE_PERCENTILE": 100,
-                "TECHNICAL_COOKIE_MIN_AGE": 0,
-                "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-                "PERCENTILE_COOKIE_NAME": "x-sampler-p",
-                "IN_SAMPLE_WITHOUT_TC": true
-              }
-            }
-
       - id: build
         name: Build
-        run: yarn build
+        run: yarn build --config ./config/dev.json
 
       - id: auth
         if: github.ref == 'refs/heads/develop'

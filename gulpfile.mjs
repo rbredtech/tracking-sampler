@@ -7,9 +7,13 @@ import rename from "gulp-rename";
 import size from "gulp-size";
 import terser from "gulp-terser";
 import { createRequire } from "module";
+import yargs from "yargs";
 
+const configFile = yargs(process.argv).argv.config || "./build.json";
 const require = createRequire(import.meta.url);
-const buildConfigs = require("./build.json");
+const buildConfigs = require(configFile);
+
+console.log(`using config file ${configFile}`);
 
 ejs.__EJS__.delimiter = "*";
 ejs.__EJS__.openDelimiter = "__ejs(/";
