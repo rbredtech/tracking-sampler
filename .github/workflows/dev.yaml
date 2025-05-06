@@ -7,9 +7,6 @@ on:
       - "feature/*"
       - "release/*"
       - "hotfix/*"
-    paths:
-      - config/dev.json
-      - .github/workflows/dev.yml
 
 jobs:
   deploy-dev:

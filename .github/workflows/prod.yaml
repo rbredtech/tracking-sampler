@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - "!develop"
+      - "master"
     tags:
       - "v*.*.*"
-    paths:
-      - config/prod.json
-      - .github/workflows/prod.yml
 
 jobs:
   deploy:
