@@ -42,6 +42,8 @@ The build process requires a `build.json` file with the following structure:
 > [!IMPORTANT]
 > `TECHNICAL_COOKIE_MIN_AGE` is in milliseconds.
 
+By default `./build.json` is expected in the root folder, by passing e.g. `--config ./build/config.json` the path to the build config to use can be passed.
+
 As shown in the example above, multiple build configs can be added. The example above would build two entrypoints, `sampler-default.js` (the key of the build config is added as a filename suffix) and `sampler-twenty.js`. If the key would be an empty string, no file suffix will be added.
 
 Every config also gets it's own testing module, following the same rules (e.g. above config outputs `testing-default.js` and `testing-twenty.js` to be used with the respective entrypoints).
