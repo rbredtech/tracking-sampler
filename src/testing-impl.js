@@ -17,12 +17,12 @@
   sampler.isTechCookieValid = function (callback) {
     var technicalCookie = parseInt(readStorage(nameTechnicalCookie)) || null;
     if (callback && typeof callback === 'function') {
-      callback(!!technicalCookie && Date.now() - parseInt('__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);') > technicalCookie);
+      callback(!!technicalCookie && new Date().getTime() - parseInt('__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);') > technicalCookie);
     }
   };
 
   sampler.setValidTechCookie = function (callback) {
-    writeStorage(nameTechnicalCookie, Date.now() - parseInt('__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);') * 2);
+    writeStorage(nameTechnicalCookie, new Date().getTime() - parseInt('__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);') * 2);
     if (callback && typeof callback === 'function') {
       callback();
     }

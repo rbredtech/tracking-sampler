@@ -7,7 +7,7 @@
 
   var technicalCookie = parseInt(readStorage(nameTechnicalCookie));
 
-  var now = Date.now();
+  var now = new Date().getTime();
   if (!technicalCookie) {
     writeStorage(nameTechnicalCookie, now);
     technicalCookie = now;
