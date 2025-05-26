@@ -1,8 +1,8 @@
+__ejs(/*- include("partials/storage.js") */);
+
 (function () {
   var nameTechnicalCookie = '__ejs(/*-TECHNICAL_COOKIE_NAME*/);';
   var namePercentileCookie = '__ejs(/*-PERCENTILE_COOKIE_NAME*/);';
-
-  __ejs(/*- include("partials/storage.js") */);
 
   sampler = window.__tvi_sampler || {};
   window.__tvi_sampler = sampler;
@@ -22,7 +22,7 @@
   };
 
   sampler.setValidTechCookie = function (callback) {
-    writeStorage(nameTechnicalCookie, Date.now() - parseInt('__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);') * 2);
+    window.samplerWriteStorage(nameTechnicalCookie, Date.now() - parseInt('__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);') * 2);
     if (callback && typeof callback === 'function') {
       callback();
     }

@@ -9,10 +9,10 @@
     "dev": "concurrently \"yarn serve-scripts\" \"yarn serve-test -c ../serve.json\"",
     "build": "rm -rf ./dist && gulp",
     "serve-scripts": "node --import=./register.js app.ts",
-    "serve-test": "serve test/ -p 8080",
+    "serve-test": "serve test/ -p 8000",
     "serve-dist": "serve dist/ -p 4040 -c ../serve.json",
     "test": "jest --verbose",
-    "ci": "start-server-and-test \"concurrently 'yarn serve-scripts' 'yarn serve-test' --hide 0,1\" http://localhost:8080 test",
+    "ci": "start-server-and-test \"concurrently 'yarn serve-scripts' 'yarn serve-test' --hide 0,1\" \"localhost:4000/sampler.js|localhost:8000\" test",
     "lint": "eslint src/**"
   },
   "devDependencies": {

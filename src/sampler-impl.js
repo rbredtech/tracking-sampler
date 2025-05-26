@@ -1,9 +1,9 @@
+__ejs(/*- include("partials/storage.js") */);
+
 (function () {
   var nameTechnicalCookie = '__ejs(/*-TECHNICAL_COOKIE_NAME*/);';
   var namePercentileCookie = '__ejs(/*-PERCENTILE_COOKIE_NAME*/);';
   var inSampleWithoutTC = __ejs(/*-IN_SAMPLE_WITHOUT_TC*/);
-
-  __ejs(/*- include("partials/storage.js") */);
 
   var technicalCookie = parseInt(window.samplerReadStorage(nameTechnicalCookie));
 
