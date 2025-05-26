@@ -25,7 +25,7 @@ describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame,
 
   afterAll(async () => {
     await page.browser().close();
-  }, 2000);
+  }, 20000);
 
   describe("before tech cookie becomes valid", () => {
     it("should always be in sample", async () => {
