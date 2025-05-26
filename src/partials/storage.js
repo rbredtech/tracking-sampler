@@ -31,13 +31,12 @@
   }
 
   function setCookie(name, value) {
-    var maxAge = 60 * 60 * 24 * 365 * 2; // 2 years
-    var cookie = name + '=' + value + ';max-age=' + maxAge + ';path=/';
+    var cookie = name + '=' + value + ';max-age=63072000;domain=__ejs(/*-COOKIE_DOMAIN*/);;path=/';
     document.cookie = cookie;
   }
 
   function deleteCookie(name) {
-    var cookie = name + '=;max-age=-1;path=/';
+    var cookie = name + '=;max-age=-1;domain=__ejs(/*-COOKIE_DOMAIN*/);;path=/';
     document.cookie = cookie;
   }
 

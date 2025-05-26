@@ -21,6 +21,7 @@ app.get("*", function(req, res) {
   res.render(__dirname + "/src" + req.url, {
     SAMPLER_HOST: "localhost:4000",
     IN_SAMPLE_PERCENTILE: 10,
+    COOKIE_DOMAIN: "localhost",
     TECHNICAL_COOKIE_MIN_AGE: 1000 * 60 * 60 * 24 * 2,
     TECHNICAL_COOKIE_NAME: "x-sampler-t",
     PERCENTILE_COOKIE_NAME: "x-sampler-p",
