@@ -2,6 +2,7 @@
   "default": {
     "SAMPLER_HOST": "sampling.tvping-agf.com",
     "IN_SAMPLE_PERCENTILE": 10,
+    "COOKIE_DOMAIN": "sampling.tvping-agf.com",
     "TECHNICAL_COOKIE_MIN_AGE": 0,
     "TECHNICAL_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
@@ -10,6 +11,7 @@
   "de-ip": {
     "SAMPLER_HOST": "sampling.tvping-agf.com",
     "IN_SAMPLE_PERCENTILE": 10,
+    "COOKIE_DOMAIN": "sampling.tvping-agf.com",
     "TECHNICAL_COOKIE_MIN_AGE": 0,
     "TECHNICAL_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
@@ -18,6 +20,7 @@
   "de-p7s1": {
     "SAMPLER_HOST": "sampling.tvping-agf.com",
     "IN_SAMPLE_PERCENTILE": 100,
+    "COOKIE_DOMAIN": "sampling.tvping-agf.com",
     "TECHNICAL_COOKIE_MIN_AGE": 0,
     "TECHNICAL_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",

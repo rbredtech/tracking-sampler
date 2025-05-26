@@ -21,6 +21,7 @@ The build process requires a `build.json` file with the following structure:
   "default": {
     "SAMPLER_HOST": "sampling.tvping.com",
     "IN_SAMPLE_PERCENTILE": 10,
+    "COOKIE_DOMAIN": "samplling.tvping.com",
     "TECHNICAL_COOKIE_MIN_AGE": 172800000,
     "TECHNICAL_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
@@ -29,6 +30,7 @@ The build process requires a `build.json` file with the following structure:
   "twenty": {
     "SAMPLER_HOST": "sampling.tvping.com",
     "IN_SAMPLE_PERCENTILE": 20,
+    "COOKIE_DOMAIN": "samplling.tvping.com",
     "TECHNICAL_COOKIE_MIN_AGE": 172800000,
     "TECHNICAL_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
