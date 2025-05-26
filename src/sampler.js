@@ -114,18 +114,6 @@
         sampler._cbMap[id] = undefined;
       } catch (e) {}
     }
-    if (message[0] === 'cmd') {
-      var cmd = message[1].split('//');
-      switch (cmd[0]) {
-        case 'set-cookie':
-          if (cmd[1]) {
-            document.cookie = cmd[1];
-          }
-          break;
-        default:
-          break;
-      }
-    }
   }
 
   function loadSamplerIframe(element) {
