@@ -9,62 +9,59 @@ __ejs(/* } */);
   <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8">
   <script type="text/javascript">
     //<![CDATA[
-    window._sendMessage = function (msg) {
-      if (window.parent && window.parent.postMessage) {
-        window.parent.postMessage(msg, '*');
+    (function () {
+      window._sendMessage = function (msg) {
+        if (window.parent && window.parent.postMessage) {
+          window.parent.postMessage(msg, '*');
+        }
+      };
+
+      function messageEventHandler(event) {
+        try {
+          if (!event.data || typeof event.data !== 'string') {
+            return;
+          }
+
+          var message = event.data.split(';');
+          if (message[1] !== '__tvi_sampler') {
+            return;
+          }
+
+          var id = message[0];
+          var method = message[2];
+          var param = JSON.parse(message[3]);
+
+          switch (method) {
+            case 'setPercentile':
+              window.__tvi_sampler.setPercentile(param.param, function (cbParam) {
+                window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
+              });
+              break;
+            case 'isTechCookieValid':
+              window.__tvi_sampler.isTechCookieValid(function (cbParam) {
+                window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
+              });
+              break;
+            case 'setValidTechCookie':
+              window.__tvi_sampler.setValidTechCookie(function (cbParam) {
+                window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
+              });
+              break;
+            case 'reset':
+              window.__tvi_sampler.reset(function (cbParam) {
+                window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
+              });
+              break;
+            default:
+              break;
+          }
+        } catch (e) {}
       }
-    };
 
-    function messageEventHandler(event) {
-      try {
-        if (!event.data || typeof event.data !== 'string') {
-          return;
-        }
-
-        var message = event.data.split(';');
-        if (message[1] !== '__tvi_sampler') {
-          return;
-        }
-
-        var id = message[0];
-        var method = message[2];
-        var param = JSON.parse(message[3]);
-
-        switch (method) {
-          case 'setPercentile':
-            window.__tvi_sampler.setPercentile(param.param, function (cbParam) {
-              window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
-            });
-            break;
-          case 'isTechCookieValid':
-            window.__tvi_sampler.isTechCookieValid(function (cbParam) {
-              window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
-            });
-            break;
-          case 'setValidTechCookie':
-            window.__tvi_sampler.setValidTechCookie(function (cbParam) {
-              window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
-            });
-            break;
-          case 'reset':
-            window.__tvi_sampler.reset(function (cbParam) {
-              window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
-            });
-            break;
-          default:
-            break;
-        }
-      } catch (e) {}
-    }
-
-    if (window['addEventListener']) {
       window.addEventListener('message', messageEventHandler, false);
-    }
+    })();
 
-    var testingScriptTag = document.createElement('script');
-    testingScriptTag.setAttribute('type', 'text/javascript');
-    testingScriptTag.setAttribute('src', window.location.protocol + '//{{SAMPLER_HOST}}{{SAMPLER_PATH}}__ejs(/*-IMPL_FILE*/);');
-    document.getElementsByTagName('head')[0].appendChild(testingScriptTag);
+    __ejs(/*- include(IMPL_FILE) */);
     //]]>
   </script>
 </head>

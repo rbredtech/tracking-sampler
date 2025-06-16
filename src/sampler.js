@@ -114,18 +114,6 @@
         sampler._cbMap[id] = undefined;
       } catch (e) {}
     }
-    if (message[0] === 'cmd') {
-      var cmd = message[1].split('//');
-      switch (cmd[0]) {
-        case 'set-cookie':
-          if (cmd[1]) {
-            document.cookie = cmd[1];
-          }
-          break;
-        default:
-          break;
-      }
-    }
   }
 
   function loadSamplerIframe(element) {
@@ -133,6 +121,7 @@
     iframe.setAttribute('src', window.location.protocol + "//{{SAMPLER_HOST}}{{SAMPLER_PATH}}sampler-iframe__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.html");
     iframe.setAttribute('style', 'position:fixed;border:0;outline:0;top:-999px;left:-999px;width:0;height:0;');
     iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('tabindex', '-1');
 
     iframe.onload = function () {
       if (!iframe.contentWindow || !iframe.contentWindow.postMessage) {
