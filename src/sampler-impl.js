@@ -1,24 +1,20 @@
 (function () {
-  var nameTechnicalCookie = '__ejs(/*-TECHNICAL_COOKIE_NAME*/);';
-  var namePercentileCookie = '__ejs(/*-PERCENTILE_COOKIE_NAME*/);';
-  var inSampleWithoutTC = __ejs(/*-IN_SAMPLE_WITHOUT_TC*/);
-
   __ejs(/*- include("partials/storage.js") */);
 
-  var technicalCookie = parseInt(readStorage(nameTechnicalCookie));
+  var technicalCookie = parseInt(readStorage('{{TECH_COOKIE_NAME}}'));
 
   var now = Date.now();
   if (!technicalCookie) {
-    writeStorage(nameTechnicalCookie, now);
+    writeStorage('{{TECH_COOKIE_NAME}}', now);
     technicalCookie = now;
   }
 
-  var technicalCookiePassed = now - parseInt('__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);') > technicalCookie;
+  var technicalCookiePassed = now - parseInt('{{TECHNICAL_COOKIE_MIN_AGE}}') > technicalCookie;
 
-  var percentile = parseInt(readStorage(namePercentileCookie)) || undefined;
+  var percentile = parseInt(readStorage('{{PERCENTILE_COOKIE_NAME}}')) || undefined;
   if (!percentile && technicalCookiePassed) {
     percentile = Math.floor(Math.random() * 100) + 1;
-    writeStorage(namePercentileCookie, percentile);
+    writeStorage('{{PERCENTILE_COOKIE_NAME}}', percentile);
   }
 
   sampler = window.__tvi_sampler || {};
@@ -27,7 +23,7 @@
   sampler.checkInSample = function (callback) {
     var desiredPercentile = parseInt('__ejs(/*-IN_SAMPLE_PERCENTILE*/);');
     if (callback && typeof callback === 'function') {
-      var inSample = inSampleWithoutTC;
+      var inSample = __ejs(/*-IN_SAMPLE_WITHOUT_TC*/);
       if (technicalCookiePassed) {
         inSample = !!percentile && percentile <= desiredPercentile;
       }

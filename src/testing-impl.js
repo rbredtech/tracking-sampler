@@ -1,36 +1,33 @@
 (function () {
-  var nameTechnicalCookie = '__ejs(/*-TECHNICAL_COOKIE_NAME*/);';
-  var namePercentileCookie = '__ejs(/*-PERCENTILE_COOKIE_NAME*/);';
-
   __ejs(/*- include("partials/storage.js") */);
 
   sampler = window.__tvi_sampler || {};
   window.__tvi_sampler = sampler;
 
   sampler.setPercentile = function (percentile, callback) {
-    writeStorage(namePercentileCookie, percentile);
+    writeStorage('{{PERCENTILE_COOKIE_NAME}}', percentile);
     if (callback && typeof callback === 'function') {
       callback(percentile);
     }
   };
 
   sampler.isTechCookieValid = function (callback) {
-    var technicalCookie = parseInt(readStorage(nameTechnicalCookie)) || null;
+    var technicalCookie = parseInt(readStorage('{{TECH_COOKIE_NAME}}')) || null;
     if (callback && typeof callback === 'function') {
-      callback(!!technicalCookie && Date.now() - parseInt('__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);') > technicalCookie);
+      callback(!!technicalCookie && Date.now() - parseInt('{{TECHNICAL_COOKIE_MIN_AGE}}') > technicalCookie);
     }
   };
 
   sampler.setValidTechCookie = function (callback) {
-    writeStorage(nameTechnicalCookie, Date.now() - parseInt('__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);') * 2);
+    writeStorage('{{TECH_COOKIE_NAME}}', Date.now() - parseInt('{{TECHNICAL_COOKIE_MIN_AGE}}') * 2);
     if (callback && typeof callback === 'function') {
       callback();
     }
   };
 
   sampler.reset = function (callback) {
-    deleteStorage(nameTechnicalCookie);
-    deleteStorage(namePercentileCookie);
+    deleteStorage('{{TECH_COOKIE_NAME}}');
+    deleteStorage('{{PERCENTILE_COOKIE_NAME}}');
     if (callback && typeof callback === 'function') {
       callback();
     }

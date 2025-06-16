@@ -6,7 +6,7 @@ Integration documentation can be found at https://docs.tv-insight.com/docs/hbbtv
 
 ## Development
 
-- `yarn dev` serves `index.html` from the `/test` folder, which loads the sampler and testing module directly from the `/src` folder (accessible in the browser via `http://localhost:8080`)
+- `yarn dev` serves `index.html` from the `/test` folder, which loads the sampler and testing module directly from the `/src` folder (accessible in the browser via `http://localhost:8000`)
 - `yarn serve-scripts` serves the compiled scripts from `/src` via `http://localhost:4000`
 - `yarn serve-dist` serves production build scripts from `/dist` via `http://localhost:4040` (see [Build](#build) section)
 

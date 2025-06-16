@@ -12,7 +12,7 @@ describe.each(cases)("Tracking Sampler - iFrame: %s", (iFrame) => {
     if (userAgent) {
       await page.setUserAgent(userAgent);
     }
-    await page.goto(`http://localhost:8080`);
+    await page.goto(`http://localhost:8000`);
     await page.waitForFunction(() => document.readyState === "complete");
   }, 5000);
 

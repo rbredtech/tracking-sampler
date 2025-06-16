@@ -53,7 +53,7 @@ __ejs(/* } */);
 
     var samplerScriptTag = document.createElement('script');
     samplerScriptTag.setAttribute('type', 'text/javascript');
-    samplerScriptTag.setAttribute('src', window.location.protocol + '//__ejs(/*-SAMPLER_HOST*/);/__ejs(/*-IMPL_FILE*/);');
+    samplerScriptTag.setAttribute('src', window.location.protocol + '//{{SAMPLER_HOST}}{{SAMPLER_PATH}}__ejs(/*-IMPL_FILE*/);');
     document.getElementsByTagName('head')[0].appendChild(samplerScriptTag);
     //]]>
   </script>
