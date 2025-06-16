@@ -1,21 +1,22 @@
 (function () {
   __ejs(/*- include("partials/storage.js") */);
 
-  var technicalCookie = parseInt(readStorage('{{TECH_COOKIE_NAME}}'));
-
-  var now = Date.now();
-  if (!technicalCookie) {
-    writeStorage('{{TECH_COOKIE_NAME}}', now);
-    technicalCookie = now;
+  var technicalCookieFromCookie = parseInt('{{TECH_COOKIE_VALUE}}');
+  var technicalCookieFromLocalStorage = parseInt(readStorage('{{TECH_COOKIE_NAME}}'));
+  if (!technicalCookieFromLocalStorage && technicalCookieFromCookie) {
+    writeStorage('{{TECH_COOKIE_NAME}}', technicalCookieFromCookie);
   }
 
-  var technicalCookiePassed = now - parseInt('{{TECHNICAL_COOKIE_MIN_AGE}}') > technicalCookie;
+  var now = new Date().getTime();
+  var technicalCookie = technicalCookieFromLocalStorage || technicalCookieFromCookie || now;
+  var technicalCookiePassed = now - parseInt('{{TECH_COOKIE_MIN_AGE}}') > technicalCookie;
 
-  var percentile = parseInt(readStorage('{{PERCENTILE_COOKIE_NAME}}')) || undefined;
-  if (!percentile && technicalCookiePassed) {
-    percentile = Math.floor(Math.random() * 100) + 1;
-    writeStorage('{{PERCENTILE_COOKIE_NAME}}', percentile);
+  var percentileFromCookie = parseInt('{{PERCENTILE_COOKIE_VALUE}}');
+  var percentileFromLocalStorage = parseInt(readStorage('{{PERCENTILE_COOKIE_NAME}}'));
+  if (!percentileFromLocalStorage && percentileFromCookie) {
+    writeStorage('{{PERCENTILE_COOKIE_NAME}}', percentileFromCookie);
   }
+  var percentile = percentileFromLocalStorage || percentileFromCookie || undefined;
 
   sampler = window.__tvi_sampler || {};
   window.__tvi_sampler = sampler;
