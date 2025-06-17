@@ -1,7 +1,3 @@
-__ejs(/* var IMPL_FILE = "sampler-impl.js" */);
-__ejs(/* if (__CONFIG_NAME) { */);
-__ejs(/* IMPL_FILE = "sampler-impl-" + __CONFIG_NAME + ".js" */);
-__ejs(/* } */);
 <!DOCTYPE html PUBLIC "-//HbbTV//1.1.1//EN" "http://www.hbbtv.org/dtd/HbbTV-1.1.1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -51,7 +47,7 @@ __ejs(/* } */);
       window.addEventListener('message', messageEventHandler, false);
     })();
 
-    __ejs(/*- include(IMPL_FILE) */);
+    __ejs(/*- include("sampler-impl.js") */);
     //]]>
   </script>
 </head>
