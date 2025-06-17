@@ -1,4 +1,6 @@
 (function () {
+  __ejs(/*- include("partials/ponyfills.js") */);
+
   var sampler = window.__tvi_sampler || {};
   window.__tvi_sampler = sampler;
   sampler._tq = [];
@@ -35,7 +37,7 @@
 
   function iframeMessage(method, parameter, callback) {
     sampler._cbMap[++sampler._cbCount] = callback;
-    var msg = sampler._cbCount + ';__tvi_sampler;' + method + ';' + JSON.stringify({ param: parameter });
+    var msg = sampler._cbCount + ';__tvi_sampler;' + method + ';' + window.jsonStringify({ param: parameter });
     iframe.contentWindow.postMessage(msg, window.location.protocol + '//{{SAMPLER_HOST}}');
   }
 

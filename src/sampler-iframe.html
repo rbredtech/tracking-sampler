@@ -5,6 +5,8 @@
   <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8">
   <script type="text/javascript">
     //<![CDATA[
+    __ejs(/*- include("partials/ponyfills.js") */);
+
     (function () {
       window._sendMessage = function (msg) {
         if (window.parent && window.parent.postMessage) {
@@ -25,17 +27,17 @@
 
           var id = message[0];
           var method = message[2];
-          var param = JSON.parse(message[3]);
+          var param = window.jsonParse(message[3]);
 
           switch (method) {
             case 'checkInSample':
               window.__tvi_sampler.checkInSample(function (cbParam) {
-                window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
+                window._sendMessage('cb$' + id + ';' + window.jsonStringify({ param: cbParam }));
               });
               break;
             case 'getPercentile':
               window.__tvi_sampler.getPercentile(function (cbParam) {
-                window._sendMessage('cb$' + id + ';' + JSON.stringify({ param: cbParam }));
+                window._sendMessage('cb$' + id + ';' + window.jsonStringify({ param: cbParam }));
               });
               break;
             default:
