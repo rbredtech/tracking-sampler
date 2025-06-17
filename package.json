@@ -6,13 +6,13 @@
   "author": "Andreas Jantschnig <andreas.jantschnig@tv-insight.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently \"yarn serve-scripts\" \"yarn serve-test -c ../serve.json\"",
+    "dev": "concurrently \"yarn serve-scripts\" \"yarn serve-test -c ../serve.test.json\"",
     "build": "rm -rf ./dist && gulp",
-    "serve-scripts": "node --import=./register.js app.ts",
+    "serve-scripts": "dotenv-load node --import=./register.js app.ts",
     "serve-test": "serve test/ -p 8000",
-    "serve-dist": "serve dist/ -p 4040 -c ../serve.json",
+    "serve-dist": "serve dist/ -p 4040 -c ../serve.dist.json",
     "test": "jest --verbose",
-    "ci": "start-server-and-test \"concurrently 'yarn serve-scripts' 'yarn serve-test' --hide 0,1\" \"http://localhost:8000|http://localhost:4040\" 'yarn test'",
+    "ci": "start-server-and-test \"concurrently 'yarn serve-scripts' 'yarn serve-test' --hide 0,1\" \"http://localhost:8000|http://localhost:4000/sampler.js\" 'yarn test'",
     "lint": "eslint src/**"
   },
   "devDependencies": {
@@ -30,6 +30,7 @@
     "@types/node": "^22.8.4",
     "concurrently": "^9.0.1",
     "cookie-parser": "^1.4.7",
+    "dotenv-load": "^3.0.0",
     "ejs": "^3.1.10",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
