@@ -1,4 +1,4 @@
-name: DEV - Static Bucket
+name: DEV - Snapshot release
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy-dev:
-    name: DEV - Deploy static assets to storage bucket
+    name: DEV - Create snapshot release
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -31,18 +31,18 @@ jobs:
         run: yarn build --config ./config/dev.json
 
       - id: zip
-        if: github.ref == 'refs/heads/develop'
+        #if: github.ref == 'refs/heads/develop'
         name: Zip templates
         run: zip -r -j templates.zip ./dist/*
 
       - id: snapshot
-        if: github.ref == 'refs/heads/develop'
+        #if: github.ref == 'refs/heads/develop'
         name: Create snapshot tag
         run: |
           echo 'version=snapshot_${{ github.run_number }}' >> $GITHUB_OUTPUT
 
       - id: release
-        if: github.ref == 'refs/heads/develop'
+        #if: github.ref == 'refs/heads/develop'
         name: Create release
         uses: softprops/action-gh-release@v2
         with:
