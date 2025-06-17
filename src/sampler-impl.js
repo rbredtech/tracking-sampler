@@ -11,8 +11,8 @@
   var technicalCookie = technicalCookieFromLocalStorage || technicalCookieFromCookie || now;
   var technicalCookiePassed = now - parseInt('{{TECH_COOKIE_MIN_AGE}}') > technicalCookie;
 
-  var percentileFromCookie = parseInt('{{PERCENTILE_COOKIE_VALUE}}');
-  var percentileFromLocalStorage = parseInt(readStorage('{{PERCENTILE_COOKIE_NAME}}'));
+  var percentileFromCookie = technicalCookiePassed ? parseInt('{{PERCENTILE_COOKIE_VALUE}}') : undefined;
+  var percentileFromLocalStorage = technicalCookiePassed ? parseInt(readStorage('{{PERCENTILE_COOKIE_NAME}}')) : undefined;
   if (!percentileFromLocalStorage && percentileFromCookie) {
     writeStorage('{{PERCENTILE_COOKIE_NAME}}', percentileFromCookie);
   }
