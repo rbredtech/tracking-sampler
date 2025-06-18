@@ -1,26 +1,14 @@
 {
   "default": {
-    "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
-    "IN_SAMPLE_PERCENTILE": 100,
-    "TECHNICAL_COOKIE_MIN_AGE": 0,
-    "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-    "PERCENTILE_COOKIE_NAME": "x-sampler-p",
+    "IN_SAMPLE_PERCENTILE": 50,
     "IN_SAMPLE_WITHOUT_TC": false
   },
   "de-ip": {
-    "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
     "IN_SAMPLE_PERCENTILE": 100,
-    "TECHNICAL_COOKIE_MIN_AGE": 0,
-    "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-    "PERCENTILE_COOKIE_NAME": "x-sampler-p",
     "IN_SAMPLE_WITHOUT_TC": false
   },
   "de-p7s1": {
-    "SAMPLER_HOST": "sampling-agf.dev.tv-insight.com",
     "IN_SAMPLE_PERCENTILE": 100,
-    "TECHNICAL_COOKIE_MIN_AGE": 0,
-    "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-    "PERCENTILE_COOKIE_NAME": "x-sampler-p",
     "IN_SAMPLE_WITHOUT_TC": true
   }
 }

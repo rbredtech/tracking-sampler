@@ -4,6 +4,12 @@
 <head>
   <meta http-equiv="content-type" content="application/vnd.hbbtv.xhtml+xml; charset=utf-8" />
   <title>Tracking Sampler Test</title>
+  <script type="text/javascript">
+    //<![CDATA[
+    // disabling native apis for testing polyfills
+    window.JSON = null;
+    //]]>
+  </script>
   <script type="text/javascript" src="http://localhost:4000/sampler.js"></script>
   <script type="text/javascript" src="http://localhost:4000/testing.js"></script>
 </head>

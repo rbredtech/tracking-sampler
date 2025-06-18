@@ -6,7 +6,7 @@ Integration documentation can be found at https://docs.tv-insight.com/docs/hbbtv
 
 ## Development
 
-- `yarn dev` serves `index.html` from the `/test` folder, which loads the sampler and testing module directly from the `/src` folder (accessible in the browser via `http://localhost:8080`)
+- `yarn dev` serves `index.html` from the `/test` folder, which loads the sampler and testing module directly from the `/src` folder (accessible in the browser via `http://localhost:8000`)
 - `yarn serve-scripts` serves the compiled scripts from `/src` via `http://localhost:4000`
 - `yarn serve-dist` serves production build scripts from `/dist` via `http://localhost:4040` (see [Build](#build) section)
 
@@ -21,16 +21,16 @@ The build process requires a `build.json` file with the following structure:
   "default": {
     "SAMPLER_HOST": "sampling.tvping.com",
     "IN_SAMPLE_PERCENTILE": 10,
-    "TECHNICAL_COOKIE_MIN_AGE": 172800000,
-    "TECHNICAL_COOKIE_NAME": "x-sampler-t",
+    "TECH_COOKIE_MIN_AGE": 172800000,
+    "TECH_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
     "IN_SAMPLE_WITHOUT_TC": false
   },
   "twenty": {
     "SAMPLER_HOST": "sampling.tvping.com",
     "IN_SAMPLE_PERCENTILE": 20,
-    "TECHNICAL_COOKIE_MIN_AGE": 172800000,
-    "TECHNICAL_COOKIE_NAME": "x-sampler-t",
+    "TECH_COOKIE_MIN_AGE": 172800000,
+    "TECH_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
     "IN_SAMPLE_WITHOUT_TC": true
   },
@@ -40,7 +40,7 @@ The build process requires a `build.json` file with the following structure:
 > All [config values](#config-values) are mandatory!
 
 > [!IMPORTANT]
-> `TECHNICAL_COOKIE_MIN_AGE` is in milliseconds.
+> `TECH_COOKIE_MIN_AGE` is in milliseconds.
 
 By default `./build.json` is expected in the root folder, by passing e.g. `--config ./build/config.json` the path to the build config to use can be passed.
 
@@ -53,8 +53,8 @@ Every config also gets it's own testing module, following the same rules (e.g. a
 | ---   | ---         |
 | `SAMPLER_HOST` | Host where sampler is deployed to |
 | `IN_SAMPLE_PERCENTILE` | Which percentile the device needs to be in |
-| `TECHNICAL_COOKIE_MIN_AGE` | How long the technical cookie needs to be stored until the sampler gets active|
-| `TECHNICAL_COOKIE_NAME` | Cookie name / localStorage key where technical cookie is saved |
+| `TECH_COOKIE_MIN_AGE` | How long the technical cookie needs to be stored until the sampler gets active|
+| `TECH_COOKIE_NAME` | Cookie name / localStorage key where technical cookie is saved |
 | `PERCENTILE_COOKIE_NAME` | Cookie name / localStorage key where device percentile is saved |
 | `IN_SAMPLE_WITHOUT_TC` | Should `checkInSample` return `true` or `false` while technical cookie evaluation is not finished |
 

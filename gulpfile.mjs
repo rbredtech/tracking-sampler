@@ -4,6 +4,7 @@ import htmlmin from "gulp-htmlmin";
 import gif from "gulp-if";
 import minifyInline from "gulp-minify-inline";
 import rename from "gulp-rename";
+import replace from "gulp-replace";
 import size from "gulp-size";
 import terser from "gulp-terser";
 import { createRequire } from "module";
@@ -42,10 +43,10 @@ function compileTemplates(done) {
   const tasks = Object.entries(buildConfigs).map(([key, config]) => {
     const compileTemplatesWithConfig = () =>
       gulp
-        .src(["./src/*", "!./src/partials/**/*"])
+        .src(["src/*.js", "src/*.html"])
         .pipe(ejs({ ...config, __CONFIG_NAME: key }))
         .pipe(gif(!!key, rename({ suffix: `-${key}` })))
-        .pipe(gulp.dest("./dist"));
+        .pipe(gulp.dest("dist"));
     return compileTemplatesWithConfig;
   });
 
@@ -55,23 +56,30 @@ function compileTemplates(done) {
   })();
 }
 
-function minifyJsTemplates() {
-  return gulp.src("./dist/*.js").pipe(terser(terserOptions)).pipe(gulp.dest("./dist"));
+function minifyJs() {
+  return gulp.src("dist/*.js").pipe(terser(terserOptions)).pipe(gulp.dest("dist"));
 }
 
-function minifyHtmlTemplates() {
+function minifyHtml() {
   return gulp
-    .src("./dist/*.html")
+    .src("dist/*.html")
     .pipe(minifyInline({ js: terserOptions }))
     .pipe(htmlmin({ collapseWhitespace: true }))
-    .pipe(gulp.dest("./dist"));
+    .pipe(gulp.dest("dist"));
+}
+
+function optimize() {
+  return gulp
+    .src("dist/*")
+    .pipe(replace(/parseInt\(["'](\d+)["']\)/, "$1"))
+    .pipe(gulp.dest("dist"));
 }
 
 function printSize() {
   return gulp
-    .src("./dist/*")
+    .src("dist/*")
     .pipe(size({ showFiles: true }))
     .pipe(gulp.dest("dist"));
 }
 
-export default gulp.series(compileTemplates, minifyJsTemplates, minifyHtmlTemplates, printSize);
+export default gulp.series(compileTemplates, gulp.parallel(minifyJs, minifyHtml), optimize, printSize);
