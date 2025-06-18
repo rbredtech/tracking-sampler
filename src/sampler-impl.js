@@ -11,8 +11,8 @@
   var technicalCookie = technicalCookieFromLocalStorage || technicalCookieFromCookie || now;
   var technicalCookiePassed = now - parseInt('{{TECH_COOKIE_MIN_AGE}}') > technicalCookie;
 
-  var percentileFromCookie = technicalCookiePassed ? parseInt('{{PERCENTILE_COOKIE_VALUE}}') : undefined;
-  var percentileFromLocalStorage = technicalCookiePassed ? parseInt(readStorage('{{PERCENTILE_COOKIE_NAME}}')) : undefined;
+  var percentileFromCookie = parseInt('{{PERCENTILE_COOKIE_VALUE}}');
+  var percentileFromLocalStorage = parseInt(readStorage('{{PERCENTILE_COOKIE_NAME}}'));
   if (!percentileFromLocalStorage && percentileFromCookie) {
     writeStorage('{{PERCENTILE_COOKIE_NAME}}', percentileFromCookie);
   }
@@ -25,7 +25,7 @@
     var desiredPercentile = parseInt('__ejs(/*-IN_SAMPLE_PERCENTILE*/);');
     if (callback && typeof callback === 'function') {
       var inSample = __ejs(/*-IN_SAMPLE_WITHOUT_TC*/);
-      if (technicalCookiePassed) {
+      if (technicalCookiePassed || !!percentile) {
         inSample = !!percentile && percentile <= desiredPercentile;
       }
       callback(inSample);
