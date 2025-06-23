@@ -2,18 +2,25 @@ const puppeteer = require("puppeteer");
 
 let page;
 
-const cases = [true, false];
+const cases = [
+  [true, true], // [iFrame, localStorage]
+  [true, false],
+  [false, true],
+  [false, false],
+];
 
-describe.each(cases)("Tracking Sampler - iFrame: %s", (iFrame) => {
+describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame, localStorage) => {
   beforeAll(async () => {
-    const userAgent = !iFrame ? "HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03" : undefined;
-    const browser = await puppeteer.launch({ dumpio: false, args: ["--disable-gpu", "--no-sandbox"] });
-    page = await browser.newPage();
-    if (userAgent) {
-      await page.setUserAgent(userAgent);
+    const args = ["--no-sandbox", "--disable-setuid-sandbox"];
+    if (!localStorage) {
+      args.push("--disable-local-storage");
     }
-    await page.goto(`http://localhost:8080`);
-    await page.waitForFunction(() => document.readyState === "complete");
+    const browser = await puppeteer.launch({ args });
+    page = await browser.newPage();
+    if (!iFrame) {
+      await page.setUserAgent("HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03");
+    }
+    await page.goto(`http://localhost:8000`);
   }, 5000);
 
   afterAll(async () => {

@@ -1,4 +1,6 @@
 (function () {
+  __ejs(/*- include("partials/ponyfills.js") */);
+
   var sampler = window.__tvi_sampler || {};
   window.__tvi_sampler = sampler;
   sampler._tq = [];
@@ -33,16 +35,28 @@
 
   var iframe;
 
+  var _q = [];
+  if ('{{TECH_COOKIE_VALUE}}') {
+    _q.push('x={{TECH_COOKIE_VALUE}}');
+  }
+  if ('{{PERCENTILE_COOKIE_VALUE}}') {
+    _q.push('p={{PERCENTILE_COOKIE_VALUE}}');
+  }
+  var _qj = _q.length ? '?' + _q.join('&') : '';
+
   function iframeMessage(method, parameter, callback) {
     sampler._cbMap[++sampler._cbCount] = callback;
-    var msg = sampler._cbCount + ';__tvi_sampler;' + method + ';' + JSON.stringify({ param: parameter });
-    iframe.contentWindow.postMessage(msg, window.location.protocol + '//__ejs(/*-SAMPLER_HOST*/);');
+    var msg = sampler._cbCount + ';__tvi_sampler;' + method + ';' + window.jsonStringify({ param: parameter });
+    iframe.contentWindow.postMessage(msg, window.location.protocol + '//{{SAMPLER_HOST}}');
   }
 
   function loadTesting(element) {
     var testingScriptTag = document.createElement('script');
     testingScriptTag.setAttribute('type', 'text/javascript');
-    testingScriptTag.setAttribute('src', window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/testing-impl__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.js");
+    testingScriptTag.setAttribute(
+      'src',
+      window.location.protocol + "//{{SAMPLER_HOST}}{{SAMPLER_PATH}}testing-impl__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.js" + _qj
+    );
 
     testingScriptTag.onload = function () {
       onTestingLoaded();
@@ -57,7 +71,7 @@
 
   function loadTestingIframe(element) {
     iframe = document.createElement('iframe');
-    iframe.setAttribute('src', window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/testing-iframe__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.html");
+    iframe.setAttribute('src', window.location.protocol + "//{{SAMPLER_HOST}}{{SAMPLER_PATH}}testing-iframe__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.html" + _qj);
     iframe.setAttribute('style', 'position:fixed;border:0;outline:0;top:-999px;left:-999px;width:0;height:0;');
     iframe.setAttribute('frameborder', '0');
     iframe.setAttribute('tabindex', '-1');

@@ -1,4 +1,6 @@
 (function () {
+  __ejs(/*- include("partials/ponyfills.js") */);
+
   window.loadOnDOMContentLoaded = function (elementTagName, onDOMContentLoadedCB) {
     document.addEventListener('DOMContentLoaded', function () {
       var element = document.getElementsByTagName(elementTagName)[0];
@@ -30,15 +32,10 @@
 
   window.isIframeCapable = function () {
     var excludeList = ['antgalio', 'hybrid', 'maple', 'presto', 'technotrend goerler', 'viera 2011'];
-    var currentUserAgent = window.navigator && navigator.userAgent && navigator.userAgent.toLowerCase();
-
-    if (!currentUserAgent || !currentUserAgent.indexOf) {
-      return false;
-    }
 
     var userAgentIsExcluded = false;
     for (var i = 0; i < excludeList.length; i++) {
-      userAgentIsExcluded = userAgentIsExcluded || currentUserAgent.indexOf(excludeList[i]) !== -1;
+      userAgentIsExcluded = userAgentIsExcluded || navigator.userAgent.toLowerCase().indexOf(excludeList[i]) !== -1;
     }
 
     return !userAgentIsExcluded;
@@ -72,18 +69,30 @@
   sampler._cbMap = sampler.callbackMap || {};
   var iframe;
 
+  var _q = [];
+  if ('{{TECH_COOKIE_VALUE}}') {
+    _q.push('x={{TECH_COOKIE_VALUE}}');
+  }
+  if ('{{PERCENTILE_COOKIE_VALUE}}') {
+    _q.push('p={{PERCENTILE_COOKIE_VALUE}}');
+  }
+  var _qj = _q.length ? '?' + _q.join('&') : '';
+
   function iframeMessage(method, parameter, callback) {
     try {
       sampler._cbMap[++sampler._cbCount] = callback;
-      var msg = sampler._cbCount + ';__tvi_sampler;' + method + ';' + JSON.stringify({ param: parameter });
-      iframe.contentWindow.postMessage(msg, window.location.protocol + '//__ejs(/*-SAMPLER_HOST*/);');
+      var msg = sampler._cbCount + ';__tvi_sampler;' + method + ';' + window.jsonStringify({ param: parameter });
+      iframe.contentWindow.postMessage(msg, window.location.protocol + '//{{SAMPLER_HOST}}');
     } catch (e) {}
   }
 
   function loadSampler(element) {
     var samplerScriptTag = document.createElement('script');
     samplerScriptTag.setAttribute('type', 'text/javascript');
-    samplerScriptTag.setAttribute('src', window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/sampler-impl__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.js");
+    samplerScriptTag.setAttribute(
+      'src',
+      window.location.protocol + "//{{SAMPLER_HOST}}{{SAMPLER_PATH}}sampler-impl__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.js" + _qj
+    );
 
     samplerScriptTag.onload = function () {
       onSamplerLoaded();
@@ -97,7 +106,7 @@
   }
 
   function onIframeMessage(event) {
-    if ((window.location.protocol + '//__ejs(/*-SAMPLER_HOST*/);').indexOf(event.origin) === -1 || !event.data || typeof event.data !== 'string') {
+    if ((window.location.protocol + '//{{SAMPLER_HOST}}').indexOf(event.origin) === -1 || !event.data || typeof event.data !== 'string') {
       return;
     }
 
@@ -106,7 +115,7 @@
       try {
         var cb = message[1].split(';');
         var id = cb[0];
-        var callbackParameter = JSON.parse(cb[1]);
+        var callbackParameter = window.jsonParse(cb[1]);
         if (!sampler._cbMap[id] || typeof sampler._cbMap[id] !== 'function') {
           return;
         }
@@ -114,23 +123,11 @@
         sampler._cbMap[id] = undefined;
       } catch (e) {}
     }
-    if (message[0] === 'cmd') {
-      var cmd = message[1].split('//');
-      switch (cmd[0]) {
-        case 'set-cookie':
-          if (cmd[1]) {
-            document.cookie = cmd[1];
-          }
-          break;
-        default:
-          break;
-      }
-    }
   }
 
   function loadSamplerIframe(element) {
     iframe = document.createElement('iframe');
-    iframe.setAttribute('src', window.location.protocol + "//__ejs(/*-SAMPLER_HOST*/);/sampler-iframe__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.html");
+    iframe.setAttribute('src', window.location.protocol + "//{{SAMPLER_HOST}}{{SAMPLER_PATH}}sampler-iframe__ejs(/*= __CONFIG_NAME ? '-' + __CONFIG_NAME : '' */);.html" + _qj);
     iframe.setAttribute('style', 'position:fixed;border:0;outline:0;top:-999px;left:-999px;width:0;height:0;');
     iframe.setAttribute('frameborder', '0');
     iframe.setAttribute('tabindex', '-1');
