@@ -3,10 +3,9 @@ const puppeteer = require("puppeteer");
 let page;
 
 beforeAll(async () => {
-  const browser = await puppeteer.launch({ dumpio: false, args: ["--disable-gpu", "--no-sandbox"] });
+  const browser = await puppeteer.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox"] });
   page = await browser.newPage();
   await page.goto(`http://localhost:8000`);
-  await page.waitForFunction(() => document.readyState === "complete");
 }, 5000);
 
 afterAll(async () => {
