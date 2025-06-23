@@ -32,15 +32,10 @@
 
   window.isIframeCapable = function () {
     var excludeList = ['antgalio', 'hybrid', 'maple', 'presto', 'technotrend goerler', 'viera 2011'];
-    var currentUserAgent = window.navigator && navigator.userAgent && navigator.userAgent.toLowerCase();
-
-    if (!currentUserAgent || !currentUserAgent.indexOf) {
-      return false;
-    }
 
     var userAgentIsExcluded = false;
     for (var i = 0; i < excludeList.length; i++) {
-      userAgentIsExcluded = userAgentIsExcluded || currentUserAgent.indexOf(excludeList[i]) !== -1;
+      userAgentIsExcluded = userAgentIsExcluded || navigator.userAgent.toLowerCase().indexOf(excludeList[i]) !== -1;
     }
 
     return !userAgentIsExcluded;
