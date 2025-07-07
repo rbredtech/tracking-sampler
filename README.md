@@ -19,7 +19,6 @@ The build process requires a `build.json` file with the following structure:
 ```json
 {
   "default": {
-    "SAMPLER_HOST": "sampling.tvping.com",
     "IN_SAMPLE_PERCENTILE": 10,
     "TECH_COOKIE_MIN_AGE": 172800000,
     "TECH_COOKIE_NAME": "x-sampler-t",
@@ -27,7 +26,6 @@ The build process requires a `build.json` file with the following structure:
     "IN_SAMPLE_WITHOUT_TC": false
   },
   "twenty": {
-    "SAMPLER_HOST": "sampling.tvping.com",
     "IN_SAMPLE_PERCENTILE": 20,
     "TECH_COOKIE_MIN_AGE": 172800000,
     "TECH_COOKIE_NAME": "x-sampler-t",
