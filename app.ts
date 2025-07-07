@@ -23,10 +23,10 @@ app.get("*", async function(req, res) {
   try {
     const rendered = (await renderFile(path.join(__dirname, "src", req.path), {
       IN_SAMPLE_PERCENTILE: 10,
-      IN_SAMPLE_WITHOUT_TC: true,
+      TECH_COOKIE_MIN_AGE: 1000 * 60 * 60 * 24 * 2,
       TECH_COOKIE_NAME: "x-sampler-t",
-      TECH_COOKIE_MIN_AGE: 172800000,
       PERCENTILE_COOKIE_NAME: "x-sampler-p",
+      IN_SAMPLE_WITHOUT_TC: true,
       __CONFIG_NAME: null,
     }))
       .replaceAll("{{SAMPLER_HOST}}", SAMPLER_HOST ?? "localhost:4000")

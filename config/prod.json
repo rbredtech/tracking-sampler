@@ -1,14 +1,23 @@
 {
   "default": {
     "IN_SAMPLE_PERCENTILE": 10,
-    "IN_SAMPLE_WITHOUT_TC": false
+    "IN_SAMPLE_WITHOUT_TC": false,
+    "TECH_COOKIE_NAME": "x-sampler-t",
+    "TECH_COOKIE_MIN_AGE": 0,
+    "PERCENTILE_COOKIE_NAME": "x-sampler-p"
   },
   "de-ip": {
     "IN_SAMPLE_PERCENTILE": 10,
-    "IN_SAMPLE_WITHOUT_TC": false
+    "IN_SAMPLE_WITHOUT_TC": false,
+    "TECH_COOKIE_NAME": "x-sampler-t",
+    "TECH_COOKIE_MIN_AGE": 0,
+    "PERCENTILE_COOKIE_NAME": "x-sampler-p"
   },
   "de-p7s1": {
     "IN_SAMPLE_PERCENTILE": 10,
-    "IN_SAMPLE_WITHOUT_TC": true
+    "IN_SAMPLE_WITHOUT_TC": true,
+    "TECH_COOKIE_NAME": "x-sampler-t",
+    "TECH_COOKIE_MIN_AGE": 0,
+    "PERCENTILE_COOKIE_NAME": "x-sampler-p"
   }
 }
