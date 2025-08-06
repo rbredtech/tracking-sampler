@@ -1,26 +1,23 @@
 {
   "default": {
-    "SAMPLER_HOST": "sampling.tvping-agf.com",
     "IN_SAMPLE_PERCENTILE": 10,
-    "TECHNICAL_COOKIE_MIN_AGE": 0,
-    "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-    "PERCENTILE_COOKIE_NAME": "x-sampler-p",
-    "IN_SAMPLE_WITHOUT_TC": false
+    "IN_SAMPLE_WITHOUT_TC": false,
+    "TECH_COOKIE_NAME": "x-sampler-t",
+    "TECH_COOKIE_MIN_AGE": 0,
+    "PERCENTILE_COOKIE_NAME": "x-sampler-p"
   },
   "de-ip": {
-    "SAMPLER_HOST": "sampling.tvping-agf.com",
     "IN_SAMPLE_PERCENTILE": 10,
-    "TECHNICAL_COOKIE_MIN_AGE": 0,
-    "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-    "PERCENTILE_COOKIE_NAME": "x-sampler-p",
-    "IN_SAMPLE_WITHOUT_TC": false
+    "IN_SAMPLE_WITHOUT_TC": false,
+    "TECH_COOKIE_NAME": "x-sampler-t",
+    "TECH_COOKIE_MIN_AGE": 0,
+    "PERCENTILE_COOKIE_NAME": "x-sampler-p"
   },
   "de-p7s1": {
-    "SAMPLER_HOST": "sampling.tvping-agf.com",
     "IN_SAMPLE_PERCENTILE": 10,
-    "TECHNICAL_COOKIE_MIN_AGE": 0,
-    "TECHNICAL_COOKIE_NAME": "x-sampler-t",
-    "PERCENTILE_COOKIE_NAME": "x-sampler-p",
-    "IN_SAMPLE_WITHOUT_TC": true
+    "IN_SAMPLE_WITHOUT_TC": true,
+    "TECH_COOKIE_NAME": "x-sampler-t",
+    "TECH_COOKIE_MIN_AGE": 0,
+    "PERCENTILE_COOKIE_NAME": "x-sampler-p"
   }
 }

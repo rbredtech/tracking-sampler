@@ -1,5 +1,5 @@
 (function () {
-  var nameTechnicalCookie = '__ejs(/*-TECHNICAL_COOKIE_NAME*/);';
+  var nameTechnicalCookie = '__ejs(/*-TECH_COOKIE_NAME*/);';
   var namePercentileCookie = '__ejs(/*-PERCENTILE_COOKIE_NAME*/);';
   var inSampleWithoutTC = __ejs(/*-IN_SAMPLE_WITHOUT_TC*/);
 
@@ -13,7 +13,7 @@
     technicalCookie = now;
   }
 
-  var technicalCookiePassed = now - parseInt('__ejs(/*-TECHNICAL_COOKIE_MIN_AGE*/);') > technicalCookie;
+  var technicalCookiePassed = now - parseInt('__ejs(/*-TECH_COOKIE_MIN_AGE*/);') > technicalCookie;
 
   var percentile = parseInt(readStorage(namePercentileCookie)) || undefined;
   if (!percentile && technicalCookiePassed) {
@@ -28,7 +28,7 @@
     var desiredPercentile = parseInt('__ejs(/*-IN_SAMPLE_PERCENTILE*/);');
     if (callback && typeof callback === 'function') {
       var inSample = inSampleWithoutTC;
-      if (technicalCookiePassed) {
+      if (technicalCookiePassed || !!percentile) {
         inSample = !!percentile && percentile <= desiredPercentile;
       }
       callback(inSample);
