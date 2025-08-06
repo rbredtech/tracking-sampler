@@ -1,3 +1,18 @@
+var lsAvailable = (function () {
+  try {
+    if (!window.localStorage) {
+      return false;
+    }
+    var key = 'a';
+    var value = new Date().getTime() + '';
+    localStorage.setItem(key, value);
+    var ls = localStorage.getItem(key);
+    localStorage.removeItem(key);
+    return ls === value;
+  } catch (e) {}
+  return false;
+})();
+
 function getCookie(name) {
   var cname = name + '=';
   var decodedCookie = decodeURIComponent(document.cookie);
@@ -18,22 +33,16 @@ function setCookie(name, value) {
   var maxAge = 60 * 60 * 24 * 365 * 2; // 2 years
   var cookie = name + '=' + value + ';max-age=' + maxAge + ';path=/';
   document.cookie = cookie;
-  if (window._sendMessage) {
-    window._sendMessage('cmd$set-cookie//' + cookie);
-  }
 }
 
 function deleteCookie(name) {
   var cookie = name + '=;max-age=-1;path=/';
   document.cookie = cookie;
-  if (window._sendMessage) {
-    window._sendMessage('cmd$set-cookie//' + cookie);
-  }
 }
 
 function readStorage(key) {
   var value = null;
-  if (window.localStorage && localStorage.getItem) {
+  if (lsAvailable) {
     value = localStorage.getItem(key);
     if (value) {
       return value;
@@ -45,14 +54,14 @@ function readStorage(key) {
 
 function writeStorage(key, value) {
   setCookie(key, value + '');
-  if (window.localStorage && localStorage.setItem) {
+  if (lsAvailable) {
     localStorage.setItem(key, value + '');
   }
 }
 
 function deleteStorage(key) {
   deleteCookie(key);
-  if (window.localStorage && localStorage.removeItem) {
+  if (lsAvailable) {
     localStorage.removeItem(key);
   }
 }
