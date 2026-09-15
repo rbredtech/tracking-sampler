@@ -2,15 +2,12 @@ name: PROD - Static Bucket
 
 on:
   push:
-    branches:
-      - "!develop"
-      - "master"
     tags:
       - "v*.*.*"
 
 jobs:
   deploy:
-    name: PROD - Deploy static assets to storage bucket
+    name: PROD - Create release artifact
     runs-on: ubuntu-latest
     timeout-minutes: 5
 

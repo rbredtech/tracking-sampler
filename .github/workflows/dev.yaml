@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy-dev:
-    name: DEV - Create snapshot release
+    name: DEV - Create snapshot release artifact
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
