@@ -51,6 +51,7 @@
     };
 
     testingScriptTag.onerror = function (e) {
+      // eslint-disable-next-line hbbtv-compat/no-unsupported-js
       console.error('error loading testing', e);
     };
 
@@ -90,6 +91,7 @@
     };
 
     iframe.onerror = function (e) {
+      // eslint-disable-next-line hbbtv-compat/no-unsupported-js
       console.error('error loading testing iframe', e);
     };
 

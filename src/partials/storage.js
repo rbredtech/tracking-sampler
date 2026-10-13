@@ -1,3 +1,4 @@
+/* eslint-disable hbbtv-compat/no-unsupported-js */
 var lsAvailable = (function () {
   try {
     if (!window.localStorage) {

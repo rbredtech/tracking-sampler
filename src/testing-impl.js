@@ -4,7 +4,7 @@
 
   __ejs(/*- include("partials/storage.js") */);
 
-  sampler = window.__tvi_sampler || {};
+  var sampler = window.__tvi_sampler || {};
   window.__tvi_sampler = sampler;
 
   sampler.setPercentile = function (percentile, callback) {
@@ -15,14 +15,16 @@
   };
 
   sampler.isTechCookieValid = function (callback) {
-    var technicalCookie = parseInt(readStorage(nameTechnicalCookie)) || null;
+    var technicalCookie = parseInt(readStorage(nameTechnicalCookie), 10) || null;
     if (callback && typeof callback === 'function') {
-      callback(!!technicalCookie && Date.now() - parseInt('__ejs(/*-TECH_COOKIE_MIN_AGE*/);') > technicalCookie);
+      var now = new Date().getTime();
+      callback(!!technicalCookie && now - parseInt('__ejs(/*-TECH_COOKIE_MIN_AGE*/);', 10) > technicalCookie);
     }
   };
 
   sampler.setValidTechCookie = function (callback) {
-    writeStorage(nameTechnicalCookie, Date.now() - parseInt('__ejs(/*-TECH_COOKIE_MIN_AGE*/);') * 2);
+    var now = new Date().getTime();
+    writeStorage(nameTechnicalCookie, now - parseInt('__ejs(/*-TECH_COOKIE_MIN_AGE*/);', 10) * 2);
     if (callback && typeof callback === 'function') {
       callback();
     }

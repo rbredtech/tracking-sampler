@@ -35,7 +35,9 @@
 
     var userAgentIsExcluded = false;
     for (var i = 0; i < excludeList.length; i++) {
-      userAgentIsExcluded = userAgentIsExcluded || navigator.userAgent.toLowerCase().indexOf(excludeList[i]) !== -1;
+      // eslint-disable-next-line hbbtv-compat/no-unsupported-js
+      var userAgent = navigator.userAgent || '';
+      userAgentIsExcluded = userAgentIsExcluded || userAgent.toLowerCase().indexOf(excludeList[i]) !== -1;
     }
 
     return !userAgentIsExcluded;
@@ -87,6 +89,7 @@
     };
 
     samplerScriptTag.onerror = function (e) {
+      // eslint-disable-next-line hbbtv-compat/no-unsupported-js
       console.error('error loading sampler', e);
     };
 
@@ -138,6 +141,7 @@
     };
 
     iframe.onerror = function (e) {
+      // eslint-disable-next-line hbbtv-compat/no-unsupported-js
       console.error('error loading iframe', e);
     };
 

@@ -1,10 +1,12 @@
 window.jsonParse =
+  // eslint-disable-next-line hbbtv-compat/no-unsupported-js
   (window.JSON && window.JSON.parse) ||
   function (jsonString) {
     return eval('(' + jsonString + ')');
   };
 
 window.jsonStringify =
+  // eslint-disable-next-line hbbtv-compat/no-unsupported-js
   (window.JSON && window.JSON.stringify) ||
   function (object) {
     var result = undefined;
