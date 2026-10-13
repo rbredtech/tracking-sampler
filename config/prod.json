@@ -3,21 +3,21 @@
     "IN_SAMPLE_PERCENTILE": 50,
     "IN_SAMPLE_WITHOUT_TC": false,
     "TECH_COOKIE_NAME": "x-sampler-t",
-    "TECH_COOKIE_MIN_AGE": 0,
+    "TECH_COOKIE_MIN_AGE": 172800000,
     "PERCENTILE_COOKIE_NAME": "x-sampler-p"
   },
   "de-ip": {
     "IN_SAMPLE_PERCENTILE": 50,
     "IN_SAMPLE_WITHOUT_TC": false,
     "TECH_COOKIE_NAME": "x-sampler-t",
-    "TECH_COOKIE_MIN_AGE": 0,
+    "TECH_COOKIE_MIN_AGE": 172800000,
     "PERCENTILE_COOKIE_NAME": "x-sampler-p"
   },
   "de-p7s1": {
     "IN_SAMPLE_PERCENTILE": 50,
     "IN_SAMPLE_WITHOUT_TC": true,
     "TECH_COOKIE_NAME": "x-sampler-t",
-    "TECH_COOKIE_MIN_AGE": 0,
+    "TECH_COOKIE_MIN_AGE": 172800000,
     "PERCENTILE_COOKIE_NAME": "x-sampler-p"
   }
 }
