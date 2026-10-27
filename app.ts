@@ -26,6 +26,7 @@ app.get("*", async function(req, res) {
       TECH_COOKIE_MIN_AGE: 1000 * 60 * 60 * 24 * 2,
       TECH_COOKIE_NAME: "x-sampler-t",
       PERCENTILE_COOKIE_NAME: "x-sampler-p",
+      ELIGIBILITY_COOKIE_NAME: "x-sampler-e",
       IN_SAMPLE_WITHOUT_TC: true,
       __CONFIG_NAME: null,
     }))

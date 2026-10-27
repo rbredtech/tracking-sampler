@@ -126,5 +126,59 @@ describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame,
         expect(inSample).toBe(false);
       });
     });
+
+    describe("and device is set eligible while percentile is above threshold", () => {
+      beforeAll(async () => {
+        await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler._setEligible(true, resolve);
+          });
+        });
+        await page.reload();
+      }, 5000);
+
+      it("should be in-sample", async () => {
+        const percentile = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.getPercentile(resolve);
+          });
+        });
+        const inSample = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.checkInSample(resolve);
+          });
+        });
+
+        expect(percentile).toBe(50);
+        expect(inSample).toBe(true);
+      });
+    });
+
+    describe("and eligibility is removed again", () => {
+      beforeAll(async () => {
+        await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler._setEligible(false, resolve);
+          });
+        });
+        await page.reload();
+      }, 5000);
+
+      it("should be out-of-sample", async () => {
+        const percentile = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.getPercentile(resolve);
+          });
+        });
+        const inSample = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.checkInSample(resolve);
+          });
+        });
+
+        expect(percentile).toBe(50);
+        expect(inSample).toBe(false);
+      });
+    });
   });
 });

@@ -40,6 +40,11 @@
                 window._sendMessage('cb$' + id + ';' + window.jsonStringify({ param: cbParam }));
               });
               break;
+            case '_setEligible':
+              window.__tvi_sampler._setEligible(param.param, function (cbParam) {
+                window._sendMessage('cb$' + id + ';' + window.jsonStringify({ param: cbParam }));
+              });
+              break;
             default:
               break;
           }

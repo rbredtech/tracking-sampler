@@ -23,6 +23,7 @@ The build process requires a `build.json` file with the following structure:
     "TECH_COOKIE_MIN_AGE": 172800000,
     "TECH_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
+    "ELIGIBILITY_COOKIE_NAME": "x-sampler-e",
     "IN_SAMPLE_WITHOUT_TC": false
   },
   "twenty": {
@@ -30,6 +31,7 @@ The build process requires a `build.json` file with the following structure:
     "TECH_COOKIE_MIN_AGE": 172800000,
     "TECH_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
+    "ELIGIBILITY_COOKIE_NAME": "x-sampler-e",
     "IN_SAMPLE_WITHOUT_TC": true
   },
 }
@@ -54,6 +56,7 @@ Every config also gets it's own testing module, following the same rules (e.g. a
 | `TECH_COOKIE_MIN_AGE` | How long the technical cookie needs to be stored until the sampler gets active|
 | `TECH_COOKIE_NAME` | Cookie name / localStorage key where technical cookie is saved |
 | `PERCENTILE_COOKIE_NAME` | Cookie name / localStorage key where device percentile is saved |
+| `ELIGIBILITY_COOKIE_NAME` | Cookie name / localStorage key where the eligibility flag set via `_setEligible` is saved |
 | `IN_SAMPLE_WITHOUT_TC` | Should `checkInSample` return `true` or `false` while technical cookie evaluation is not finished |
 
 [^1]: The tech cookie is a cookie/localStorage key which stores the timestamp at creation. If this cookie/localStorage can still be read after at least 2 days, it is assumed that the device can store data in cookies/localStorage and therefore the percentile of the device can be persisted. If cookies/localStorage are not available, the device will always be out-of-sample.
