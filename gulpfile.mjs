@@ -71,7 +71,7 @@ function minifyHtml() {
 function optimize() {
   return gulp
     .src("dist/*")
-    .pipe(replace(/parseInt\(["'](\d+)["']\)/, "$1"))
+    .pipe(replace(/parseInt\(["'](\d+)["'](?:,\s*10)?\)/g, "$1"))
     .pipe(gulp.dest("dist"));
 }
 
