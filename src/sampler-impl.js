@@ -25,11 +25,12 @@
   window.__tvi_sampler = sampler;
 
   sampler.checkInSample = function (callback) {
-    var desiredPercentile = parseInt('__ejs(/*-IN_SAMPLE_PERCENTILE*/);', 10);
+    var minPercentile = parseInt('__ejs(/*-IN_SAMPLE_PERCENTILE_MIN*/);', 10);
+    var maxPercentile = parseInt('__ejs(/*-IN_SAMPLE_PERCENTILE_MAX*/);', 10);
     if (callback && typeof callback === 'function') {
       var inSample = inSampleWithoutTC;
       if (technicalCookiePassed || !!percentile) {
-        inSample = !!percentile && percentile <= desiredPercentile;
+        inSample = !!percentile && percentile >= minPercentile && percentile <= maxPercentile;
       }
       callback(inSample);
     }

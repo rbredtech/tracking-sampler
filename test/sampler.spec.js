@@ -61,17 +61,25 @@ describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame,
       await page.reload();
     }, 5000);
 
-    describe("and percentile is below threshold", () => {
+    // app.ts serves the sampler with an in-sample range of 5-20
+    describe.each([
+      ["below lower bound", 4, false],
+      ["at lower bound", 5, true],
+      ["within range", 12, true],
+      ["at upper bound", 20, true],
+      ["above upper bound", 21, false],
+      ["far above upper bound", 50, false],
+    ])("and percentile is %s (%i)", (_, storedPercentile, expectedInSample) => {
       beforeAll(async () => {
-        await page.evaluate(() => {
+        await page.evaluate((p) => {
           return new Promise((resolve) => {
-            window.__tvi_sampler.setPercentile(5, resolve);
+            window.__tvi_sampler.setPercentile(p, resolve);
           });
-        });
+        }, storedPercentile);
         await page.reload();
       }, 5000);
 
-      it("should be in-sample", async () => {
+      it(`should be ${expectedInSample ? "in-sample" : "out-of-sample"}`, async () => {
         const techCookieValid = await page.evaluate(() => {
           return new Promise((resolve) => {
             window.__tvi_sampler.isTechCookieValid(resolve);
@@ -89,41 +97,8 @@ describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame,
         });
 
         expect(techCookieValid).toBe(true);
-        expect(percentile).toBe(5);
-        expect(inSample).toBe(true);
-      });
-    });
-
-    describe("and percentile is above threshold", () => {
-      beforeAll(async () => {
-        await page.evaluate(() => {
-          return new Promise((resolve) => {
-            window.__tvi_sampler.setPercentile(50, resolve);
-          });
-        });
-        await page.reload();
-      }, 5000);
-
-      it("should be out-of-sample", async () => {
-        const techCookieValid = await page.evaluate(() => {
-          return new Promise((resolve) => {
-            window.__tvi_sampler.isTechCookieValid(resolve);
-          });
-        });
-        const percentile = await page.evaluate(() => {
-          return new Promise((resolve) => {
-            window.__tvi_sampler.getPercentile(resolve);
-          });
-        });
-        const inSample = await page.evaluate(() => {
-          return new Promise((resolve) => {
-            window.__tvi_sampler.checkInSample(resolve);
-          });
-        });
-
-        expect(techCookieValid).toBe(true);
-        expect(percentile).toBe(50);
-        expect(inSample).toBe(false);
+        expect(percentile).toBe(storedPercentile);
+        expect(inSample).toBe(expectedInSample);
       });
     });
   });

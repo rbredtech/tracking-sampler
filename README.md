@@ -19,14 +19,16 @@ The build process requires a `build.json` file with the following structure:
 ```json
 {
   "default": {
-    "IN_SAMPLE_PERCENTILE": 10,
+    "IN_SAMPLE_PERCENTILE_MIN": 1,
+    "IN_SAMPLE_PERCENTILE_MAX": 10,
     "TECH_COOKIE_MIN_AGE": 172800000,
     "TECH_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
     "IN_SAMPLE_WITHOUT_TC": false
   },
   "twenty": {
-    "IN_SAMPLE_PERCENTILE": 20,
+    "IN_SAMPLE_PERCENTILE_MIN": 1,
+    "IN_SAMPLE_PERCENTILE_MAX": 20,
     "TECH_COOKIE_MIN_AGE": 172800000,
     "TECH_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
@@ -50,7 +52,8 @@ Every config also gets it's own testing module, following the same rules (e.g. a
 | Value | Description |
 | ---   | ---         |
 | `SAMPLER_HOST` | Host where sampler is deployed to |
-| `IN_SAMPLE_PERCENTILE` | Which percentile the device needs to be in |
+| `IN_SAMPLE_PERCENTILE_MIN` | Lowest percentile (inclusive) a device can have to be in sample |
+| `IN_SAMPLE_PERCENTILE_MAX` | Highest percentile (inclusive) a device can have to be in sample |
 | `TECH_COOKIE_MIN_AGE` | How long the technical cookie needs to be stored until the sampler gets active|
 | `TECH_COOKIE_NAME` | Cookie name / localStorage key where technical cookie is saved |
 | `PERCENTILE_COOKIE_NAME` | Cookie name / localStorage key where device percentile is saved |
