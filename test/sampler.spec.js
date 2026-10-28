@@ -101,5 +101,164 @@ describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame,
         expect(inSample).toBe(expectedInSample);
       });
     });
+
+    describe("and device is set eligible while percentile is above threshold", () => {
+      let eligible;
+
+      beforeAll(async () => {
+        eligible = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler._setEligible(true, resolve);
+          });
+        });
+      }, 5000);
+
+      it("should report the device as eligible", () => {
+        expect(eligible).toBe(true);
+      });
+
+      it("should be in-sample without a reload", async () => {
+        const inSample = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.checkInSample(resolve);
+          });
+        });
+
+        expect(inSample).toBe(true);
+      });
+    });
+
+    describe("and page is reloaded while device is eligible", () => {
+      beforeAll(async () => {
+        await page.reload();
+      }, 5000);
+
+      it("should be in-sample", async () => {
+        const percentile = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.getPercentile(resolve);
+          });
+        });
+        const inSample = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.checkInSample(resolve);
+          });
+        });
+
+        expect(percentile).toBe(50);
+        expect(inSample).toBe(true);
+      });
+    });
+
+    describe("and eligibility is removed again", () => {
+      let eligible;
+
+      beforeAll(async () => {
+        eligible = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler._setEligible(false, resolve);
+          });
+        });
+      }, 5000);
+
+      it("should report the device as not eligible", () => {
+        expect(eligible).toBe(false);
+      });
+
+      it("should be out-of-sample without a reload", async () => {
+        const inSample = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.checkInSample(resolve);
+          });
+        });
+
+        expect(inSample).toBe(false);
+      });
+    });
+
+    describe("and page is reloaded after eligibility was removed", () => {
+      beforeAll(async () => {
+        await page.reload();
+      }, 5000);
+
+      it("should be out-of-sample", async () => {
+        const percentile = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.getPercentile(resolve);
+          });
+        });
+        const inSample = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.checkInSample(resolve);
+          });
+        });
+
+        expect(percentile).toBe(50);
+        expect(inSample).toBe(false);
+      });
+    });
+
+    describe("and testing module is reset while device is eligible", () => {
+      beforeAll(async () => {
+        await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler._setEligible(true, resolve);
+          });
+        });
+        await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.reset(resolve);
+          });
+        });
+        await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.setValidTechCookie(resolve);
+          });
+        });
+        await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.setPercentile(50, resolve);
+          });
+        });
+        await page.reload();
+      }, 5000);
+
+      it("should no longer be eligible", async () => {
+        const inSample = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.checkInSample(resolve);
+          });
+        });
+
+        expect(inSample).toBe(false);
+      });
+    });
+  });
+});
+
+describe.each([true, false])("Tracking Sampler without storage - iFrame: %s", (iFrame) => {
+  beforeAll(async () => {
+    const browser = await puppeteer.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-local-storage"] });
+    page = await browser.newPage();
+    const cdp = await page.createCDPSession();
+    await cdp.send("Emulation.setDocumentCookieDisabled", { disabled: true });
+    if (!iFrame) {
+      await page.setUserAgent("HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03");
+    }
+    await page.goto(`http://localhost:8000`);
+  }, 5000);
+
+  afterAll(async () => {
+    await page.browser().close();
+  }, 5000);
+
+  it("should not report the device as eligible when the flag cannot be stored", async () => {
+    const eligible = await page.evaluate(() => {
+      return new Promise((resolve) => {
+        window.__tvi_sampler._setEligible(true, resolve);
+      });
+    });
+
+    expect(eligible).toBe(false);
   });
 });

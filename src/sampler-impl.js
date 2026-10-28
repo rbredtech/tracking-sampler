@@ -1,6 +1,7 @@
 (function () {
   var nameTechnicalCookie = '__ejs(/*-TECH_COOKIE_NAME*/);';
   var namePercentileCookie = '__ejs(/*-PERCENTILE_COOKIE_NAME*/);';
+  var nameEligibilityCookie = '__ejs(/*-ELIGIBILITY_COOKIE_NAME*/);';
   var inSampleWithoutTC = __ejs(/*-IN_SAMPLE_WITHOUT_TC*/);
 
   __ejs(/*- include("partials/storage.js") */);
@@ -21,6 +22,8 @@
     writeStorage(namePercentileCookie, percentile);
   }
 
+  var eligible = readStorage(nameEligibilityCookie) === 'true';
+
   var sampler = window.__tvi_sampler || {};
   window.__tvi_sampler = sampler;
 
@@ -32,7 +35,19 @@
       if (technicalCookiePassed || !!percentile) {
         inSample = !!percentile && percentile >= minPercentile && percentile <= maxPercentile;
       }
-      callback(inSample);
+      callback(eligible || inSample);
+    }
+  };
+
+  sampler._setEligible = function (isEligible, callback) {
+    if (isEligible === true) {
+      writeStorage(nameEligibilityCookie, true);
+    } else {
+      deleteStorage(nameEligibilityCookie);
+    }
+    eligible = readStorage(nameEligibilityCookie) === 'true';
+    if (callback && typeof callback === 'function') {
+      callback(eligible);
     }
   };
 
