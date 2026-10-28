@@ -22,7 +22,8 @@ app.set("view engine", "ejs");
 app.get("*", async function(req, res) {
   try {
     const rendered = (await renderFile(path.join(__dirname, "src", req.path), {
-      IN_SAMPLE_PERCENTILE: 10,
+      IN_SAMPLE_PERCENTILE_MIN: 5,
+      IN_SAMPLE_PERCENTILE_MAX: 20,
       TECH_COOKIE_MIN_AGE: 1000 * 60 * 60 * 24 * 2,
       TECH_COOKIE_NAME: "x-sampler-t",
       PERCENTILE_COOKIE_NAME: "x-sampler-p",
