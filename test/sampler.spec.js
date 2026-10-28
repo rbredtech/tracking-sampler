@@ -128,12 +128,33 @@ describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame,
     });
 
     describe("and device is set eligible while percentile is above threshold", () => {
+      let eligible;
+
       beforeAll(async () => {
-        await page.evaluate(() => {
+        eligible = await page.evaluate(() => {
           return new Promise((resolve) => {
             window.__tvi_sampler._setEligible(true, resolve);
           });
         });
+      }, 5000);
+
+      it("should report the device as eligible", () => {
+        expect(eligible).toBe(true);
+      });
+
+      it("should be in-sample without a reload", async () => {
+        const inSample = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.checkInSample(resolve);
+          });
+        });
+
+        expect(inSample).toBe(true);
+      });
+    });
+
+    describe("and page is reloaded while device is eligible", () => {
+      beforeAll(async () => {
         await page.reload();
       }, 5000);
 
@@ -155,12 +176,33 @@ describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame,
     });
 
     describe("and eligibility is removed again", () => {
+      let eligible;
+
       beforeAll(async () => {
-        await page.evaluate(() => {
+        eligible = await page.evaluate(() => {
           return new Promise((resolve) => {
             window.__tvi_sampler._setEligible(false, resolve);
           });
         });
+      }, 5000);
+
+      it("should report the device as not eligible", () => {
+        expect(eligible).toBe(false);
+      });
+
+      it("should be out-of-sample without a reload", async () => {
+        const inSample = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.checkInSample(resolve);
+          });
+        });
+
+        expect(inSample).toBe(false);
+      });
+    });
+
+    describe("and page is reloaded after eligibility was removed", () => {
+      beforeAll(async () => {
         await page.reload();
       }, 5000);
 
@@ -177,6 +219,42 @@ describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame,
         });
 
         expect(percentile).toBe(50);
+        expect(inSample).toBe(false);
+      });
+    });
+
+    describe("and testing module is reset while device is eligible", () => {
+      beforeAll(async () => {
+        await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler._setEligible(true, resolve);
+          });
+        });
+        await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.reset(resolve);
+          });
+        });
+        await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.setValidTechCookie(resolve);
+          });
+        });
+        await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.setPercentile(50, resolve);
+          });
+        });
+        await page.reload();
+      }, 5000);
+
+      it("should no longer be eligible", async () => {
+        const inSample = await page.evaluate(() => {
+          return new Promise((resolve) => {
+            window.__tvi_sampler.checkInSample(resolve);
+          });
+        });
+
         expect(inSample).toBe(false);
       });
     });
