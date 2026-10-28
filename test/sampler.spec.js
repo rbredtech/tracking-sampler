@@ -260,3 +260,30 @@ describe.each(cases)("Tracking Sampler - iFrame: %s, localStorage: %s", (iFrame,
     });
   });
 });
+
+describe.each([true, false])("Tracking Sampler without storage - iFrame: %s", (iFrame) => {
+  beforeAll(async () => {
+    const browser = await puppeteer.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-local-storage"] });
+    page = await browser.newPage();
+    const cdp = await page.createCDPSession();
+    await cdp.send("Emulation.setDocumentCookieDisabled", { disabled: true });
+    if (!iFrame) {
+      await page.setUserAgent("HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03");
+    }
+    await page.goto(`http://localhost:8000`);
+  }, 5000);
+
+  afterAll(async () => {
+    await page.browser().close();
+  }, 5000);
+
+  it("should not report the device as eligible when the flag cannot be stored", async () => {
+    const eligible = await page.evaluate(() => {
+      return new Promise((resolve) => {
+        window.__tvi_sampler._setEligible(true, resolve);
+      });
+    });
+
+    expect(eligible).toBe(false);
+  });
+});

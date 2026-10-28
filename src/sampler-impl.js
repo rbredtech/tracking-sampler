@@ -39,12 +39,12 @@
   };
 
   sampler._setEligible = function (isEligible, callback) {
-    eligible = isEligible === true;
-    if (eligible) {
-      writeStorage(nameEligibilityCookie, eligible);
+    if (isEligible === true) {
+      writeStorage(nameEligibilityCookie, true);
     } else {
       deleteStorage(nameEligibilityCookie);
     }
+    eligible = readStorage(nameEligibilityCookie) === 'true';
     if (callback && typeof callback === 'function') {
       callback(eligible);
     }
