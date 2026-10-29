@@ -289,3 +289,51 @@ describe.each([true, false])("Tracking Sampler with a malformed host app cookie 
     expect(typeof inSample).toBe("boolean");
   });
 });
+
+// Chrome honours max-age, so check the written cookie strings for the expires date older browsers depend on
+describe("Tracking Sampler cookie expiry - iFrame: false", () => {
+  beforeAll(async () => {
+    const browser = await puppeteer.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-local-storage"] });
+    page = await browser.newPage();
+    await page.setUserAgent("HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03");
+    await page.evaluateOnNewDocument(() => {
+      const cookie = Object.getOwnPropertyDescriptor(Document.prototype, "cookie");
+      window.__cookieWrites = [];
+      Object.defineProperty(document, "cookie", {
+        get: () => cookie.get.call(document),
+        set: (value) => {
+          window.__cookieWrites.push(value);
+          cookie.set.call(document, value);
+        },
+      });
+    });
+    await page.goto(`http://localhost:8000`);
+  }, 5000);
+
+  afterAll(async () => {
+    await page.browser().close();
+  }, 5000);
+
+  it("should set an expires date about 2 years ahead when storing", async () => {
+    const writes = await page.evaluate(() => window.__cookieWrites);
+    const techCookieWrite = writes.find((write) => write.indexOf("x-sampler-t=") === 0);
+    const expires = /expires=([^;]+)/.exec(techCookieWrite);
+
+    expect(expires).not.toBeNull();
+    expect(new Date(expires[1]).getTime()).toBeGreaterThan(Date.now() + 1000 * 60 * 60 * 24 * 365);
+  });
+
+  it("should set an expires date in the past when deleting", async () => {
+    await page.evaluate(() => {
+      return new Promise((resolve) => {
+        window.__tvi_sampler.reset(resolve);
+      });
+    });
+    const writes = await page.evaluate(() => window.__cookieWrites);
+    const techCookieDelete = writes.find((write) => write.indexOf("x-sampler-t=;") === 0);
+    const expires = /expires=([^;]+)/.exec(techCookieDelete);
+
+    expect(expires).not.toBeNull();
+    expect(new Date(expires[1]).getTime()).toBeLessThan(Date.now());
+  });
+});

@@ -32,12 +32,14 @@ function getCookie(name) {
 
 function setCookie(name, value) {
   var maxAge = 60 * 60 * 24 * 365 * 2; // 2 years
-  var cookie = name + '=' + value + ';max-age=' + maxAge + ';path=/';
+  // expires as well, for older browsers that ignore max-age and would keep the cookie for the session only
+  var expires = new Date(new Date().getTime() + maxAge * 1000).toUTCString();
+  var cookie = name + '=' + value + ';expires=' + expires + ';max-age=' + maxAge + ';path=/';
   document.cookie = cookie;
 }
 
 function deleteCookie(name) {
-  var cookie = name + '=;max-age=-1;path=/';
+  var cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;max-age=-1;path=/';
   document.cookie = cookie;
 }
 
