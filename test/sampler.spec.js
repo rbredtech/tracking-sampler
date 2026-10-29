@@ -262,3 +262,30 @@ describe.each([true, false])("Tracking Sampler without storage - iFrame: %s", (i
     expect(eligible).toBe(false);
   });
 });
+
+describe.each([true, false])("Tracking Sampler with a malformed host app cookie - iFrame: %s", (iFrame) => {
+  beforeAll(async () => {
+    const browser = await puppeteer.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox"] });
+    page = await browser.newPage();
+    if (!iFrame) {
+      await page.setUserAgent("HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03");
+    }
+    // not valid URI encoding, as written by e.g. escape("ä") or a raw "%"
+    await page.setCookie({ name: "host_app", value: "100%", url: "http://localhost:8000" });
+    await page.goto(`http://localhost:8000`);
+  }, 5000);
+
+  afterAll(async () => {
+    await page.browser().close();
+  }, 5000);
+
+  it("should still answer checkInSample", async () => {
+    const inSample = await page.evaluate(() => {
+      return new Promise((resolve) => {
+        window.__tvi_sampler.checkInSample(resolve);
+      });
+    });
+
+    expect(typeof inSample).toBe("boolean");
+  });
+});

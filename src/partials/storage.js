@@ -16,8 +16,8 @@ var lsAvailable = (function () {
 
 function getCookie(name) {
   var cname = name + '=';
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
+  // not decoded: our values are plain ASCII, and decoding would throw on any malformed cookie of the host app
+  var ca = document.cookie.split(';');
   for (var i = 0; i < ca.length; i++) {
     var c = ca[i];
     while (c.charAt(0) === ' ') {
