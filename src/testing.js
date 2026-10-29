@@ -22,7 +22,9 @@
   };
 
   function callTestingQueue() {
-    for (var i = 0; i < sampler._tq.length; i++) {
+    // fixed length: if testing-impl failed, the queueing stubs are still in place and would re-queue each call forever
+    var queueLength = sampler._tq.length;
+    for (var i = 0; i < queueLength; i++) {
       var f = sampler._tq[i];
       sampler[f.m].apply(null, f.a);
     }

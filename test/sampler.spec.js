@@ -290,6 +290,39 @@ describe.each([true, false])("Tracking Sampler with a malformed host app cookie 
   });
 });
 
+describe("Testing module when testing-impl fails - iFrame: false", () => {
+  beforeAll(async () => {
+    const indexHtml = await (await fetch("http://localhost:8000")).text();
+    const browser = await puppeteer.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox"] });
+    page = await browser.newPage();
+    await page.setUserAgent("HbbTV/1.1.1 (+PVR;Humax;HD FOX+;1.00.20;1.0;)CE-HTML/1.0 ANTGalio/3.3.0.26.03");
+    await page.setRequestInterception(true);
+    page.on("request", (request) => {
+      if (request.url() === "http://localhost:8000/") {
+        // queue a testing call before testing-impl has loaded
+        const body = indexHtml.replace("</head>", '<script type="text/javascript">window.__tvi_sampler.reset();</script></head>');
+        return request.respond({ contentType: "text/html", body });
+      }
+      if (request.url().indexOf("/testing-impl") !== -1) {
+        return request.respond({ contentType: "text/javascript", body: "throw new Error('testing-impl failed');" });
+      }
+      return request.continue();
+    });
+    page.on("pageerror", () => {});
+  }, 5000);
+
+  afterAll(async () => {
+    await page.browser().close();
+  }, 5000);
+
+  it("should not freeze the page", async () => {
+    await page.goto(`http://localhost:8000`, { timeout: 4000 });
+    const responsive = await page.evaluate(() => true);
+
+    expect(responsive).toBe(true);
+  });
+});
+
 // Chrome honours max-age, so check the written cookie strings for the expires date older browsers depend on
 describe("Tracking Sampler cookie expiry - iFrame: false", () => {
   beforeAll(async () => {
