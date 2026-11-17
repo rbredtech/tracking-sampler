@@ -69,8 +69,28 @@
     delete sampler._q;
   }
 
+  // The tracking script's eligibility.js reads the device ID where tracking stored it and hands it to _checkEligibility
+  function checkEligibility() {
+    sampler._shouldCheckEligibility(function (due) {
+      if (!due) {
+        return;
+      }
+      waitForDOMElement(
+        'head',
+        function (head) {
+          var eligibilityScriptTag = document.createElement('script');
+          eligibilityScriptTag.setAttribute('type', 'text/javascript');
+          eligibilityScriptTag.setAttribute('src', window.location.protocol + '//{{ELIGIBILITY_SCRIPT}}');
+          head.appendChild(eligibilityScriptTag);
+        },
+        3
+      );
+    });
+  }
+
   function onSamplerLoaded() {
     callQueue();
+    checkEligibility();
   }
 
   sampler._cbCount = sampler._cbCount || 0;
@@ -145,6 +165,14 @@
 
       sampler._setEligible = function (isEligible, callback) {
         iframeMessage('_setEligible', isEligible, callback);
+      };
+
+      sampler._shouldCheckEligibility = function (callback) {
+        iframeMessage('_shouldCheckEligibility', undefined, callback);
+      };
+
+      sampler._checkEligibility = function (deviceId) {
+        iframeMessage('_checkEligibility', deviceId);
       };
 
       onSamplerLoaded();

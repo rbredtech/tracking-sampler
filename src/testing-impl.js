@@ -2,6 +2,7 @@
   var nameTechnicalCookie = '__ejs(/*-TECH_COOKIE_NAME*/);';
   var namePercentileCookie = '__ejs(/*-PERCENTILE_COOKIE_NAME*/);';
   var nameEligibilityCookie = '__ejs(/*-ELIGIBILITY_COOKIE_NAME*/);';
+  var nameEligibilityRoundCookie = '__ejs(/*-ELIGIBILITY_ROUND_COOKIE_NAME*/);';
 
   __ejs(/*- include("partials/storage.js") */);
 
@@ -35,6 +36,7 @@
     deleteStorage(nameTechnicalCookie);
     deleteStorage(namePercentileCookie);
     deleteStorage(nameEligibilityCookie);
+    deleteStorage(nameEligibilityRoundCookie);
     if (callback && typeof callback === 'function') {
       callback();
     }

@@ -45,6 +45,14 @@
                 window._sendMessage('cb$' + id + ';' + window.jsonStringify({ param: cbParam }));
               });
               break;
+            case '_shouldCheckEligibility':
+              window.__tvi_sampler._shouldCheckEligibility(function (cbParam) {
+                window._sendMessage('cb$' + id + ';' + window.jsonStringify({ param: cbParam }));
+              });
+              break;
+            case '_checkEligibility':
+              window.__tvi_sampler._checkEligibility(param.param);
+              break;
             default:
               break;
           }
