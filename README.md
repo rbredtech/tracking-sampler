@@ -25,6 +25,7 @@ The build process requires a `build.json` file with the following structure:
     "TECH_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
     "ELIGIBILITY_COOKIE_NAME": "x-sampler-e",
+    "ELIGIBILITY_ROUND_COOKIE_NAME": "x-sampler-r",
     "IN_SAMPLE_WITHOUT_TC": false
   },
   "twenty": {
@@ -34,6 +35,7 @@ The build process requires a `build.json` file with the following structure:
     "TECH_COOKIE_NAME": "x-sampler-t",
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
     "ELIGIBILITY_COOKIE_NAME": "x-sampler-e",
+    "ELIGIBILITY_ROUND_COOKIE_NAME": "x-sampler-r",
     "IN_SAMPLE_WITHOUT_TC": true
   },
 }
@@ -60,6 +62,25 @@ Every config also gets it's own testing module, following the same rules (e.g. a
 | `TECH_COOKIE_NAME` | Cookie name / localStorage key where technical cookie is saved |
 | `PERCENTILE_COOKIE_NAME` | Cookie name / localStorage key where device percentile is saved |
 | `ELIGIBILITY_COOKIE_NAME` | Cookie name / localStorage key where the eligibility flag set via `_setEligible` is saved |
+| `ELIGIBILITY_ROUND_COOKIE_NAME` | Cookie name / localStorage key where the last checked eligibility round is saved |
 | `IN_SAMPLE_WITHOUT_TC` | Should `checkInSample` return `true` or `false` while technical cookie evaluation is not finished |
+
+## Eligibility
+
+The backend can mark devices on a list eligible, so they stay in sample (see `_setEligible`). Once per list, a device that is out of sample checks whether it is on it:
+
+1. After the sampler loaded, `sampler.js` asks `_shouldCheckEligibility`. The check is due if the device is out of sample and the round stored under `ELIGIBILITY_ROUND_COOKIE_NAME` is not `{{ELIGIBILITY_ROUND}}`.
+2. If it is, `sampler.js` loads the tracking script's `eligibility.js` from `{{ELIGIBILITY_SCRIPT}}`. It reads the device ID tracking stored and calls `_checkEligibility(did)`, with `''` if there is none.
+3. With a device ID, the sampler requests `set_eligible.js?did=<did>` from the backend, which answers with `_eligibilityChecked(eligible, round)`. The sampler then marks an eligible device and stores the round. Without a device ID it stores the round right away.
+
+The backend fills in these placeholders, like `{{SAMPLER_HOST}}` and `{{SAMPLER_PATH}}`:
+
+| Placeholder | Template | Description |
+| ---   | ---   | ---         |
+| `{{ELIGIBILITY_ROUND}}` | `sampler-impl.js`, `set_eligible.js` | Identifies the list of eligible devices; empty for no list, which turns the check off |
+| `{{ELIGIBILITY_SCRIPT}}` | `sampler.js` | Host and path of the tracking script's `eligibility.js`, without the scheme |
+| `{{ELIGIBLE}}` | `set_eligible.js` | Whether the requested device ID is on the list (true/false) |
+
+For development, `app.ts` takes `ELIGIBILITY_ROUND`, `ELIGIBILITY_SCRIPT` and `ELIGIBLE_DEVICE_IDS` (comma-separated) from the environment, and serves a stand-in for `eligibility.js` at `/test/eligibility.js`.
 
 [^1]: The tech cookie is a cookie/localStorage key which stores the timestamp at creation. If this cookie/localStorage can still be read after at least 2 days, it is assumed that the device can store data in cookies/localStorage and therefore the percentile of the device can be persisted. If cookies/localStorage are not available, the device will always be out-of-sample.

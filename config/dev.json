@@ -6,7 +6,8 @@
     "TECH_COOKIE_NAME": "x-sampler-t",
     "TECH_COOKIE_MIN_AGE": 172800000,
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
-    "ELIGIBILITY_COOKIE_NAME": "x-sampler-e"
+    "ELIGIBILITY_COOKIE_NAME": "x-sampler-e",
+    "ELIGIBILITY_ROUND_COOKIE_NAME": "x-sampler-r"
   },
   "de-ip": {
     "IN_SAMPLE_PERCENTILE_MIN": 1,
@@ -15,7 +16,8 @@
     "TECH_COOKIE_NAME": "x-sampler-t",
     "TECH_COOKIE_MIN_AGE": 172800000,
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
-    "ELIGIBILITY_COOKIE_NAME": "x-sampler-e"
+    "ELIGIBILITY_COOKIE_NAME": "x-sampler-e",
+    "ELIGIBILITY_ROUND_COOKIE_NAME": "x-sampler-r"
   },
   "de-p7s1": {
     "IN_SAMPLE_PERCENTILE_MIN": 1,
@@ -24,6 +26,7 @@
     "TECH_COOKIE_NAME": "x-sampler-t",
     "TECH_COOKIE_MIN_AGE": 172800000,
     "PERCENTILE_COOKIE_NAME": "x-sampler-p",
-    "ELIGIBILITY_COOKIE_NAME": "x-sampler-e"
+    "ELIGIBILITY_COOKIE_NAME": "x-sampler-e",
+    "ELIGIBILITY_ROUND_COOKIE_NAME": "x-sampler-r"
   }
 }
